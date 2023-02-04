@@ -5,6 +5,21 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class FlightStick1038 extends Joystick {
+    // Buttons
+    public final JoystickButton trigger;
+    public final JoystickButton button2;
+    public final JoystickButton button3;
+    public final JoystickButton button4;
+    public final JoystickButton button5;
+    public final JoystickButton button6;
+    public final JoystickButton button7;
+    public final JoystickButton button8;
+    public final JoystickButton button9;
+    public final JoystickButton button10;
+    public final JoystickButton button11;
+    public final JoystickButton button12;
+
+    // Enums
     public enum ButtonType {
         trigger(1),
         button2(2),
@@ -25,19 +40,6 @@ public class FlightStick1038 extends Joystick {
             this.value = value;
         }
     }
-
-    public final JoystickButton trigger = new JoystickButton(this, ButtonType.trigger.value);
-    public final JoystickButton button2 = new JoystickButton(this, ButtonType.button2.value);
-    public final JoystickButton button3 = new JoystickButton(this, ButtonType.button3.value);
-    public final JoystickButton button4 = new JoystickButton(this, ButtonType.button4.value);
-    public final JoystickButton button5 = new JoystickButton(this, ButtonType.button5.value);
-    public final JoystickButton button6 = new JoystickButton(this, ButtonType.button6.value);
-    public final JoystickButton button7 = new JoystickButton(this, ButtonType.button7.value);
-    public final JoystickButton button8 = new JoystickButton(this, ButtonType.button8.value);
-    public final JoystickButton button9 = new JoystickButton(this, ButtonType.button9.value);
-    public final JoystickButton button10 = new JoystickButton(this, ButtonType.button10.value);
-    public final JoystickButton button11 = new JoystickButton(this, ButtonType.button11.value);
-    public final JoystickButton button12 = new JoystickButton(this, ButtonType.button12.value);
 
     public enum AxisType {
         X(0),
@@ -63,10 +65,24 @@ public class FlightStick1038 extends Joystick {
      */
     public FlightStick1038(int port) {
         super(port);
+        trigger = new JoystickButton(this, ButtonType.trigger.value);
+        button2 = new JoystickButton(this, ButtonType.button2.value);
+        button3 = new JoystickButton(this, ButtonType.button3.value);
+        button4 = new JoystickButton(this, ButtonType.button4.value);
+        button5 = new JoystickButton(this, ButtonType.button5.value);
+        button6 = new JoystickButton(this, ButtonType.button6.value);
+        button7 = new JoystickButton(this, ButtonType.button7.value);
+        button8 = new JoystickButton(this, ButtonType.button8.value);
+        button9 = new JoystickButton(this, ButtonType.button9.value);
+        button10 = new JoystickButton(this, ButtonType.button10.value);
+        button11 = new JoystickButton(this, ButtonType.button11.value);
+        button12 = new JoystickButton(this, ButtonType.button12.value);
+
     }
 
     /**
-     * Throws an error, use {@link #getPOVPosition()}
+     * @deprecated
+     *             Throws an error, use {@link #getPOVPosition()}
      */
     @Deprecated
     public int getPOV() {
