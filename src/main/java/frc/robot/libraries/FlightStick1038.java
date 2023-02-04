@@ -66,10 +66,9 @@ public class FlightStick1038 extends Joystick {
     }
 
     /**
-     * Returns the state of the POV on the flight stick
-     *
-     * @return value of POV
+     * Throws an error, use {@link #getPOVPosition()}
      */
+    @Deprecated
     public int getPOV() {
         throw new Error("Use getPOVPosition");
     }
