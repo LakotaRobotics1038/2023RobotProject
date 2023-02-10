@@ -13,10 +13,17 @@ public class ConeAcquisition {
     private final TimeOfFlight distanceSensor = new TimeOfFlight(ACQUISITION_MOTOR_PORT);
 
     ConeAcquisition() {
-
     }
 
-    public TimeOfFlight TimeOfFlight() {
-        return getRange(distanceSensor);
+    public double TimeOfFlight() {
+        return distanceSensor.getRange();
+    }
+
+    public void AccuireCone() {
+        coneAcquisitionMotor.set(CONSTANT_MOTOR_SPEED);
+    }
+
+    public void DisposeOfCode() {
+        coneAcquisitionMotor.set(-1 * CONSTANT_MOTOR_SPEED);
     }
 }
