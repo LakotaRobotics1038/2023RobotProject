@@ -6,10 +6,10 @@ import frc.robot.constants.AcquisitionConstants;
 import com.playingwithfusion.TimeOfFlight;
 
 public class ConeAcquisition {
-    private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(AcquisitionConstants.ACQUISITION_MOTOR_PORT,
+    private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(AcquisitionConstants.kAcquisitonMotorPort,
             MotorType.kBrushless);
 
-    private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.ACQUISITION_MOTOR_PORT);
+    private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.kAcquisitonMotorPort);
 
     private static ConeAcquisition instance;
 
@@ -22,14 +22,14 @@ public class ConeAcquisition {
     }
 
     public void AccuireCone() {
-        coneAcquisitionMotor.set(AcquisitionConstants.CONSTANT_MOTOR_SPEED);
+        coneAcquisitionMotor.set(AcquisitionConstants.kConstantMotorSpeed);
     }
 
     public void DisposeOfCode() {
-        coneAcquisitionMotor.set(-AcquisitionConstants.CONSTANT_MOTOR_SPEED);
+        coneAcquisitionMotor.set(-AcquisitionConstants.kConstantMotorSpeed);
     }
 
-    public ConeAcquisition getInstance() {
+    public static ConeAcquisition getInstance() {
         if (instance == null) {
             instance = new ConeAcquisition();
         }
