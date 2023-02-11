@@ -7,13 +7,13 @@ public class Arm {
 
     private static Arm inst;
 
-    private enum ArmExtensionState {
+    private enum ArmExtensionStates {
         In(true),
         Out(false);
 
         private final boolean value;
 
-        ArmExtensionState(boolean value) {
+        ArmExtensionStates(boolean value) {
             this.value = value;
         }
     }
@@ -29,7 +29,7 @@ public class Arm {
         return inst;
     }
 
-    public void setArmExtensionPosition(ArmExtensionState state) {
+    public void setArmExtensionPosition(ArmExtensionStates state) {
         armExtension.set(state.value);
     }
 
