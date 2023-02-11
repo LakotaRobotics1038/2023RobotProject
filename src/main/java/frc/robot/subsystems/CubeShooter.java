@@ -14,7 +14,7 @@ public class CubeShooter {
     private DigitalInput cubeLimitSwitch = new DigitalInput(ShooterConstants.kCubeLimitSwitchPort);
 
     public void loadCube() {
-        if (cubeLimitSwitch.get() == false) { // if circuit is closed
+        if (!cubeLimitSwitch.get()) {
             leftShooterMotor.set(0.0);
             rightShooterMotor.set(0.0);
         } else {
