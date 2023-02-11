@@ -10,6 +10,8 @@ public class CubeAcquisition {
     private CANSparkMax acquisitionMotor = new CANSparkMax(0, MotorType.kBrushless);
     private Solenoid acquisitionSolenoid;
 
+    private static CubeAcquisition inst;
+
     private enum AcquisitionStates {
         In(true), Out(false);
 
@@ -20,8 +22,15 @@ public class CubeAcquisition {
         }
     }
 
-    public CubeAcquisition() {
+    private CubeAcquisition() {
 
+    }
+
+    public static CubeAcquisition getInstance() {
+        if (inst == null) {
+            inst = new CubeAcquisition();
+        }
+        return inst;
     }
 
     public void activateAquisition() {
