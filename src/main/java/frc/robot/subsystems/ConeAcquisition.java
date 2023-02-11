@@ -2,17 +2,19 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.constants.AcquisitionConstants;
 import com.playingwithfusion.TimeOfFlight;
 
 public class ConeAcquisition {
-    private final int ACQUISITION_MOTOR_PORT = 0;
-    private final double CONSTANT_MOTOR_SPEED = 1;
+    private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(AcquisitionConstants.ACQUISITION_MOTOR_PORT,
+            MotorType.kBrushless);
 
-    private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(ACQUISITION_MOTOR_PORT, MotorType.kBrushless);
+    private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.ACQUISITION_MOTOR_PORT);
 
-    private final TimeOfFlight distanceSensor = new TimeOfFlight(ACQUISITION_MOTOR_PORT);
+    private static ConeAcquisition instance;
 
-    ConeAcquisition() {
+    private ConeAcquisition() {
+
     }
 
     public double getDistanceSensor() {
@@ -20,10 +22,17 @@ public class ConeAcquisition {
     }
 
     public void AccuireCone() {
-        coneAcquisitionMotor.set(CONSTANT_MOTOR_SPEED);
+        coneAcquisitionMotor.set(AcquisitionConstants.CONSTANT_MOTOR_SPEED);
     }
 
     public void DisposeOfCode() {
-        coneAcquisitionMotor.set(-1 * CONSTANT_MOTOR_SPEED);
+        coneAcquisitionMotor.set(-AcquisitionConstants.CONSTANT_MOTOR_SPEED);
+    }
+
+    public ConeAcquisition getInstance() {
+        if (instance == null) {
+            instance = new ConeAcquisition();
+        }
+        return instance;
     }
 }
