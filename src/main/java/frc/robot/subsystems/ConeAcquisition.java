@@ -15,7 +15,7 @@ public class ConeAcquisition {
     ConeAcquisition() {
     }
 
-    public double TimeOfFlight() {
+    public double getDistanceSensor() {
         return distanceSensor.getRange();
     }
 
