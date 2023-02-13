@@ -6,7 +6,8 @@ import frc.robot.constants.AcquisitionConstants;
 import com.playingwithfusion.TimeOfFlight;
 
 public class ConeAcquisition {
-    private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(AcquisitionConstants.kAcquisitonMotorPort,
+    private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(
+            AcquisitionConstants.kAcquisitonMotorPort,
             MotorType.kBrushless);
 
     private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.kAcquisitonMotorPort);
