@@ -29,11 +29,11 @@ public class ConeAcquisition {
         return distanceSensor.getRange();
     }
 
-    public void accuireCone() {
+    public void acquireCone() {
         coneAcquisitionMotor.set(AcquisitionConstants.kConstantMotorSpeed);
     }
 
-    public void disposeOfCode() {
+    public void disposeCone() {
         coneAcquisitionMotor.set(-AcquisitionConstants.kConstantMotorSpeed);
     }
 }
