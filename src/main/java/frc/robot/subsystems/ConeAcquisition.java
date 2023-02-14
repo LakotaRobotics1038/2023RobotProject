@@ -10,9 +10,16 @@ public class ConeAcquisition {
             AcquisitionConstants.kAcquisitonMotorPort,
             MotorType.kBrushless);
 
-    private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.kAcquisitonMotorPort);
+    private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.kAcquisitionSensorPort);
 
     private static ConeAcquisition instance;
+
+    public static ConeAcquisition getInstance() {
+        if (instance == null) {
+            instance = new ConeAcquisition();
+        }
+        return instance;
+    }
 
     private ConeAcquisition() {
 
@@ -22,18 +29,11 @@ public class ConeAcquisition {
         return distanceSensor.getRange();
     }
 
-    public void AccuireCone() {
+    public void accuireCone() {
         coneAcquisitionMotor.set(AcquisitionConstants.kConstantMotorSpeed);
     }
 
-    public void DisposeOfCode() {
+    public void disposeOfCode() {
         coneAcquisitionMotor.set(-AcquisitionConstants.kConstantMotorSpeed);
-    }
-
-    public static ConeAcquisition getInstance() {
-        if (instance == null) {
-            instance = new ConeAcquisition();
-        }
-        return instance;
     }
 }
