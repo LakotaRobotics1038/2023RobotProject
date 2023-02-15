@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.AbsoluteEncoder;
@@ -24,7 +23,7 @@ public class Shoulder extends PIDSubsystem {
     private final static double I = 0.00;
     private final static double D = 0.00;
 
-    // singleton setup
+    // Singleton setup
 
     private static Shoulder instance;
 
@@ -40,7 +39,6 @@ public class Shoulder extends PIDSubsystem {
         super(new PIDController(P, I, D));
         getController().setTolerance(TOLERANCE);
         getController().disableContinuousInput();
-
     }
 
     @Override
@@ -62,15 +60,4 @@ public class Shoulder extends PIDSubsystem {
         setpoint = MathUtil.clamp(setpoint, 0, MAX_DISTANCE);
         super.setSetpoint(setpoint);
     }
-
-    /*
-     * public void shoulderPeriodic() {
-     * if ( check if the PID controller is enabled ) {
-     *
-     * shoulderMotor.set(pid.calculate(shoulderEncoder.getDistance(), setpoint));
-     *
-     * } else {
-     * break;
-     * }
-     */
 }
