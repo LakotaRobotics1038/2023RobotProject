@@ -7,12 +7,12 @@ import frc.robot.constants.CubeAcquisitionConstants;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class CubeAcquisition implements Subsystem {
-    private CANSparkMax feederMotor = new CANSparkMax(0, MotorType.kBrushless);
-    private CANSparkMax acquisitionMotor = new CANSparkMax(0, MotorType.kBrushless);
+    private CANSparkMax feederMotor = new CANSparkMax(CubeAcquisitionConstants.kCubeAcquisitionFeederPort,
+            MotorType.kBrushless);
+    private CANSparkMax acquisitionMotor = new CANSparkMax(CubeAcquisitionConstants.k, MotorType.kBrushless);
     private DoubleSolenoid acquisitionSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,
             CubeAcquisitionConstants.kPullOutAcquisitionChannel,
             CubeAcquisitionConstants.kPullInAcquisitionChannel);
@@ -34,7 +34,7 @@ public class CubeAcquisition implements Subsystem {
     }
 
     private CubeAcquisition() {
-        currentState = AcquisitionStates.Down;
+        setPosition(AcquisitionStates.Down);
     }
 
     public void activateAquisition() {
@@ -50,8 +50,10 @@ public class CubeAcquisition implements Subsystem {
     public void setPosition(AcquisitionStates state) {
         if (state.equals(AcquisitionStates.Up)) {
             acquisitionSolenoid.set(DoubleSolenoid.Value.kReverse);
+            currentState = state;
         } else {
             acquisitionSolenoid.set(DoubleSolenoid.Value.kForward);
+            currentState = state;
         }
     }
 
