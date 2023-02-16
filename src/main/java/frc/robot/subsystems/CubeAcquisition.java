@@ -3,55 +3,63 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import frc.robot.constants.CubeAcquisitionConstants;
 
-public class CubeAcquisition {
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj2.command.Subsystem;
+
+public class CubeAcquisition implements Subsystem {
     private CANSparkMax feederMotor = new CANSparkMax(0, MotorType.kBrushless);
     private CANSparkMax acquisitionMotor = new CANSparkMax(0, MotorType.kBrushless);
-    private Solenoid acquisitionSolenoid;
-
-    private static CubeAcquisition inst;
+    private DoubleSolenoid acquisitionSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,
+            CubeAcquisitionConstants.kPullOutAcquisitionChannel,
+            CubeAcquisitionConstants.kPullInAcquisitionChannel);
 
     private enum AcquisitionStates {
-        In(true), Out(false);
+        Down, Up;
+    }
 
-        private final boolean value;
+    private AcquisitionStates currentState;
 
-        AcquisitionStates(Boolean value) {
-            this.value = value;
+    private static CubeAcquisition instance;
+
+    public static CubeAcquisition getinstanceance() {
+        if (instance == null) {
+            instance = new CubeAcquisition();
         }
+        return instance;
+
     }
 
     private CubeAcquisition() {
-
-    }
-
-    public static CubeAcquisition getInstance() {
-        if (inst == null) {
-            inst = new CubeAcquisition();
-        }
-        return inst;
+        currentState = AcquisitionStates.Down;
     }
 
     public void activateAquisition() {
-        if (!acquisitionSolenoid.get()) {
-            acquisitionMotor.set(0.0);
+        if (currentState.equals(AcquisitionStates.Down)) {
+            acquisitionMotor.set(CubeAcquisitionConstants.kCubeAcquisitionMotorSpeed);
         }
     }
 
-    public void disactivateAcquisition() {
+    public void stopAcquisition() {
         acquisitionMotor.set(0);
     }
 
     public void setPosition(AcquisitionStates state) {
-        acquisitionSolenoid.set(state.value);
+        if (state.equals(AcquisitionStates.Up)) {
+            acquisitionSolenoid.set(DoubleSolenoid.Value.kReverse);
+        } else {
+            acquisitionSolenoid.set(DoubleSolenoid.Value.kForward);
+        }
     }
 
-    public void activateTheFeeder() {
-        feederMotor.set(0);
+    public void activateFeeder() {
+        feederMotor.set(CubeAcquisitionConstants.kCubeAcquisitionFeederSpeed);
     }
 
-    public void disactivateTheFeeder() {
+    public void stopTheFeeder() {
         feederMotor.set(0);
     }
 }
