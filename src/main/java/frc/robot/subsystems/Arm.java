@@ -15,7 +15,7 @@ public class Arm {
 
     private static Arm instance;
 
-    public Arm getinstance() {
+    public Arm getInstance() {
         if (null == instance) {
             instance = new Arm();
         }
