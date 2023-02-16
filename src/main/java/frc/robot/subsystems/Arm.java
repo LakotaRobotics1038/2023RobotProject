@@ -1,36 +1,37 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import frc.robot.constants.ArmConstants;
 
 public class Arm {
-    Solenoid armExtension;
-
-    private static Arm inst;
+    DoubleSolenoid armExtension = new DoubleSolenoid(PneumaticsModuleType.REVPH,
+            ArmConstants.kPushOutArmChannel,
+            ArmConstants.kPullInArmChannel);
 
     private enum ArmExtensionStates {
-        In(true),
-        Out(false);
+        In, Out;
+    }
 
-        private final boolean value;
+    private static Arm instance;
 
-        ArmExtensionStates(boolean value) {
-            this.value = value;
+    public Arm getinstance() {
+        if (null == instance) {
+            instance = new Arm();
         }
+        return instance;
     }
 
     private Arm() {
 
     }
 
-    public Arm getInstance() {
-        if (null == inst) {
-            inst = new Arm();
-        }
-        return inst;
-    }
-
     public void setArmExtensionPosition(ArmExtensionStates state) {
-        armExtension.set(state.value);
+        if (state.equals(ArmExtensionStates.In)) {
+            armExtension.set(DoubleSolenoid.Value.kReverse);
+        } else {
+            armExtension.set(DoubleSolenoid.Value.kForward);
+        }
     }
 
 }
