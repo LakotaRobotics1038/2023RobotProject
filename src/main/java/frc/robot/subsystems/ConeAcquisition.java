@@ -7,7 +7,7 @@ import com.playingwithfusion.TimeOfFlight;
 
 public class ConeAcquisition {
     private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(
-            AcquisitionConstants.kAcquisitonMotorPort,
+            AcquisitionConstants.kAcquisitionMotorPort,
             MotorType.kBrushless);
 
     private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.kAcquisitionSensorPort);

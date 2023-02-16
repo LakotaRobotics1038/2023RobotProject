@@ -1,7 +1,6 @@
 package frc.robot.constants;
 
-public class ShooterConstants {
-
+public final class ShooterConstants {
     public static final int kCubeRightMotorPort = 0;
     public static final int kCubeLeftMotorPort = 0;
 
