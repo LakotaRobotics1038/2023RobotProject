@@ -7,22 +7,14 @@ import com.revrobotics.AbsoluteEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import frc.robot.constants.ShoulderConstants;
 import edu.wpi.first.math.MathUtil;
 
 public class Shoulder extends PIDSubsystem {
-
-    private final int shoulderMotorPort = 0;
-
-    public final CANSparkMax shoulderMotor = new CANSparkMax(shoulderMotorPort, MotorType.kBrushless);
+    public final CANSparkMax shoulderMotor = new CANSparkMax(ShoulderConstants.kShoulderMotorPort,
+            MotorType.kBrushless);
 
     private AbsoluteEncoder shoulderEncoder = shoulderMotor.getAbsoluteEncoder(Type.kDutyCycle);
-
-    private final double MAX_DISTANCE = 0.00;
-    private final double TOLERANCE = 0.00;
-    private final static double P = 0.00;
-    private final static double I = 0.00;
-    private final static double D = 0.00;
-
     // Singleton setup
 
     private static Shoulder instance;
@@ -36,8 +28,8 @@ public class Shoulder extends PIDSubsystem {
     }
 
     private Shoulder() {
-        super(new PIDController(P, I, D));
-        getController().setTolerance(TOLERANCE);
+        super(new PIDController(ShoulderConstants.kP, ShoulderConstants.kI, ShoulderConstants.kD));
+        getController().setTolerance(ShoulderConstants.kTolerance);
         getController().disableContinuousInput();
     }
 
@@ -57,7 +49,7 @@ public class Shoulder extends PIDSubsystem {
     }
 
     public void setSetpoint(double setpoint) {
-        setpoint = MathUtil.clamp(setpoint, 0, MAX_DISTANCE);
+        setpoint = MathUtil.clamp(setpoint, 0, ShoulderConstants.kMaxDistance);
         super.setSetpoint(setpoint);
     }
 }
