@@ -2,10 +2,14 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import frc.robot.constants.AcquisitionConstants;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import com.playingwithfusion.TimeOfFlight;
 
-public class ConeAcquisition {
+import frc.robot.constants.AcquisitionConstants;
+
+public class ConeAcquisition extends SubsystemBase {
     private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(
             AcquisitionConstants.kAcquisitionMotorPort,
             MotorType.kBrushless);

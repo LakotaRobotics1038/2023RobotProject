@@ -7,8 +7,9 @@ import com.revrobotics.AbsoluteEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.constants.ShoulderConstants;
 import edu.wpi.first.math.MathUtil;
+
+import frc.robot.constants.ShoulderConstants;
 
 public class Shoulder extends PIDSubsystem {
     public final CANSparkMax shoulderMotor = new CANSparkMax(ShoulderConstants.kShoulderMotorPort,
