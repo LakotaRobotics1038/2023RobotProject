@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.playingwithfusion.TimeOfFlight;
 
-import frc.robot.constants.AcquisitionConstants;
+import frc.robot.constants.ConeAcquisitionConstants;
 
 public class ConeAcquisition extends SubsystemBase {
     private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(
-            AcquisitionConstants.kAcquisitionMotorPort,
+            ConeAcquisitionConstants.kAcquisitionMotorPort,
             MotorType.kBrushless);
 
-    private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.kAcquisitionSensorPort);
+    private final TimeOfFlight distanceSensor = new TimeOfFlight(ConeAcquisitionConstants.kAcquisitionSensorPort);
 
     private static ConeAcquisition instance;
 
@@ -34,10 +34,10 @@ public class ConeAcquisition extends SubsystemBase {
     }
 
     public void acquireCone() {
-        coneAcquisitionMotor.set(AcquisitionConstants.kConstantMotorSpeed);
+        coneAcquisitionMotor.set(ConeAcquisitionConstants.kConstantMotorSpeed);
     }
 
     public void disposeCone() {
-        coneAcquisitionMotor.set(-AcquisitionConstants.kConstantMotorSpeed);
+        coneAcquisitionMotor.set(-ConeAcquisitionConstants.kConstantMotorSpeed);
     }
 }
