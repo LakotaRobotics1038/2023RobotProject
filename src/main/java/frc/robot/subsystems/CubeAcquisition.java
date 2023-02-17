@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class CubeAcquisition implements Subsystem {
+public class CubeAcquisition extends Subsystem {
     private CANSparkMax feederMotor = new CANSparkMax(CubeAcquisitionConstants.kCubeAcquisitionFeederPort,
             MotorType.kBrushless);
     private CANSparkMax acquisitionMotor = new CANSparkMax(CubeAcquisitionConstants.k, MotorType.kBrushless);
@@ -61,7 +61,7 @@ public class CubeAcquisition implements Subsystem {
         feederMotor.set(CubeAcquisitionConstants.kCubeAcquisitionFeederSpeed);
     }
 
-    public void stopTheFeeder() {
+    public void stopFeeder() {
         feederMotor.set(0);
     }
 }
