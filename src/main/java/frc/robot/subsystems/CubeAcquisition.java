@@ -7,12 +7,13 @@ import frc.robot.constants.CubeAcquisitionConstants;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj2.command.Subsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class CubeAcquisition extends Subsystem {
-    private CANSparkMax feederMotor = new CANSparkMax(CubeAcquisitionConstants.kCubeAcquisitionFeederPort,
+public final class CubeAcquisition extends SubsystemBase {
+    private CANSparkMax feederMotor = new CANSparkMax(CubeAcquisitionConstants.kCubeAcquisitionFeederMotorPort,
             MotorType.kBrushless);
-    private CANSparkMax acquisitionMotor = new CANSparkMax(CubeAcquisitionConstants.k, MotorType.kBrushless);
+    private CANSparkMax acquisitionMotor = new CANSparkMax(CubeAcquisitionConstants.kCubeAcquisitionMotorPort,
+            MotorType.kBrushless);
     private DoubleSolenoid acquisitionSolenoid = new DoubleSolenoid(PneumaticsModuleType.REVPH,
             CubeAcquisitionConstants.kPullOutAcquisitionChannel,
             CubeAcquisitionConstants.kPullInAcquisitionChannel);
@@ -25,7 +26,7 @@ public class CubeAcquisition extends Subsystem {
 
     private static CubeAcquisition instance;
 
-    public static CubeAcquisition getinstanceance() {
+    public static CubeAcquisition getInstance() {
         if (instance == null) {
             instance = new CubeAcquisition();
         }
@@ -58,7 +59,7 @@ public class CubeAcquisition extends Subsystem {
     }
 
     public void activateFeeder() {
-        feederMotor.set(CubeAcquisitionConstants.kCubeAcquisitionFeederSpeed);
+        feederMotor.set(CubeAcquisitionConstants.kCubeAcquisitionFeederMotorSpeed);
     }
 
     public void stopFeeder() {
