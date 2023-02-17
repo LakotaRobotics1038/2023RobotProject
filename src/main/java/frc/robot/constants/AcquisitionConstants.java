@@ -11,4 +11,6 @@ public class AcquisitionConstants {
     public static final double kWristD = 0.0;
     public static final double kWristPIDMinimum = 0.0;
     public static final double kWristPIDMaximum = 0.0;
+    public static final double kWristPIDSpeed = 0.0;
+    public static final double kWristPIDTolerance = 0.0;
 }

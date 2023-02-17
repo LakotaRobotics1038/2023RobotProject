@@ -3,15 +3,18 @@ package frc.robot.subsystems;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
+
 import frc.robot.constants.AcquisitionConstants;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 
-public class Wrist {
+public class Wrist extends PIDSubsystem{
     private static Wrist wristInstance;
 
     private CANSparkMax wristMotor = new CANSparkMax(AcquisitionConstants.kWristMotorPort, MotorType.kBrushless);
-    private AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(null);
+    private AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
     private PIDController wristPIDController;
     private boolean isPIDEnabled;
 
@@ -23,15 +26,18 @@ public class Wrist {
     }
 
     private Wrist() {
+        super(new PIDController(AcquisitionConstants.kWristP, AcquisitionConstants.kWristI,
+        AcquisitionConstants.kWristD));
+        getController().disableContinuousInput();
     }
 
-    private void setPIDcontroller() {
+    public void setPIDTolerance() {
+        getController().setTolerance(AcquisitionConstants.kWristPIDTolerance);
+    }
+
+    public void setPIDcontroller() {
         wristPIDController.setPID(AcquisitionConstants.kWristP, AcquisitionConstants.kWristI,
-                AcquisitionConstants.kWristD);
-    }
-
-    private void periodic() {
-        wristMotor.set(wristPIDController.calculate(0.0));
+        AcquisitionConstants.kWristD);
     }
 
     public void enable() {
@@ -39,7 +45,21 @@ public class Wrist {
                 AcquisitionConstants.kWristPIDMinimum);
     }
 
+    public void periodic() {
+        if(isPIDEnabled) {
+            wristMotor.set(wristPIDController.calculate(AcquisitionConstants.kWristPIDSpeed));
+        }
+    }
+
     public void disable() {
+    }
+
+    public void useOutput(double output, double setpoint) {
+
+    }
+
+    public double getMeasurement() {
+        return 0.0;
     }
 
 }
