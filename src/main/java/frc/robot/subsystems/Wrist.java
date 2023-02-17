@@ -2,22 +2,32 @@ package frc.robot.subsystems;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.constants.AcquisitionConstants;
 
 import edu.wpi.first.math.controller.PIDController;
 
 public class Wrist {
-    private static Wrist inst;
+    private static Wrist wristInstance;
 
-    private CANSparkMax wristMotor = new CANSparkMax(0, null);
+    private CANSparkMax wristMotor = new CANSparkMax(AcquisitionConstants.kWristMotorPort, MotorType.kBrushless);
     private AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(null);
     private PIDController wristPIDController;
     private boolean isPIDEnabled;
 
+    public static Wrist getInstance() {
+        if (wristInstance == null) {
+            wristInstance = new Wrist();
+        }
+        return wristInstance;
+    }
+
     private Wrist() {
     }
 
-    private void setPIDcontorller() {
-        wristPIDController.setPID(0, 0, 0);
+    private void setPIDcontroller() {
+        wristPIDController.setPID(AcquisitionConstants.kWristP, AcquisitionConstants.kWristI,
+                AcquisitionConstants.kWristD);
     }
 
     private void periodic() {
@@ -25,16 +35,11 @@ public class Wrist {
     }
 
     public void enable() {
-        wristPIDController.enableContinuousInput(0, 0);
+        wristPIDController.enableContinuousInput(AcquisitionConstants.kWristPIDMinimum,
+                AcquisitionConstants.kWristPIDMinimum);
     }
 
     public void disable() {
     }
 
-    public static Wrist getInstance() {
-        if (inst == null) {
-            inst = new Wrist();
-        }
-        return inst;
-    }
 }
