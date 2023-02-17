@@ -10,7 +10,7 @@ public class ShootCubeCommand extends CommandBase {
 
     public ShootCubeCommand() {
         this.addRequirements(cubeShooter);
-        this.addRequirements();
+        this.addRequirements(cubeAcquisition);
     }
 
     public boolean isFinished() {
@@ -18,6 +18,19 @@ public class ShootCubeCommand extends CommandBase {
     }
 
     public void initialize() {
+        CubeAcquisition.setPosition(Down);
+    }
 
+    public void execute() {
+        CubeShooter.shootCube();
+    }
+
+    public void end() {
+        CubeAcquisition.stopFeeder();
+        CubeAcquisition.stopAcquisition();
+        cubeShooter.leftShooterMotor.set(0);
+        cubeShooter.rightShooterMotor.set(0);
+        cubeAcquisition.feederMotor.set(0);
+        cubeAcquisition.acquisitionMotor.set(0);
     }
 }
