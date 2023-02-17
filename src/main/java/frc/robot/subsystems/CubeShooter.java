@@ -15,6 +15,15 @@ public class CubeShooter extends SubsystemBase {
 
     private DigitalInput cubeLimitSwitch = new DigitalInput(ShooterConstants.kCubeLimitSwitchPort);
 
+    private static CubeShooter instance;
+
+    public static CubeShooter getInstance() {
+        if (instance == null) {
+            instance = new CubeShooter();
+        }
+        return instance;
+    }
+
     public void loadCube() {
         if (!cubeLimitSwitch.get()) {
             leftShooterMotor.set(0.0);
