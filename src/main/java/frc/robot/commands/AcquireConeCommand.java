@@ -15,7 +15,11 @@ public class AcquireConeCommand extends CommandBase {
         return false;
     }
 
-    public void end() {
+    public void execute() {
+        coneAcquisition.acquireCone();
+    }
 
+    public void end() {
+        coneAcquisition.stopMotor();
     }
 }

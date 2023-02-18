@@ -40,4 +40,8 @@ public class ConeAcquisition extends SubsystemBase {
     public void disposeCone() {
         coneAcquisitionMotor.set(-ConeAcquisitionConstants.kConstantMotorSpeed);
     }
+
+    public void stopMotor() {
+        coneAcquisitionMotor.stopMotor();
+    }
 }
