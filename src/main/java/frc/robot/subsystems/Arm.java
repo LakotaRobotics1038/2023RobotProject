@@ -7,17 +7,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
-    DoubleSolenoid armExtension = new DoubleSolenoid(PneumaticsModuleType.REVPH,
+    public DoubleSolenoid armExtension = new DoubleSolenoid(PneumaticsModuleType.REVPH,
             ArmConstants.kPushOutArmChannel,
             ArmConstants.kPullInArmChannel);
 
-    private enum ArmExtensionStates {
+    public enum ArmExtensionStates {
         In, Out;
     }
 
     private static Arm instance;
 
-    public Arm getInstance() {
+    public static Arm getInstance() {
         if (null == instance) {
             instance = new Arm();
         }
@@ -28,7 +28,7 @@ public class Arm extends SubsystemBase {
 
     }
 
-    public void setArmExtensionPosition(ArmExtensionStates state) {
+    public void setArmExtensionPosition(Object state) {
         if (state.equals(ArmExtensionStates.In)) {
             armExtension.set(DoubleSolenoid.Value.kReverse);
         } else {
