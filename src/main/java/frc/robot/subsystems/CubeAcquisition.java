@@ -24,6 +24,7 @@ public final class CubeAcquisition extends SubsystemBase {
 
     private AcquisitionStates currentState;
 
+    // Singleton Setup
     private static CubeAcquisition instance;
 
     public static CubeAcquisition getInstance() {
