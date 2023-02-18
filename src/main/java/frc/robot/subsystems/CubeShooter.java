@@ -26,21 +26,20 @@ public class CubeShooter extends SubsystemBase {
     }
 
     private CubeShooter() {
-
+        leftShooterMotor.restoreFactoryDefaults();
+        rightShooterMotor.restoreFactoryDefaults();
+        rightShooterMotor.follow(leftShooterMotor, true);
     }
 
     public void loadCube() {
         if (!cubeLimitSwitch.get()) {
             leftShooterMotor.stopMotor();
-            rightShooterMotor.stopMotor();
         } else {
             leftShooterMotor.set(ShooterConstants.kCubeLoadSpeed);
-            rightShooterMotor.set(ShooterConstants.kCubeLoadSpeed);
         }
     }
 
     public void shootCube() {
         leftShooterMotor.set(ShooterConstants.kCubeShooterSpeed);
-        rightShooterMotor.set(ShooterConstants.kCubeShooterSpeed);
     }
 }
