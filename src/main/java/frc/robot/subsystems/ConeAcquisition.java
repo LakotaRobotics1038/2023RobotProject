@@ -2,15 +2,19 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import frc.robot.constants.AcquisitionConstants;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import com.playingwithfusion.TimeOfFlight;
 
-public class ConeAcquisition {
+import frc.robot.constants.ConeAcquisitionConstants;
+
+public class ConeAcquisition extends SubsystemBase {
     private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(
-            AcquisitionConstants.kConeAcquisitonMotorPort,
+            ConeAcquisitionConstants.kAcquisitionMotorPort,
             MotorType.kBrushless);
 
-    private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.kConeAcquisitionSensorPort);
+    private final TimeOfFlight distanceSensor = new TimeOfFlight(ConeAcquisitionConstants.kAcquisitionSensorPort);
 
     private static ConeAcquisition instance;
 
@@ -30,10 +34,14 @@ public class ConeAcquisition {
     }
 
     public void acquireCone() {
-        coneAcquisitionMotor.set(AcquisitionConstants.kConeAcquisitionConstantMotorSpeed);
+        coneAcquisitionMotor.set(ConeAcquisitionConstants.kConstantMotorSpeed);
     }
 
     public void disposeCone() {
-        coneAcquisitionMotor.set(-AcquisitionConstants.kConeAcquisitionConstantMotorSpeed);
+        coneAcquisitionMotor.set(-ConeAcquisitionConstants.kConstantMotorSpeed);
+    }
+
+    public void stopMotor() {
+        coneAcquisitionMotor.stopMotor();
     }
 }
