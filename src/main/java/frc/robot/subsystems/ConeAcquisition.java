@@ -16,6 +16,7 @@ public class ConeAcquisition extends SubsystemBase {
 
     private final TimeOfFlight distanceSensor = new TimeOfFlight(ConeAcquisitionConstants.kAcquisitionSensorPort);
 
+    // Singleton Setup
     private static ConeAcquisition instance;
 
     public static ConeAcquisition getInstance() {
@@ -39,5 +40,9 @@ public class ConeAcquisition extends SubsystemBase {
 
     public void disposeCone() {
         coneAcquisitionMotor.set(-ConeAcquisitionConstants.kConstantMotorSpeed);
+    }
+
+    public void stopMotor() {
+        coneAcquisitionMotor.stopMotor();
     }
 }

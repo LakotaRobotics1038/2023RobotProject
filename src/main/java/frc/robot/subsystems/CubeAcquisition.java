@@ -24,6 +24,7 @@ public final class CubeAcquisition extends SubsystemBase {
 
     private AcquisitionStates currentState;
 
+    // Singleton Setup
     private static CubeAcquisition instance;
 
     public static CubeAcquisition getInstance() {
@@ -45,7 +46,7 @@ public final class CubeAcquisition extends SubsystemBase {
     }
 
     public void stopAcquisition() {
-        acquisitionMotor.set(0);
+        acquisitionMotor.stopMotor();
     }
 
     public void setPosition(AcquisitionStates state) {
@@ -63,7 +64,7 @@ public final class CubeAcquisition extends SubsystemBase {
     }
 
     public void stopFeeder() {
-        feederMotor.set(0);
+        feederMotor.stopMotor();
     }
 
     public AcquisitionStates getDownState() {
