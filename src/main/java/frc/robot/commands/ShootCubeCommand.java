@@ -18,19 +18,21 @@ public class ShootCubeCommand extends CommandBase {
     }
 
     public void initialize() {
-        CubeAcquisition.setPosition(Down);
+        cubeAcquisition.setPosition(cubeAcquisition.getDownState());
     }
 
     public void execute() {
-        CubeShooter.shootCube();
+        cubeShooter.shootCube();
     }
 
     public void end() {
-        CubeAcquisition.stopFeeder();
-        CubeAcquisition.stopAcquisition();
-        cubeShooter.leftShooterMotor.set(0);
-        cubeShooter.rightShooterMotor.set(0);
-        cubeAcquisition.feederMotor.set(0);
-        cubeAcquisition.acquisitionMotor.set(0);
+
+        cubeAcquisition.stopFeeder();
+        cubeAcquisition.stopAcquisition();
+        cubeShooter.getLeftShooterMotor().set(0);
+        cubeShooter.getRightShooterMotor().set(0);
+        cubeAcquisition.stopFeeder();
+        cubeAcquisition.stopAcquisition();
+
     }
 }
