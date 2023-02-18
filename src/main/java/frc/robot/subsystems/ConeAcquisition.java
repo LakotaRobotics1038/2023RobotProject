@@ -7,10 +7,10 @@ import com.playingwithfusion.TimeOfFlight;
 
 public class ConeAcquisition {
     private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(
-            AcquisitionConstants.kAcquisitonMotorPort,
+            AcquisitionConstants.kConeAcquisitonMotorPort,
             MotorType.kBrushless);
 
-    private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.kAcquisitionSensorPort);
+    private final TimeOfFlight distanceSensor = new TimeOfFlight(AcquisitionConstants.kConeAcquisitionSensorPort);
 
     private static ConeAcquisition instance;
 
@@ -30,10 +30,10 @@ public class ConeAcquisition {
     }
 
     public void acquireCone() {
-        coneAcquisitionMotor.set(AcquisitionConstants.kConstantMotorSpeed);
+        coneAcquisitionMotor.set(AcquisitionConstants.kConeAcquisitionConstantMotorSpeed);
     }
 
     public void disposeCone() {
-        coneAcquisitionMotor.set(-AcquisitionConstants.kConstantMotorSpeed);
+        coneAcquisitionMotor.set(-AcquisitionConstants.kConeAcquisitionConstantMotorSpeed);
     }
 }
