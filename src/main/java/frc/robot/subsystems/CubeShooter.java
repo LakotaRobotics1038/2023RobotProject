@@ -17,8 +17,8 @@ public class CubeShooter extends SubsystemBase {
 
     public void loadCube() {
         if (!cubeLimitSwitch.get()) {
-            leftShooterMotor.set(0.0);
-            rightShooterMotor.set(0.0);
+            leftShooterMotor.stopMotor();
+            rightShooterMotor.stopMotor();
         } else {
             leftShooterMotor.set(ShooterConstants.kCubeLoadSpeed);
             rightShooterMotor.set(ShooterConstants.kCubeLoadSpeed);
