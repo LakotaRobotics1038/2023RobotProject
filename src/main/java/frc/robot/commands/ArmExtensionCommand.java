@@ -9,11 +9,6 @@ public class ArmExtensionCommand extends CommandBase {
 
     private ArmExtensionStates state;
 
-    @Override
-    public boolean isFinished() {
-        return true;
-    }
-
     public ArmExtensionCommand(ArmExtensionStates state) {
         this.addRequirements(arm);
     }
@@ -23,7 +18,7 @@ public class ArmExtensionCommand extends CommandBase {
         if (this.state != null) {
             this.arm.setArmExtensionPosition(state);
         } else {
-            switch (arm.ExtensionStates) {
+            switch (state) {
                 case In:
                     this.arm.setArmExtensionPosition(ArmExtensionStates.In);
                     break;
@@ -34,4 +29,10 @@ public class ArmExtensionCommand extends CommandBase {
             }
         }
     }
+
+    @Override
+    public boolean isFinished() {
+        return true;
+    }
+
 }
