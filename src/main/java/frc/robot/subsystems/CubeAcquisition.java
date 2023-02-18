@@ -18,7 +18,7 @@ public final class CubeAcquisition extends SubsystemBase {
             CubeAcquisitionConstants.kPullOutAcquisitionChannel,
             CubeAcquisitionConstants.kPullInAcquisitionChannel);
 
-    private enum AcquisitionStates {
+    public enum AcquisitionStates {
         Down, Up;
     }
 
@@ -64,5 +64,9 @@ public final class CubeAcquisition extends SubsystemBase {
 
     public void stopFeeder() {
         feederMotor.set(0);
+    }
+
+    public AcquisitionStates getCurrentState() {
+        return currentState;
     }
 }
