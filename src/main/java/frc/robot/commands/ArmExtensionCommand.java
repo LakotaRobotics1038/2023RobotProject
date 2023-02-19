@@ -10,6 +10,7 @@ public class ArmExtensionCommand extends CommandBase {
     private ArmExtensionStates state;
 
     public ArmExtensionCommand(ArmExtensionStates state) {
+        this.state = state;
         this.addRequirements(arm);
     }
 
@@ -18,13 +19,12 @@ public class ArmExtensionCommand extends CommandBase {
         if (this.state != null) {
             this.arm.setArmExtensionPosition(state);
         } else {
-            switch (state) {
+            switch (this.arm.getExtensionPosition()) {
                 case In:
-                    this.arm.setArmExtensionPosition(ArmExtensionStates.In);
-                    break;
-
-                case Out:
                     this.arm.setArmExtensionPosition(ArmExtensionStates.Out);
+                    break;
+                case Out:
+                    this.arm.setArmExtensionPosition(ArmExtensionStates.In);
                     break;
             }
         }
