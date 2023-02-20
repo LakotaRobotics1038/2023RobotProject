@@ -10,26 +10,26 @@ public class ShoulderPositionCommand extends CommandBase {
 
     public ShoulderPositionCommand(double setPoint) {
         this.setPoint = setPoint;
-        // requires shoulder subsystem
+
         addRequirements(shoulder);
     }
 
     @Override
     public void initialize() {
-        // enables shoulder, sets setpoint
+
         shoulder.enable();
         shoulder.setSetpoint(setPoint);
     }
 
     @Override
     public boolean isFinished() {
-        // isFinished if shoulder setpoint = setpoint
+
         return shoulder.onTarget();
     }
 
     @Override
     public void end(boolean interrupted) {
-        // disable shoulder
+
         shoulder.disable();
     }
 }
