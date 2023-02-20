@@ -17,8 +17,6 @@ public class Wrist extends PIDSubsystem {
 
     private CANSparkMax wristMotor = new CANSparkMax(WristConstants.kWristMotorPort, MotorType.kBrushless);
     private AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
-    private PIDController wristPIDController;
-    private boolean isPIDEnabled;
 
     public static Wrist getInstance() {
         if (wristInstance == null) {
