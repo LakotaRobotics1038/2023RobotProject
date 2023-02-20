@@ -44,13 +44,9 @@ public class Shoulder extends PIDSubsystem {
         return shoulderEncoder.getPosition();
     }
 
-    public boolean onTarget(double setPoint) {
+    public boolean onTarget() {
 
-        if (super.getSetpoint() == setPoint) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.getController().atSetpoint();
 
     }
 
