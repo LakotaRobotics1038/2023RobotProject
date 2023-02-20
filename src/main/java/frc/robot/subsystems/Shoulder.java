@@ -16,10 +16,8 @@ public class Shoulder extends PIDSubsystem {
             MotorType.kBrushless);
 
     private AbsoluteEncoder shoulderEncoder = shoulderMotor.getAbsoluteEncoder(Type.kDutyCycle);
-    // Singleton setup
-    private static PIDController pidController = new PIDController(ShoulderConstants.kP, ShoulderConstants.kI,
-            ShoulderConstants.kD);
 
+    // Singleton setup
     private static Shoulder instance;
 
     public static Shoulder getInstance() {
@@ -44,10 +42,6 @@ public class Shoulder extends PIDSubsystem {
 
     public double getShoulderEncoder() {
         return shoulderEncoder.getPosition();
-    }
-
-    public boolean onTarget() {
-        return pidController.atSetpoint();
     }
 
     @Override
