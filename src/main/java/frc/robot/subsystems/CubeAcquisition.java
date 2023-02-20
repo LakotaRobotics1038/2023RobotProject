@@ -66,9 +66,4 @@ public final class CubeAcquisition extends SubsystemBase {
     public void stopFeeder() {
         feederMotor.stopMotor();
     }
-
-    public AcquisitionStates getDownState() {
-        return AcquisitionStates.Down;
-    }
-
 }
