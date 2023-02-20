@@ -11,8 +11,7 @@ public class AcquireCubeCommand extends CommandBase {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
 
     public AcquireCubeCommand() {
-        addRequirements(cubeAcquisition);
-        addRequirements(cubeShooter);
+        addRequirements(cubeShooter, cubeAcquisition);
     }
 
     @Override
@@ -23,7 +22,7 @@ public class AcquireCubeCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return (cubeShooter.getLimit());
+        return cubeShooter.getLimit();
     }
 
     @Override
