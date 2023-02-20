@@ -25,7 +25,7 @@ public class ShoulderPositionCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         // isFinished if shoulder setpoint = setpoint
-        return (shoulder.onTarget(setPoint));
+        return shoulder.onTarget(setPoint);
     }
 
     @Override
