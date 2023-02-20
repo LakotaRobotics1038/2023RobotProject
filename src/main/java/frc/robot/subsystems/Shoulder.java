@@ -45,9 +45,7 @@ public class Shoulder extends PIDSubsystem {
     }
 
     public boolean onTarget() {
-
         return this.getController().atSetpoint();
-
     }
 
     @Override
