@@ -28,8 +28,6 @@ public class ShootCubeCommand extends CommandBase {
     }
 
     public void end() {
-        cubeShooter.setLeftMotorSpeed(cubeShooterSpeed);
-        cubeShooter.setRightMotorSpeed(cubeShooterSpeed);
         cubeAcquisition.stopFeeder();
         cubeAcquisition.stopAcquisition();
     }
