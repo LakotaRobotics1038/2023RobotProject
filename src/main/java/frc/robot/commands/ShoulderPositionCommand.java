@@ -5,18 +5,15 @@ import frc.robot.subsystems.Shoulder;
 
 public class ShoulderPositionCommand extends CommandBase {
 
-    // creates setPoint, creates Shoulder instance
-    private double setPoint = 0;
+\    private double setPoint = 0;
     private Shoulder shoulder = Shoulder.getInstance();
 
     public ShoulderPositionCommand() {
-        // requires shoulder subsystem
         addRequirements(shoulder);
     }
 
     @Override
     public void initialize() {
-        // enables shoulder, sets setpoint
         shoulder.enable();
         shoulder.setSetpoint(setPoint);
     }
@@ -24,12 +21,11 @@ public class ShoulderPositionCommand extends CommandBase {
     @Override
     public boolean isFinished() {
         // isFinished if shoulder setpoint = setpoint
-        return (pid.onTarget(setPoint));
+        return (shoulder.onTarget(setPoint));
     }
 
     @Override
     public void end(boolean interrupted) {
-        // disable shoulder
         shoulder.disable();
     }
 }

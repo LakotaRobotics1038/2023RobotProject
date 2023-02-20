@@ -40,6 +40,6 @@ public class CubeShooter extends SubsystemBase {
     }
 
     public boolean getLimit() {
-        return (cubeLimitSwitch.get());
+        return cubeLimitSwitch.get();
     }
 }
