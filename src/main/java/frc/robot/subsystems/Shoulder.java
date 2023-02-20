@@ -17,6 +17,8 @@ public class Shoulder extends PIDSubsystem {
 
     private AbsoluteEncoder shoulderEncoder = shoulderMotor.getAbsoluteEncoder(Type.kDutyCycle);
     // Singleton setup
+    private static PIDController pidController = new PIDController(ShoulderConstants.kP, ShoulderConstants.kI,
+            ShoulderConstants.kD);
 
     private static Shoulder instance;
 
@@ -44,14 +46,8 @@ public class Shoulder extends PIDSubsystem {
         return shoulderEncoder.getPosition();
     }
 
-    public boolean onTarget(double setPoint) {
-
-        if (super.getSetpoint() == setPoint) {
-            return true;
-        } else {
-            return false;
-        }
-
+    public boolean onTarget() {
+        return pidController.atSetpoint();
     }
 
     @Override

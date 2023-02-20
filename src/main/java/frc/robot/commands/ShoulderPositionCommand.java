@@ -5,7 +5,7 @@ import frc.robot.subsystems.Shoulder;
 
 public class ShoulderPositionCommand extends CommandBase {
 
-\    private double setPoint = 0;
+    private double setPoint = 0;
     private Shoulder shoulder = Shoulder.getInstance();
 
     public ShoulderPositionCommand() {
@@ -20,8 +20,7 @@ public class ShoulderPositionCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        // isFinished if shoulder setpoint = setpoint
-        return (shoulder.onTarget(setPoint));
+        return shoulder.onTarget();
     }
 
     @Override
