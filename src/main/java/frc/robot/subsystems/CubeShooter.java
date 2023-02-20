@@ -44,10 +44,10 @@ public class CubeShooter extends SubsystemBase {
         rightShooterMotor.set(ShooterConstants.kCubeShooterSpeed);
     }
 
-    public CANSparkMax getLeftShooterMotor() {
-        return this.leftShooterMotor;
+    public void setLeftMotorSpeed(double cubeShooterSpeed) {
+        leftShooterMotor.set(cubeShooterSpeed);
     }
 
-    public CANSparkMax getRightShooterMotor() {
-        return this.rightShooterMotor;
-}
+    public CANSparkMax setRightMotorSpeed(double cubeShooterSpeed) {
+        rightShooterMotor.set(cubeShooterSpeed);
+    }

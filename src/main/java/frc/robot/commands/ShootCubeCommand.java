@@ -9,6 +9,8 @@ public class ShootCubeCommand extends CommandBase {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private CubeAcquisition cubeAcquisition = CubeAcquisition.getInstance();
 
+    public double cubeShooterSpeed = 0;
+
     public ShootCubeCommand() {
         this.addRequirements(cubeAcquisition, cubeShooter);
     }
@@ -26,13 +28,9 @@ public class ShootCubeCommand extends CommandBase {
     }
 
     public void end() {
-
+        cubeShooter.setLeftMotorSpeed(cubeShooterSpeed);
+        cubeShooter.setRightMotorSpeed(cubeShooterSpeed);
         cubeAcquisition.stopFeeder();
         cubeAcquisition.stopAcquisition();
-        cubeShooter.getLeftShooterMotor().set(0);
-        cubeShooter.getRightShooterMotor().set(0);
-        cubeAcquisition.stopFeeder();
-        cubeAcquisition.stopAcquisition();
-
     }
 }
