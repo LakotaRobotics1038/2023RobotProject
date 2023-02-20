@@ -38,16 +38,6 @@ public class CubeShooter extends SubsystemBase {
         }
     }
 
-    private static CubeShooter instance;
-
-    public static CubeShooter getInstance() {
-        if (instance == null) {
-            instance = new CubeShooter();
-        }
-        return instance;
-
-    }
-
     public void shootCube() {
         leftShooterMotor.set(ShooterConstants.kCubeShooterSpeed);
     }
