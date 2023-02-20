@@ -9,7 +9,8 @@ public class ShoulderPositionCommand extends CommandBase {
     private double setPoint = 0;
     private Shoulder shoulder = Shoulder.getInstance();
 
-    public ShoulderPositionCommand() {
+    public ShoulderPositionCommand(double setPoint) {
+    this.setPoint = setPoint;
         // requires shoulder subsystem
         addRequirements(shoulder);
     }
