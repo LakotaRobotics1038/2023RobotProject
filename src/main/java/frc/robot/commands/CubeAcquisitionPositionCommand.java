@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CubeAcquisition;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
@@ -26,10 +25,10 @@ public class CubeAcquisitionPositionCommand extends CommandBase {
         } else {
             switch (cubeAcquisition.getCurrentState()) {
                 case Down:
-                    this.cubeAcquisition.setPosition(AcquisitionStates.Up);
+                    this.cubeAcquisition.setPosition(AcquisitionStates.Down);
                     break;
                 case Up:
-                    this.cubeAcquisition.setPosition(AcquisitionStates.Down);
+                    this.cubeAcquisition.setPosition(AcquisitionStates.Up);
                     break;
             }
         }
