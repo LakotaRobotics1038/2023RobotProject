@@ -15,6 +15,7 @@ public class Arm extends SubsystemBase {
         In, Out;
     }
 
+    // Singleton Setup
     private static Arm instance;
 
     public Arm getInstance() {
