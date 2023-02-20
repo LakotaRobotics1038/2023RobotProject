@@ -2,22 +2,26 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
-    DoubleSolenoid armExtension = new DoubleSolenoid(PneumaticsModuleType.REVPH,
+
+    public ArmExtensionStates armExtensionState = ArmExtensionStates.In;
+
+    private DoubleSolenoid armExtension = new DoubleSolenoid(PneumaticsModuleType.REVPH,
             ArmConstants.kPushOutArmChannel,
             ArmConstants.kPullInArmChannel);
 
-    private enum ArmExtensionStates {
+    public enum ArmExtensionStates {
         In, Out;
     }
 
     private static Arm instance;
 
-    public Arm getInstance() {
+    public static Arm getInstance() {
         if (null == instance) {
             instance = new Arm();
         }
@@ -28,12 +32,19 @@ public class Arm extends SubsystemBase {
 
     }
 
-    public void setArmExtensionPosition(ArmExtensionStates state) {
-        if (state.equals(ArmExtensionStates.In)) {
-            armExtension.set(DoubleSolenoid.Value.kReverse);
-        } else {
-            armExtension.set(DoubleSolenoid.Value.kForward);
-        }
+    public DoubleSolenoid.Value getArmExtension() {
+        return armExtension.get();
     }
 
+    public void setArmExtensionPosition(ArmExtensionStates state) {
+        switch (state) {
+            case In:
+                armExtension.set(Value.kReverse);
+
+            case Out:
+                armExtension.set(Value.kForward);
+                break;
+        }
+        armExtensionState = state;
+    }
 }
