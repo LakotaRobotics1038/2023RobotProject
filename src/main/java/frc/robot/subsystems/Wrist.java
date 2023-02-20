@@ -31,29 +31,7 @@ public class Wrist extends PIDSubsystem {
         super(new PIDController(WristConstants.kWristP, WristConstants.kWristI,
                 WristConstants.kWristD));
         getController().disableContinuousInput();
-    }
-
-    public void setPIDTolerance() {
         getController().setTolerance(WristConstants.kWristPIDTolerance);
-    }
-
-    public void setPIDcontroller() {
-        wristPIDController.setPID(WristConstants.kWristP, WristConstants.kWristI,
-                WristConstants.kWristD);
-    }
-
-    public void enable() {
-        wristPIDController.enableContinuousInput(WristConstants.kWristPIDMinimum,
-                WristConstants.kWristPIDMinimum);
-    }
-
-    public void periodic() {
-        if (isPIDEnabled) {
-            wristMotor.set(wristPIDController.calculate(WristConstants.kWristPIDSpeed));
-        }
-    }
-
-    public void disable() {
     }
 
     @Override
