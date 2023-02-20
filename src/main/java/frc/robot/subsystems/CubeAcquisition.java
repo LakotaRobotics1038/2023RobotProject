@@ -24,6 +24,7 @@ public final class CubeAcquisition extends SubsystemBase {
 
     private AcquisitionStates currentState;
 
+    // Singleton Setup
     private static CubeAcquisition instance;
 
     public static CubeAcquisition getInstance() {
@@ -36,6 +37,8 @@ public final class CubeAcquisition extends SubsystemBase {
 
     private CubeAcquisition() {
         setPosition(AcquisitionStates.Down);
+        feederMotor.restoreFactoryDefaults();
+        acquisitionMotor.restoreFactoryDefaults();
     }
 
     public void activateAquisition() {

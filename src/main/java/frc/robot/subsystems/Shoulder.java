@@ -30,6 +30,7 @@ public class Shoulder extends PIDSubsystem {
 
     private Shoulder() {
         super(new PIDController(ShoulderConstants.kP, ShoulderConstants.kI, ShoulderConstants.kD));
+        shoulderMotor.restoreFactoryDefaults();
         getController().setTolerance(ShoulderConstants.kTolerance);
         getController().disableContinuousInput();
     }
