@@ -11,13 +11,13 @@ public class Arm extends SubsystemBase {
             ArmConstants.kPushOutArmChannel,
             ArmConstants.kPullInArmChannel);
 
-    private enum ArmExtensionStates {
+    public enum ArmExtensionStates {
         In, Out;
     }
 
     private static Arm instance;
 
-    public Arm getInstance() {
+    public static Arm getInstance() {
         if (null == instance) {
             instance = new Arm();
         }

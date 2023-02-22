@@ -48,7 +48,6 @@ public final class CubeAcquisition extends SubsystemBase {
         acquisitionMotor.stopMotor();
     }
 
-    // t
     public void setPosition(AcquisitionStates state) {
         if (state.equals(AcquisitionStates.Up)) {
             acquisitionSolenoid.set(DoubleSolenoid.Value.kReverse);
