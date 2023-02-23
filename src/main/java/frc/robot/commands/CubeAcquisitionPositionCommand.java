@@ -25,10 +25,10 @@ public class CubeAcquisitionPositionCommand extends CommandBase {
         } else {
             switch (cubeAcquisition.getCurrentState()) {
                 case Down:
-                    this.cubeAcquisition.setPosition(AcquisitionStates.Down);
+                    this.cubeAcquisition.setPosition(AcquisitionStates.Up);
                     break;
                 case Up:
-                    this.cubeAcquisition.setPosition(AcquisitionStates.Up);
+                    this.cubeAcquisition.setPosition(AcquisitionStates.Down);
                     break;
             }
         }
