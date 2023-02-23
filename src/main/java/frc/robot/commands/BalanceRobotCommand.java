@@ -14,22 +14,17 @@ public class BalanceRobotCommand extends CommandBase {
     }
 
     public boolean isFinished() {
-
         boolean isPIDSet = pidController.atSetpoint();
         return isPIDSet;
-
     }
 
     public void execute() {
-        // Function to use a PID to balance the Robots
         if (driveTrain.getPitch() != 10.0) {
             if (driveTrain.getPitch() < 0) {
                 driveTrain.drive(0, 0, 0, isFinished());
             } else {
                 driveTrain.drive(0, 0, 0, isFinished());
-
             }
         }
-
     }
 }
