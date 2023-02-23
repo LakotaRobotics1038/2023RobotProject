@@ -6,7 +6,7 @@ import frc.robot.subsystems.Wrist;
 public class WristPositionCommand extends CommandBase {
     private Wrist wrist = Wrist.getInstance();
 
-    WristPositionCommand() {
+    WristPositionCommand(double wristSetPoint) {
         this.addRequirements(wrist);
     }
 
