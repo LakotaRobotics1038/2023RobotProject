@@ -17,6 +17,7 @@ public class CubeAcquisitionPositionCommand extends CommandBase {
     }
 
     public CubeAcquisitionPositionCommand() {
+        this.addRequirements(cubeAcquisition);
     }
 
     public void execute() {
