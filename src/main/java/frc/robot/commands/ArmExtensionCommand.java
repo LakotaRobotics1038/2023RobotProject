@@ -13,27 +13,16 @@ public class ArmExtensionCommand extends CommandBase {
         this.state = state;
         this.addRequirements(arm);
     }
-
-    public ArmExtensionCommand() {
-
-    }
-
     @Override
-
     public void execute() {
-
-        /*
-         * If a new extension position was explicitly passed set it,
-         * If not toggle the current position
-         */
         if (this.state != null) {
             this.arm.setArmExtensionPosition(state);
         } else {
             switch (state) {
-                case In: // In -> Out
+                case In:
                     this.arm.setArmExtensionPosition(ArmExtensionStates.Out);
                     break;
-                case Out: // Out -> In
+                case Out:
                     this.arm.setArmExtensionPosition(ArmExtensionStates.In);
                     break;
             }
