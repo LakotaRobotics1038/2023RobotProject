@@ -35,6 +35,6 @@ public class Pigeon1038 extends Pigeon2 implements Gyro {
     public double getRate() {
         double[] rate_xyz = {};
         super.getRawGyro(rate_xyz);
-        return rate_xyz[2]; // TODO: is this the right index?
+        return rate_xyz[2];
     }
 }
