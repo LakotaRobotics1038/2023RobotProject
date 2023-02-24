@@ -15,11 +15,13 @@ public class AcquireConeCommand extends CommandBase {
         return false;
     }
 
+    @Override
     public void execute() {
         coneAcquisition.acquireCone();
     }
 
-    public void end() {
+    @Override
+    public void end(boolean interrupted) {
         coneAcquisition.stopMotor();
     }
 }
