@@ -16,7 +16,7 @@ public class AcquireCubeCommand extends CommandBase {
     @Override
     public void execute() {
         cubeAcquisition.activateFeeder();
-        cubeAcquisition.activateAquisition();
+        cubeAcquisition.activateAcquisition();
     }
 
     @Override
