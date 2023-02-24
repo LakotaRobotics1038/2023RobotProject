@@ -27,7 +27,7 @@ public class ConeAcquisition extends SubsystemBase {
     }
 
     private ConeAcquisition() {
-
+        coneAcquisitionMotor.restoreFactoryDefaults();
     }
 
     public double getDistanceSensor() {
