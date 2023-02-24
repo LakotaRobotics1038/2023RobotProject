@@ -13,6 +13,11 @@ public class ArmExtensionCommand extends CommandBase {
         this.state = state;
         this.addRequirements(arm);
     }
+
+    public ArmExtensionCommand() {
+        this.addRequirements(arm);
+    }
+
     @Override
     public void execute() {
         if (this.state != null) {
@@ -33,5 +38,4 @@ public class ArmExtensionCommand extends CommandBase {
     public boolean isFinished() {
         return true;
     }
-
 }
