@@ -7,18 +7,18 @@ import frc.robot.constants.ArmConstants;
 import frc.robot.constants.PneumaticsConstants;
 
 public class Arm extends SubsystemBase {
-    DoubleSolenoid armExtension = new DoubleSolenoid(PneumaticsConstants.kModuleType,
+    private DoubleSolenoid armExtension = new DoubleSolenoid(PneumaticsConstants.kModuleType,
             ArmConstants.kPushOutArmChannel,
             ArmConstants.kPullInArmChannel);
 
-    private enum ArmExtensionStates {
+    public enum ArmExtensionStates {
         In, Out;
     }
 
     // Singleton Setup
     private static Arm instance;
 
-    public Arm getInstance() {
+    public static Arm getInstance() {
         if (null == instance) {
             instance = new Arm();
         }
