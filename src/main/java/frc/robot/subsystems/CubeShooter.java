@@ -45,12 +45,4 @@ public class CubeShooter extends SubsystemBase {
     public boolean getLimit() {
         return cubeLimitSwitch.get();
     }
-
-    public void setLeftMotorSpeed(double cubeShooterSpeed) {
-        leftShooterMotor.set(cubeShooterSpeed);
-    }
-
-    public void setRightMotorSpeed(double cubeShooterSpeed) {
-        rightShooterMotor.set(cubeShooterSpeed);
-    }
 }
