@@ -1,8 +1,10 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CubeShooterConstants;
@@ -11,6 +13,7 @@ public class CubeShooter extends SubsystemBase {
     private CANSparkMax feederMotor = new CANSparkMax(CubeShooterConstants.kFeederMotorPort, MotorType.kBrushless);
     private CANSparkMax leftShooterMotor = new CANSparkMax(CubeShooterConstants.kLeftMotorPort, MotorType.kBrushless);
     private CANSparkMax rightShooterMotor = new CANSparkMax(CubeShooterConstants.kRightMotorPort, MotorType.kBrushless);
+    private RelativeEncoder leftShooterEncoder = leftShooterMotor.getEncoder();
 
     private DigitalInput cubeLimitSwitch = new DigitalInput(CubeShooterConstants.kCubeLimitSwitchPort);
 
@@ -32,6 +35,8 @@ public class CubeShooter extends SubsystemBase {
         feederMotor.setInverted(true);
         leftShooterMotor.setInverted(true);
         rightShooterMotor.follow(leftShooterMotor, true);
+
+        leftShooterEncoder.setVelocityConversionFactor(CubeShooterConstants.kShooterVelocityConversionFactor);
     }
 
     public void loadCube() {
@@ -42,8 +47,9 @@ public class CubeShooter extends SubsystemBase {
         }
     }
 
-    public void shootCube() {
-        leftShooterMotor.set(CubeShooterConstants.kCubeShooterSpeed);
+    public void setShooterSpeed(double power) {
+        power = MathUtil.clamp(power, -1, 1);
+        leftShooterMotor.set(power);
     }
 
     public void feedIn() {
@@ -64,5 +70,9 @@ public class CubeShooter extends SubsystemBase {
 
     public boolean getLimit() {
         return !cubeLimitSwitch.get();
+    }
+
+    public double getShooterVelocity() {
+        return leftShooterEncoder.getVelocity();
     }
 }
