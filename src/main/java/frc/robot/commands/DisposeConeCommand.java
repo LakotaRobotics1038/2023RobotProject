@@ -15,11 +15,13 @@ public class DisposeConeCommand extends CommandBase {
         return false;
     }
 
+    @Override
     public void execute() {
         coneAcquisition.disposeCone();
     }
 
-    public void end() {
+    @Override
+    public void end(boolean interrupted) {
         coneAcquisition.stopMotor();
     }
 }

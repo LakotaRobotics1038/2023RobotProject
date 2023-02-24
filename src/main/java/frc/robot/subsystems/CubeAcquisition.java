@@ -36,9 +36,10 @@ public final class CubeAcquisition extends SubsystemBase {
     }
 
     private CubeAcquisition() {
-        setPosition(AcquisitionStates.Down);
+        setPosition(AcquisitionStates.Up);
         feederMotor.restoreFactoryDefaults();
         acquisitionMotor.restoreFactoryDefaults();
+        feederMotor.setInverted(true);
     }
 
     public void activateAcquisition() {
@@ -61,8 +62,12 @@ public final class CubeAcquisition extends SubsystemBase {
         }
     }
 
-    public void activateFeeder() {
+    public void feedIn() {
         feederMotor.set(CubeAcquisitionConstants.kCubeAcquisitionFeederMotorSpeed);
+    }
+
+    public void feedOut() {
+        feederMotor.set(-CubeAcquisitionConstants.kCubeAcquisitionFeederMotorSpeed);
     }
 
     public void stopFeeder() {

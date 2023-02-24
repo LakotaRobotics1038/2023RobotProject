@@ -15,8 +15,9 @@ public class AcquireCubeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        cubeAcquisition.activateFeeder();
+        cubeAcquisition.feedIn();
         cubeAcquisition.activateAcquisition();
+        cubeShooter.loadCube();
     }
 
     @Override
@@ -28,6 +29,6 @@ public class AcquireCubeCommand extends CommandBase {
     public void end(boolean interrupted) {
         cubeAcquisition.stopFeeder();
         cubeAcquisition.stopAcquisition();
+        cubeShooter.stopMotor();
     }
-
 }

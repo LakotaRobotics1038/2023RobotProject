@@ -13,20 +13,25 @@ public class ShootCubeCommand extends CommandBase {
         this.addRequirements(cubeAcquisition, cubeShooter);
     }
 
-    public boolean isFinished() {
-        return false;
-    }
-
+    @Override
     public void initialize() {
         cubeAcquisition.setPosition(AcquisitionStates.Down);
     }
 
+    @Override
     public void execute() {
         cubeShooter.shootCube();
+        cubeAcquisition.feedOut();
     }
 
-    public void end() {
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        cubeShooter.stopMotor();
         cubeAcquisition.stopFeeder();
-        cubeAcquisition.stopAcquisition();
     }
 }
