@@ -3,10 +3,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import frc.robot.constants.ShooterConstants;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.ShooterConstants;
 
 public class CubeShooter extends SubsystemBase {
 
@@ -41,5 +40,9 @@ public class CubeShooter extends SubsystemBase {
 
     public void shootCube() {
         leftShooterMotor.set(ShooterConstants.kCubeShooterSpeed);
+    }
+
+    public boolean getLimit() {
+        return cubeLimitSwitch.get();
     }
 }

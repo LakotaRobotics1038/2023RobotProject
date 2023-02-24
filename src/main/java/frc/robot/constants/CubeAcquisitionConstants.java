@@ -6,5 +6,5 @@ public final class CubeAcquisitionConstants {
     public static final double kCubeAcquisitionMotorSpeed = 0.0;
     public static final double kCubeAcquisitionFeederMotorSpeed = 0.0;
     public static final int kCubeAcquisitionMotorPort = 0;
-    public static final int kCubeAcquisitionFeederMotorPort = 0;
+    public static final int kCubeAcquisitionFeederMotorPort = 14;
 }
