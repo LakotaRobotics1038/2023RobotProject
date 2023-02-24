@@ -1,30 +1,27 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.DriveTrain;
 
-public class BalanceRobotCommand extends CommandBase {
+public class BalanceRobotCommand extends PIDCommand {
 
-    private DriveTrain driveTrain = DriveTrain.getInstance();
-    private PIDController pidController = new PIDController(0, 0, 0);
+    private static DriveTrain driveTrain = DriveTrain.getInstance();
 
     public BalanceRobotCommand() {
-        this.addRequirements(driveTrain);
+        super(new PIDController(0, 0, 0),
+                driveTrain::getPitch,
+                0.0,
+                output -> driveTrain.drive(output, 0, 0, true),
+                driveTrain);
+
+        getController().disableContinuousInput();
+        getController().setTolerance(0);
     }
 
+    @Override
     public boolean isFinished() {
-        boolean isPIDSet = pidController.atSetpoint();
-        return isPIDSet;
-    }
-
-    public void execute() {
-        if (driveTrain.getPitch() != 10.0) {
-            if (driveTrain.getPitch() < 0) {
-                driveTrain.drive(0, 0, 0, isFinished());
-            } else {
-                driveTrain.drive(0, 0, 0, isFinished());
-            }
-        }
+        // End when the controller is at the reference.
+        return getController().atSetpoint();
     }
 }
