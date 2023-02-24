@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.hal.ControlWord;
+import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.autons.Auton;
@@ -11,10 +13,16 @@ import frc.robot.autons.AutonSelector;
 import frc.robot.subsystems.Compressor1038;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.SwagLights;
 
 public class Robot extends TimedRobot {
-    private Auton autonomousCommand;
+    // Singleton Instances
     private AutonSelector autonSelector = AutonSelector.getInstance();
+    private SwagLights swagLights = SwagLights.getInstance();
+
+    // Variables
+    private Auton autonomousCommand;
+    private ControlWord controlWordCache = new ControlWord();
 
     // Subsystems
     private DriveTrain driveTrain = DriveTrain.getInstance();
@@ -32,6 +40,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        System.out.println("Robot Disabled");
+        DriverStationJNI.getControlWord(controlWordCache);
+        if (controlWordCache.getEStop()) {
+            swagLights.setEStop();
+        } else {
+            swagLights.setDisabled(true);
+        }
     }
 
     @Override
@@ -40,6 +55,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledExit() {
+        swagLights.setDisabled(false);
     }
 
     @Override
