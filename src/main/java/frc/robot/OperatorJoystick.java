@@ -7,16 +7,12 @@ import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.DisposeConeCommand;
 import frc.robot.commands.ShootCubeCommand;
 import frc.robot.constants.IOConstants;
-import frc.robot.subsystems.CubeShooter;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class OperatorJoystick extends XboxController1038 {
-
-    private final CubeShooter cubeShooter = CubeShooter.getInstance();
-
+    // Singleton Setup
     private static OperatorJoystick instance;
 
-    public static OperatorJoystick getIntance() {
+    public static OperatorJoystick getInstance() {
         if (instance == null) {
             System.out.println("Creating a new Operator");
             instance = new OperatorJoystick();
@@ -33,11 +29,11 @@ public class OperatorJoystick extends XboxController1038 {
 
         // Cube Acquisition
         super.bButton.whileTrue(new AcquireCubeCommand());
-        super.yButton.whenPressed(new CubeAcquisitionPositionCommand());
+        super.yButton.onTrue(new CubeAcquisitionPositionCommand());
 
         // Cube Shooter
         super.leftBumper.whileTrue(new ShootCubeCommand());
-        super.leftTrigger.whileTrue(new RunCommand(cubeShooter::loadCube, cubeShooter));
+        super.leftTrigger.whileTrue(new AcquireCubeCommand());
 
         // Arm + Wrist + Shoulder
 
