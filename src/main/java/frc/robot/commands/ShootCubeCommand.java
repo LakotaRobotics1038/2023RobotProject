@@ -9,8 +9,6 @@ public class ShootCubeCommand extends CommandBase {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private CubeAcquisition cubeAcquisition = CubeAcquisition.getInstance();
 
-    public double cubeShooterSpeed = 0;
-
     public ShootCubeCommand() {
         this.addRequirements(cubeAcquisition, cubeShooter);
     }
