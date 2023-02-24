@@ -15,18 +15,31 @@ public class CubeShooter extends SubsystemBase {
 
     private DigitalInput cubeLimitSwitch = new DigitalInput(ShooterConstants.kCubeLimitSwitchPort);
 
+    // Singleton Setup
+    private static CubeShooter instance;
+
+    public static CubeShooter getInstance() {
+        if (instance == null) {
+            instance = new CubeShooter();
+        }
+        return instance;
+    }
+
+    private CubeShooter() {
+        leftShooterMotor.restoreFactoryDefaults();
+        rightShooterMotor.restoreFactoryDefaults();
+        rightShooterMotor.follow(leftShooterMotor, true);
+    }
+
     public void loadCube() {
         if (!cubeLimitSwitch.get()) {
             leftShooterMotor.stopMotor();
-            rightShooterMotor.stopMotor();
         } else {
             leftShooterMotor.set(ShooterConstants.kCubeLoadSpeed);
-            rightShooterMotor.set(ShooterConstants.kCubeLoadSpeed);
         }
     }
 
     public void shootCube() {
         leftShooterMotor.set(ShooterConstants.kCubeShooterSpeed);
-        rightShooterMotor.set(ShooterConstants.kCubeShooterSpeed);
     }
 }
