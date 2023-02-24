@@ -6,6 +6,6 @@ public final class ShooterConstants {
 
     public static final int kCubeLimitSwitchPort = 0;
 
-    public final static double kCubeLoadSpeed = 0.0;
-    public final static double kCubeShooterSpeed = 0.0;
+    public final static double kCubeLoadSpeed = 0.5;
+    public final static double kCubeShooterSpeed = 0.5;
 }
