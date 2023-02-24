@@ -10,8 +10,7 @@ import frc.robot.constants.CubeAcquisitionConstants;
 import frc.robot.constants.PneumaticsConstants;
 
 public final class CubeAcquisition extends SubsystemBase {
-    private CANSparkMax feederMotor = new CANSparkMax(CubeAcquisitionConstants.kCubeAcquisitionFeederMotorPort,
-            MotorType.kBrushless);
+
     private CANSparkMax acquisitionMotor = new CANSparkMax(CubeAcquisitionConstants.kCubeAcquisitionMotorPort,
             MotorType.kBrushless);
     private DoubleSolenoid acquisitionSolenoid = new DoubleSolenoid(PneumaticsConstants.kModuleType,
@@ -37,9 +36,7 @@ public final class CubeAcquisition extends SubsystemBase {
 
     private CubeAcquisition() {
         setPosition(AcquisitionStates.Up);
-        feederMotor.restoreFactoryDefaults();
         acquisitionMotor.restoreFactoryDefaults();
-        feederMotor.setInverted(true);
     }
 
     public void activateAcquisition() {
@@ -60,18 +57,6 @@ public final class CubeAcquisition extends SubsystemBase {
             acquisitionSolenoid.set(DoubleSolenoid.Value.kForward);
             currentState = state;
         }
-    }
-
-    public void feedIn() {
-        feederMotor.set(CubeAcquisitionConstants.kCubeAcquisitionFeederMotorSpeed);
-    }
-
-    public void feedOut() {
-        feederMotor.set(-CubeAcquisitionConstants.kCubeAcquisitionFeederMotorSpeed);
-    }
-
-    public void stopFeeder() {
-        feederMotor.stopMotor();
     }
 
     public AcquisitionStates getCurrentState() {

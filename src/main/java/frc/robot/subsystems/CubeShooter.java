@@ -5,14 +5,14 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.ShooterConstants;
+import frc.robot.constants.CubeShooterConstants;
 
 public class CubeShooter extends SubsystemBase {
+    private CANSparkMax feederMotor = new CANSparkMax(CubeShooterConstants.kFeederMotorPort, MotorType.kBrushless);
+    private CANSparkMax leftShooterMotor = new CANSparkMax(CubeShooterConstants.kLeftMotorPort, MotorType.kBrushless);
+    private CANSparkMax rightShooterMotor = new CANSparkMax(CubeShooterConstants.kRightMotorPort, MotorType.kBrushless);
 
-    private CANSparkMax leftShooterMotor = new CANSparkMax(ShooterConstants.kCubeLeftMotorPort, MotorType.kBrushless);
-    private CANSparkMax rightShooterMotor = new CANSparkMax(ShooterConstants.kCubeRightMotorPort, MotorType.kBrushless);
-
-    private DigitalInput cubeLimitSwitch = new DigitalInput(ShooterConstants.kCubeLimitSwitchPort);
+    private DigitalInput cubeLimitSwitch = new DigitalInput(CubeShooterConstants.kCubeLimitSwitchPort);
 
     // Singleton Setup
     private static CubeShooter instance;
@@ -27,6 +27,9 @@ public class CubeShooter extends SubsystemBase {
     private CubeShooter() {
         leftShooterMotor.restoreFactoryDefaults();
         rightShooterMotor.restoreFactoryDefaults();
+        feederMotor.restoreFactoryDefaults();
+
+        feederMotor.setInverted(true);
         leftShooterMotor.setInverted(true);
         rightShooterMotor.follow(leftShooterMotor, true);
     }
@@ -35,12 +38,24 @@ public class CubeShooter extends SubsystemBase {
         if (this.getLimit()) {
             leftShooterMotor.stopMotor();
         } else {
-            leftShooterMotor.set(ShooterConstants.kCubeLoadSpeed);
+            leftShooterMotor.set(CubeShooterConstants.kCubeLoadSpeed);
         }
     }
 
     public void shootCube() {
-        leftShooterMotor.set(ShooterConstants.kCubeShooterSpeed);
+        leftShooterMotor.set(CubeShooterConstants.kCubeShooterSpeed);
+    }
+
+    public void feedIn() {
+        feederMotor.set(CubeShooterConstants.kFeederMotorSpeed);
+    }
+
+    public void feedOut() {
+        feederMotor.set(-CubeShooterConstants.kFeederMotorSpeed);
+    }
+
+    public void stopFeeder() {
+        feederMotor.stopMotor();
     }
 
     public void stopMotor() {
