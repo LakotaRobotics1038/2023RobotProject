@@ -30,6 +30,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         DriverJoystick.getInstance();
+        OperatorJoystick.getInstance();
         Dashboard.getInstance();
     }
 
