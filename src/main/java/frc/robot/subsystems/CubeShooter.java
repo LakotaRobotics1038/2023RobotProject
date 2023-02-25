@@ -18,6 +18,18 @@ public class CubeShooter extends PIDSubsystem {
 
     private DigitalInput cubeLimitSwitch = new DigitalInput(CubeShooterConstants.kCubeLimitSwitchPort);
 
+    public enum CubeShooterSetpoints {
+        low(0),
+        medium(0),
+        high(0);
+
+        public final int value;
+
+        CubeShooterSetpoints(int value) {
+            this.value = value;
+        }
+    }
+
     // Singleton Setup
     private static CubeShooter instance;
 
@@ -81,9 +93,8 @@ public class CubeShooter extends PIDSubsystem {
         return !cubeLimitSwitch.get();
     }
 
-    public void setSetpoint(double setpoint) {
-        setpoint = MathUtil.clamp(setpoint, 0, Integer.MAX_VALUE);
-        super.setSetpoint(setpoint);
+    public void setSetpoint(CubeShooterSetpoints setpoint) {
+        super.setSetpoint(setpoint.value);
     }
 
     @Override
