@@ -1,37 +1,27 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CubeShooter;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
-import frc.robot.constants.CubeShooterConstants;
 import frc.robot.subsystems.CubeAcquisition;
 
-public class ShootCubeCommand extends PIDCommand {
-    private static CubeShooter cubeShooter = CubeShooter.getInstance();
-    private static CubeAcquisition cubeAcquisition = CubeAcquisition.getInstance();
+public class ShootCubeCommand extends CommandBase {
+    private CubeShooter cubeShooter = CubeShooter.getInstance();
+    private CubeAcquisition cubeAcquisition = CubeAcquisition.getInstance();
 
     public ShootCubeCommand() {
-        super(
-                new PIDController(
-                        CubeShooterConstants.kShooterP,
-                        CubeShooterConstants.kShooterI,
-                        CubeShooterConstants.kShooterD),
-                cubeShooter::getShooterVelocity,
-                CubeShooterConstants.kShooterSetpoint,
-                power -> cubeShooter.setShooterSpeed(power),
-                cubeShooter,
-                cubeAcquisition);
+        this.addRequirements(cubeShooter, cubeAcquisition);
     }
 
     @Override
     public void initialize() {
         cubeAcquisition.setPosition(AcquisitionStates.Down);
+        cubeShooter.enable();
     }
 
     @Override
     public void execute() {
-        if (getController().atSetpoint()) {
+        if (cubeShooter.onTarget()) {
             cubeShooter.feedOut();
         }
     }
@@ -43,7 +33,7 @@ public class ShootCubeCommand extends PIDCommand {
 
     @Override
     public void end(boolean interrupted) {
-        cubeShooter.stopMotor();
+        cubeShooter.disable();
         cubeShooter.stopFeeder();
     }
 }
