@@ -46,4 +46,8 @@ public class Wrist extends PIDSubsystem {
     public double getWristEncoder() {
         return wristEncoder.getPosition();
     }
+
+    public boolean onTarget() {
+        return getController().atSetpoint();
+    }
 }
