@@ -5,26 +5,26 @@ import frc.robot.subsystems.Wrist;
 
 public class WristPositionCommand extends CommandBase {
     private Wrist wrist = Wrist.getInstance();
-    // Used in constructor do not delete
     private double wristSetpoint;
 
-    WristPositionCommand(double wristSetpoint) {
+    public WristPositionCommand(double wristSetpoint) {
         this.addRequirements(wrist);
         this.wristSetpoint = wristSetpoint;
     }
 
+    @Override
     public void initialize() {
         wrist.enable();
         wrist.setSetpoint(wristSetpoint);
     }
 
+    @Override
     public boolean isFinished() {
         return wrist.onTarget();
     }
 
-    public void end() {
+    @Override
+    public void end(boolean interrupted) {
         wrist.disable();
-        if (wristSetpoint == 0) {
-        }
     }
 }
