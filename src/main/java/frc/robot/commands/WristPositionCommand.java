@@ -13,7 +13,7 @@ public class WristPositionCommand extends CommandBase {
         this.wristSetpoint = wristSetpoint;
     }
 
-    public void initialize(double wristSetpoint) {
+    public void initialize() {
         wrist.enable();
         wrist.setSetpoint(wristSetpoint);
     }
