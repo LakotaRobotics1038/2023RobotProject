@@ -20,6 +20,7 @@ public class CubeAcquisitionPositionCommand extends CommandBase {
         this.addRequirements(cubeAcquisition);
     }
 
+    @Override
     public void execute() {
         if (this.state != null) {
             this.cubeAcquisition.setPosition(state);
@@ -35,8 +36,8 @@ public class CubeAcquisitionPositionCommand extends CommandBase {
         }
     }
 
+    @Override
     public boolean isFinished() {
         return true;
     }
-
 }
