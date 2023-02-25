@@ -5,11 +5,12 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.constants.CubeShooterConstants;
 
-public class CubeShooter extends SubsystemBase {
+public class CubeShooter extends PIDSubsystem {
     private CANSparkMax feederMotor = new CANSparkMax(CubeShooterConstants.kFeederMotorPort, MotorType.kBrushless);
     private CANSparkMax leftShooterMotor = new CANSparkMax(CubeShooterConstants.kLeftMotorPort, MotorType.kBrushless);
     private CANSparkMax rightShooterMotor = new CANSparkMax(CubeShooterConstants.kRightMotorPort, MotorType.kBrushless);
@@ -28,6 +29,13 @@ public class CubeShooter extends SubsystemBase {
     }
 
     private CubeShooter() {
+        super(new PIDController(
+                CubeShooterConstants.kShooterP,
+                CubeShooterConstants.kShooterI,
+                CubeShooterConstants.kShooterD));
+        getController().setTolerance(CubeShooterConstants.kShooterTolerance);
+        getController().disableContinuousInput();
+
         leftShooterMotor.restoreFactoryDefaults();
         rightShooterMotor.restoreFactoryDefaults();
         feederMotor.restoreFactoryDefaults();
@@ -47,8 +55,9 @@ public class CubeShooter extends SubsystemBase {
         }
     }
 
-    public void setShooterSpeed(double power) {
-        power = MathUtil.clamp(power, -1, 1);
+    @Override
+    protected void useOutput(double output, double setpoint) {
+        double power = MathUtil.clamp(output, -1, 1);
         leftShooterMotor.set(power);
     }
 
@@ -72,7 +81,17 @@ public class CubeShooter extends SubsystemBase {
         return !cubeLimitSwitch.get();
     }
 
-    public double getShooterVelocity() {
+    public void setSetpoint(double setpoint) {
+        setpoint = MathUtil.clamp(setpoint, 0, Integer.MAX_VALUE);
+        super.setSetpoint(setpoint);
+    }
+
+    @Override
+    protected double getMeasurement() {
         return leftShooterEncoder.getVelocity();
+    }
+
+    public boolean onTarget() {
+        return getController().atSetpoint();
     }
 }
