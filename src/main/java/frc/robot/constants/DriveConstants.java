@@ -39,5 +39,5 @@ public final class DriveConstants {
     public static final int kRearRightTurningCanId = 3;
 
     public static final boolean kGyroReversed = false;
-    public static final int kGyroCanId = 13;
+    public static final int kGyroCanId = 22;
 }
