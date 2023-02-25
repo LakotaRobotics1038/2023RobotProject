@@ -1,19 +1,28 @@
 package frc.robot.commands;
 
 import frc.robot.constants.BalanceConstants;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.DriveTrain;
+import edu.wpi.first.math.controller.PIDController;
 
-public class BalanceRobotCommand extends CommandBase {
+public class BalanceRobotCommand extends PIDCommand {
 
-    private DriveTrain driveTrain = DriveTrain.getInstance();
+    private static DriveTrain driveTrain = DriveTrain.getInstance();
 
     public BalanceRobotCommand() {
-        this.addRequirements(driveTrain);
+        super(
+                new PIDController(
+                        BalanceConstants.kBalanceP,
+                        BalanceConstants.kBalanceI,
+                        BalanceConstants.kBalanceD),
+                driveTrain::getHeading,
+                BalanceConstants.kBalanceSetpoint,
+                speed -> driveTrain.drive(speed, speed, speed, false),
+                driveTrain);
     }
 
     public boolean isFinished() {
-        return BalanceConstants.pidController.atSetpoint();
+        return getController().atSetpoint();
     }
 
     public void execute() {
