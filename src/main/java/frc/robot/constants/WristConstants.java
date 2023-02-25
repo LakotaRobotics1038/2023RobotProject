@@ -1,5 +1,7 @@
 package frc.robot.constants;
 
+import edu.wpi.first.math.controller.PIDController;
+
 public class WristConstants {
     public static final int kWristMotorPort = 11;
     public static final double kWristP = 0.0;
@@ -9,4 +11,6 @@ public class WristConstants {
     public static final double kWristPIDMaximum = 0.0;
     public static final double kWristPIDSpeed = 0.0;
     public static final double kWristPIDTolerance = 0.0;
+
+    public static PIDController pidController = new PIDController(kWristMotorPort, kWristI, kWristD);
 }
