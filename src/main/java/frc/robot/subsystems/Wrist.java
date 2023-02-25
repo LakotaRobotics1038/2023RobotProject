@@ -48,6 +48,6 @@ public class Wrist extends PIDSubsystem {
     }
 
     public boolean onTarget() {
-        return WristConstants.pidController.atSetpoint();
+        return getController().atSetpoint();
     }
 }
