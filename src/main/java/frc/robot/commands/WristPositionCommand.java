@@ -24,5 +24,7 @@ public class WristPositionCommand extends CommandBase {
 
     public void end() {
         wrist.disable();
+        if (wristSetpoint == 0) {
+        }
     }
 }
