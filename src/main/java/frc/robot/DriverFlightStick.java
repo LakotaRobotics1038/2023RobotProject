@@ -7,7 +7,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
-public class DriverJoystick extends FlightStick1038 {
+public class DriverFlightStick extends FlightStick1038 {
     // Subsystem Dependencies
     private final DriveTrain driveTrain = DriveTrain.getInstance();
 
@@ -17,20 +17,19 @@ public class DriverJoystick extends FlightStick1038 {
     private double prevZ = 0;
 
     // Singleton Setup
-    private static DriverJoystick instance;
+    private static DriverFlightStick instance;
 
-    public static DriverJoystick getInstance() {
+    public static DriverFlightStick getInstance() {
         if (instance == null) {
-            System.out.println("Creating a new Driver");
-            instance = new DriverJoystick();
+            System.out.println("Creating a new Driver Flight Stick");
+            instance = new DriverFlightStick();
         }
         return instance;
     }
 
-    private DriverJoystick() {
+    private DriverFlightStick() {
         super(IOConstants.kDriverControllerPort);
 
-        // TODO: See what this rate limiting does to the robot drive
         SlewRateLimiter forwardFilter = new SlewRateLimiter(1.0);
         SlewRateLimiter sidewaysFilter = new SlewRateLimiter(1.0);
         SlewRateLimiter rotateFilter = new SlewRateLimiter(1.0);
