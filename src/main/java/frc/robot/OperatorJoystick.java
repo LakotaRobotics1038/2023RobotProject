@@ -1,6 +1,7 @@
 package frc.robot;
 
 import frc.robot.libraries.XboxController1038;
+import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
 import frc.robot.commands.AcquireConeCommand;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
@@ -32,7 +33,7 @@ public class OperatorJoystick extends XboxController1038 {
         super.yButton.onTrue(new CubeAcquisitionPositionCommand());
 
         // Cube Shooter
-        super.leftBumper.whileTrue(new ShootCubeCommand());
+        super.leftBumper.whileTrue(new ShootCubeCommand(CubeShooterSetpoints.high));
         super.leftTrigger.whileTrue(new AcquireCubeCommand());
 
         // Arm + Wrist + Shoulder
