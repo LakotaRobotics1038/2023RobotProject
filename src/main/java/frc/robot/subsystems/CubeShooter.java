@@ -60,11 +60,7 @@ public class CubeShooter extends PIDSubsystem {
     }
 
     public void loadCube() {
-        if (this.getLimit()) {
-            leftShooterMotor.stopMotor();
-        } else {
-            leftShooterMotor.set(CubeShooterConstants.kCubeLoadSpeed);
-        }
+        leftShooterMotor.set(CubeShooterConstants.kCubeLoadSpeed);
     }
 
     @Override
@@ -74,7 +70,11 @@ public class CubeShooter extends PIDSubsystem {
     }
 
     public void feedIn() {
-        feederMotor.set(CubeShooterConstants.kFeederMotorSpeed);
+        if (this.getLimit()) {
+            feederMotor.stopMotor();
+        } else {
+            feederMotor.set(CubeShooterConstants.kFeederMotorSpeed);
+        }
     }
 
     public void feedOut() {
