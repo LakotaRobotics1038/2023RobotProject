@@ -14,6 +14,5 @@ public final class CubeShooterConstants {
     public static final double kShooterP = 0;
     public static final double kShooterI = 0;
     public static final double kShooterD = 0;
-    public static final double kShooterSetpoint = 0;
     public static final double kShooterTolerance = 0;
 }
