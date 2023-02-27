@@ -38,6 +38,7 @@ public class ManualShootCubeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        this.feedOut = false;
         cubeShooter.disable();
         cubeShooter.stopFeeder();
     }
