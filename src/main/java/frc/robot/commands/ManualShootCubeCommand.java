@@ -16,6 +16,7 @@ public class ManualShootCubeCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        this.feedOut = false;
         cubeAcquisition.setPosition(AcquisitionStates.Down);
     }
 
@@ -38,7 +39,6 @@ public class ManualShootCubeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        this.feedOut = false;
         cubeShooter.disable();
         cubeShooter.stopFeeder();
     }
