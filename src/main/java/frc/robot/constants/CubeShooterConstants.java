@@ -9,6 +9,7 @@ public final class CubeShooterConstants {
 
     public static final double kFeederMotorSpeed = 0.7;
     public static final double kCubeLoadSpeed = -0.3;
+    public static final double kDefaultShooterSpeed = 0.1;
 
     public static final double kShooterVelocityConversionFactor = 1 / 5;
     public static final double kShooterP = 0.001;

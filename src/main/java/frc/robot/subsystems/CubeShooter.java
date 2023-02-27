@@ -16,8 +16,9 @@ public class CubeShooter extends PIDSubsystem {
     private CANSparkMax leftShooterMotor = new CANSparkMax(CubeShooterConstants.kLeftMotorPort, MotorType.kBrushless);
     private CANSparkMax rightShooterMotor = new CANSparkMax(CubeShooterConstants.kRightMotorPort, MotorType.kBrushless);
     private RelativeEncoder leftShooterEncoder = leftShooterMotor.getEncoder();
-
     private DigitalInput cubeLimitSwitch = new DigitalInput(CubeShooterConstants.kCubeLimitSwitchPort);
+
+    private double shooterSpeed = CubeShooterConstants.kDefaultShooterSpeed;
 
     public enum CubeShooterSetpoints {
         low(CubeShooterConstants.kLowShooterSetpoint),
@@ -71,6 +72,15 @@ public class CubeShooter extends PIDSubsystem {
     protected void useOutput(double output, double setpoint) {
         double power = MathUtil.clamp(output, 0, 1);
         leftShooterMotor.set(power);
+    }
+
+    public void run() {
+        leftShooterMotor.set(shooterSpeed);
+    }
+
+    public void setShooterSpeed(double p) {
+        MathUtil.clamp(p, 0.01, 1);
+        shooterSpeed = p;
     }
 
     public void feedIn() {
