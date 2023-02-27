@@ -10,6 +10,7 @@ public class ShootCubeCommand extends CommandBase {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private CubeAcquisition cubeAcquisition = CubeAcquisition.getInstance();
     private CubeShooterSetpoints setpoint;
+    private boolean overrideFeedOut = false;
 
     public ShootCubeCommand(CubeShooterSetpoints setpoint) {
         this.addRequirements(cubeShooter, cubeAcquisition);
@@ -25,9 +26,13 @@ public class ShootCubeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (cubeShooter.onTarget()) {
+        if (overrideFeedOut || cubeShooter.onTarget()) {
             cubeShooter.feedOut();
         }
+    }
+
+    public void overrideFeed() {
+        this.overrideFeedOut = true;
     }
 
     @Override
