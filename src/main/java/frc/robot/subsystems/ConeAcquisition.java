@@ -2,10 +2,10 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.Rev2mDistanceSensor.Port;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.playingwithfusion.TimeOfFlight;
 
 import frc.robot.constants.ConeAcquisitionConstants;
 
@@ -14,7 +14,7 @@ public class ConeAcquisition extends SubsystemBase {
             ConeAcquisitionConstants.kAcquisitionMotorPort,
             MotorType.kBrushless);
 
-    private final TimeOfFlight distanceSensor = new TimeOfFlight(ConeAcquisitionConstants.kAcquisitionSensorPort);
+    private final Rev2mDistanceSensor distanceSensor = new Rev2mDistanceSensor(Port.kMXP);
 
     // Singleton Setup
     private static ConeAcquisition instance;
@@ -31,7 +31,7 @@ public class ConeAcquisition extends SubsystemBase {
     }
 
     public double getDistanceSensor() {
-        return distanceSensor.getRange();
+        return distanceSensor.GetRange();
     }
 
     public void acquireCone() {
