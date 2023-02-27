@@ -12,6 +12,7 @@ import frc.robot.autons.Auton;
 public class Dashboard extends SubsystemBase {
     // Inputs
     private DriveTrain driveTrain = DriveTrain.getInstance();
+    private CubeShooter cubeShooter = CubeShooter.getInstance();
 
     // Choosers
     private SendableChooser<Auton> autoChooser = new SendableChooser<>();
@@ -49,6 +50,8 @@ public class Dashboard extends SubsystemBase {
         driversTab.addNumber("Gyro", driveTrain::getHeading)
                 .withPosition(2, 0);
         // .withWidget(BuiltInWidgets.kGyro);
+
+        driversTab.addNumber("Shooter Speed", cubeShooter::getMeasurement);
     }
 
     @Override

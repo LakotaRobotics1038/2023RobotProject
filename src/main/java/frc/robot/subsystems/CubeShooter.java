@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
@@ -19,9 +20,9 @@ public class CubeShooter extends PIDSubsystem {
     private DigitalInput cubeLimitSwitch = new DigitalInput(CubeShooterConstants.kCubeLimitSwitchPort);
 
     public enum CubeShooterSetpoints {
-        low(0),
-        medium(0),
-        high(0);
+        low(CubeShooterConstants.kLowShooterSetpoint),
+        mid(CubeShooterConstants.kMidShooterSetpoint),
+        high(CubeShooterConstants.kHighShooterSetpoint);
 
         public final int value;
 
@@ -53,6 +54,9 @@ public class CubeShooter extends PIDSubsystem {
         feederMotor.restoreFactoryDefaults();
 
         feederMotor.setInverted(true);
+        leftShooterMotor.setIdleMode(IdleMode.kCoast);
+        rightShooterMotor.setIdleMode(IdleMode.kCoast);
+        leftShooterMotor.setIdleMode(IdleMode.kCoast);
         leftShooterMotor.setInverted(true);
         rightShooterMotor.follow(leftShooterMotor, true);
 
@@ -65,7 +69,7 @@ public class CubeShooter extends PIDSubsystem {
 
     @Override
     protected void useOutput(double output, double setpoint) {
-        double power = MathUtil.clamp(output, -1, 1);
+        double power = MathUtil.clamp(output, 0, 1);
         leftShooterMotor.set(power);
     }
 
