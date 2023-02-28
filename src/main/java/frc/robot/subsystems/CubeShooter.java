@@ -68,6 +68,10 @@ public class CubeShooter extends PIDSubsystem {
         leftShooterMotor.set(CubeShooterConstants.kCubeLoadSpeed);
     }
 
+    public void unloadCube() {
+        leftShooterMotor.set(-CubeShooterConstants.kCubeLoadSpeed);
+    }
+
     @Override
     protected void useOutput(double output, double setpoint) {
         double power = MathUtil.clamp(output, 0, 1);
