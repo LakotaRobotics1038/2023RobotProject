@@ -29,6 +29,7 @@ public class Dashboard extends SubsystemBase {
             .withWidget(BuiltInWidgets.kToggleButton)
             .getEntry();
     private GenericEntry shooterPower = driversTab.add("Shooter Power", CubeShooterConstants.kDefaultShooterSpeed)
+            .withPosition(0, 2)
             .withSize(1, 1)
             .getEntry();
 
@@ -55,7 +56,8 @@ public class Dashboard extends SubsystemBase {
                 .withPosition(2, 0);
         // .withWidget(BuiltInWidgets.kGyro);
 
-        driversTab.addNumber("Shooter Speed", cubeShooter::getVelocity);
+        driversTab.addNumber("Shooter Speed", cubeShooter::getVelocity)
+                .withPosition(0, 1);
     }
 
     @Override
