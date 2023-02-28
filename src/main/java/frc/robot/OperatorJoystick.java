@@ -4,7 +4,7 @@ import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
 import frc.robot.commands.AcquireConeCommand;
 import frc.robot.commands.AcquireCubeCommand;
-import frc.robot.commands.ArmExtensionCommand;
+import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.DisposeConeCommand;
 import frc.robot.commands.DisposeCubeCommand;
 import frc.robot.commands.ManualShootCubeCommand;
@@ -38,12 +38,12 @@ public class OperatorJoystick extends XboxController1038 {
         ShootCubeCommand highShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.high);
         super.xButton.whileTrue(highShootCubeCommand);
 
-        ShootCubeCommand lowShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.low);
-        super.aButton.whileTrue(lowShootCubeCommand);
+        ShootCubeCommand midShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.mid);
+        super.aButton.whileTrue(midShootCubeCommand);
 
         // Arm + Wrist + Shoulder
         // b toggle arms in and arms out
-        super.bButton.onTrue(new ArmExtensionCommand());
+        super.bButton.onTrue(new CubeAcquisitionPositionCommand());
 
         // y manual revving shooter wheels
         super.yButton.whileTrue(new ManualShootCubeCommand());
