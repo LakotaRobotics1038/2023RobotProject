@@ -8,10 +8,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.autons.Auton;
+import frc.robot.constants.CubeShooterConstants;
 
 public class Dashboard extends SubsystemBase {
     // Inputs
     private DriveTrain driveTrain = DriveTrain.getInstance();
+    private CubeShooter cubeShooter = CubeShooter.getInstance();
 
     // Choosers
     private SendableChooser<Auton> autoChooser = new SendableChooser<>();
@@ -25,6 +27,9 @@ public class Dashboard extends SubsystemBase {
             .withSize(1, 1)
             .withPosition(1, 1)
             .withWidget(BuiltInWidgets.kToggleButton)
+            .getEntry();
+    private GenericEntry shooterPower = driversTab.add("Shooter Power", CubeShooterConstants.kDefaultShooterSpeed)
+            .withSize(1, 1)
             .getEntry();
 
     // Singleton Setup
@@ -49,6 +54,8 @@ public class Dashboard extends SubsystemBase {
         driversTab.addNumber("Gyro", driveTrain::getHeading)
                 .withPosition(2, 0);
         // .withWidget(BuiltInWidgets.kGyro);
+
+        driversTab.addNumber("Shooter Speed", cubeShooter::getMeasurement);
     }
 
     @Override
@@ -58,6 +65,7 @@ public class Dashboard extends SubsystemBase {
             driveTrain.zeroHeading();
             resetGyro.setBoolean(false);
         }
+        cubeShooter.setShooterSpeed(shooterPower.getDouble(CubeShooterConstants.kDefaultShooterSpeed));
     }
 
     public SendableChooser<Auton> getAutoChooser() {

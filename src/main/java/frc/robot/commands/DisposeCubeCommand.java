@@ -5,19 +5,19 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.CubeAcquisition;
 import frc.robot.subsystems.CubeShooter;
 
-public class AcquireCubeCommand extends CommandBase {
+public class DisposeCubeCommand extends CommandBase {
     private CubeAcquisition cubeAcquisition = CubeAcquisition.getInstance();
     private CubeShooter cubeShooter = CubeShooter.getInstance();
 
-    public AcquireCubeCommand() {
+    public DisposeCubeCommand() {
         addRequirements(cubeShooter, cubeAcquisition);
     }
 
     @Override
     public void execute() {
-        cubeAcquisition.acquire();
-        cubeShooter.feedIn();
-        cubeShooter.loadCube();
+        cubeAcquisition.dispose();
+        cubeShooter.feedOut();
+        cubeShooter.unloadCube();
     }
 
     @Override

@@ -39,9 +39,15 @@ public final class CubeAcquisition extends SubsystemBase {
         acquisitionMotor.restoreFactoryDefaults();
     }
 
-    public void activateAcquisition() {
+    public void acquire() {
         if (currentState.equals(AcquisitionStates.Down)) {
             acquisitionMotor.set(CubeAcquisitionConstants.kCubeAcquisitionMotorSpeed);
+        }
+    }
+
+    public void dispose() {
+        if (currentState.equals(AcquisitionStates.Down)) {
+            acquisitionMotor.set(-CubeAcquisitionConstants.kCubeAcquisitionMotorSpeed);
         }
     }
 
