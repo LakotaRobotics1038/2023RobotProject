@@ -32,7 +32,7 @@ public class OperatorJoystick extends XboxController1038 {
 
         // Cube Acquisition
         super.rightTrigger.whileTrue(new AcquireCubeCommand());
-        super.rightBumper.onTrue(new DisposeCubeCommand());
+        super.rightBumper.whileTrue(new DisposeCubeCommand());
 
         // Cube Shooter
         ShootCubeCommand highShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.high);
