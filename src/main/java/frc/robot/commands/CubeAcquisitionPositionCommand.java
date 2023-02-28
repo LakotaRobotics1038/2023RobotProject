@@ -25,7 +25,7 @@ public class CubeAcquisitionPositionCommand extends CommandBase {
         if (this.state != null) {
             this.cubeAcquisition.setPosition(state);
         } else {
-            switch (cubeAcquisition.getCurrentState()) {
+            switch (cubeAcquisition.getPosition()) {
                 case Down:
                     this.cubeAcquisition.setPosition(AcquisitionStates.Up);
                     break;

@@ -21,14 +21,14 @@ public class ArmExtensionCommand extends CommandBase {
     @Override
     public void execute() {
         if (this.state != null) {
-            this.arm.setArmExtensionPosition(state);
+            this.arm.setPosition(state);
         } else {
             switch (state) {
                 case In:
-                    this.arm.setArmExtensionPosition(ArmExtensionStates.Out);
+                    this.arm.setPosition(ArmExtensionStates.Out);
                     break;
                 case Out:
-                    this.arm.setArmExtensionPosition(ArmExtensionStates.In);
+                    this.arm.setPosition(ArmExtensionStates.In);
                     break;
             }
         }

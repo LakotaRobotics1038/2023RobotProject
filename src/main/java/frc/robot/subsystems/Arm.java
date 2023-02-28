@@ -29,12 +29,11 @@ public class Arm extends SubsystemBase {
 
     }
 
-    public void setArmExtensionPosition(ArmExtensionStates state) {
+    public void setPosition(ArmExtensionStates state) {
         if (state.equals(ArmExtensionStates.In)) {
             armExtension.set(DoubleSolenoid.Value.kReverse);
         } else {
             armExtension.set(DoubleSolenoid.Value.kForward);
         }
     }
-
 }

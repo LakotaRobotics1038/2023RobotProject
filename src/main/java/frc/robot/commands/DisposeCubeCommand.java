@@ -27,8 +27,8 @@ public class DisposeCubeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        cubeAcquisition.stopAcquisition();
+        cubeAcquisition.stop();
         cubeShooter.stopFeeder();
-        cubeShooter.stopMotor();
+        cubeShooter.stopShooter();
     }
 }

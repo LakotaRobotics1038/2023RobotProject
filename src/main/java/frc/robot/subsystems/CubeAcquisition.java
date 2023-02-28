@@ -31,7 +31,6 @@ public final class CubeAcquisition extends SubsystemBase {
             instance = new CubeAcquisition();
         }
         return instance;
-
     }
 
     private CubeAcquisition() {
@@ -51,7 +50,7 @@ public final class CubeAcquisition extends SubsystemBase {
         }
     }
 
-    public void stopAcquisition() {
+    public void stop() {
         acquisitionMotor.stopMotor();
     }
 
@@ -65,7 +64,7 @@ public final class CubeAcquisition extends SubsystemBase {
         }
     }
 
-    public AcquisitionStates getCurrentState() {
+    public AcquisitionStates getPosition() {
         return currentState;
     }
 }

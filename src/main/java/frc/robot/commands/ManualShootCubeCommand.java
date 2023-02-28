@@ -22,7 +22,7 @@ public class ManualShootCubeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        cubeShooter.run();
+        cubeShooter.runShooter();
         if (feedOut) {
             cubeShooter.feedOut();
         }

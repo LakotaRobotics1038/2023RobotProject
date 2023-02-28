@@ -41,19 +41,20 @@ public class Shoulder extends PIDSubsystem {
         shoulderMotor.set(power);
     }
 
-    public double getShoulderEncoder() {
+    @Override
+    protected double getMeasurement() {
+        return getPosition();
+    }
+
+    public double getPosition() {
         return shoulderEncoder.getPosition();
     }
 
     public boolean onTarget() {
-        return this.getController().atSetpoint();
+        return getController().atSetpoint();
     }
 
     @Override
-    protected double getMeasurement() {
-        return getShoulderEncoder();
-    }
-
     public void setSetpoint(double setpoint) {
         setpoint = MathUtil.clamp(setpoint, 0, ShoulderConstants.kMaxDistance);
         super.setSetpoint(setpoint);

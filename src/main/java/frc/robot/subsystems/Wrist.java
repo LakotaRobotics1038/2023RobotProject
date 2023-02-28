@@ -40,14 +40,20 @@ public class Wrist extends PIDSubsystem {
 
     @Override
     public double getMeasurement() {
-        return getWristEncoder();
+        return getPosition();
     }
 
-    public double getWristEncoder() {
+    public double getPosition() {
         return wristEncoder.getPosition();
     }
 
     public boolean onTarget() {
         return getController().atSetpoint();
+    }
+
+    @Override
+    public void setSetpoint(double setpoint) {
+        setpoint = MathUtil.clamp(setpoint, 0, WristConstants.kMaxDistance);
+        super.setSetpoint(setpoint);
     }
 }

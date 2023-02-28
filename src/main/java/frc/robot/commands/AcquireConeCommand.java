@@ -17,11 +17,11 @@ public class AcquireConeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        coneAcquisition.acquireCone();
+        coneAcquisition.acquire();
     }
 
     @Override
     public void end(boolean interrupted) {
-        coneAcquisition.stopMotor();
+        coneAcquisition.stop();
     }
 }

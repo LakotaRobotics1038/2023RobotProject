@@ -32,12 +32,12 @@ public class ConeAcquisition extends SubsystemBase {
         coneAcquisitionMotor.restoreFactoryDefaults();
     }
 
-    public double getDistanceSensor() {
+    public double getConeDistance() {
         // return distanceSensor.GetRange();
         return 0.0;
     }
 
-    public void acquireCone() {
+    public void acquire() {
         coneAcquisitionMotor.set(ConeAcquisitionConstants.kConstantMotorSpeed);
     }
 
@@ -45,7 +45,7 @@ public class ConeAcquisition extends SubsystemBase {
         coneAcquisitionMotor.set(-ConeAcquisitionConstants.kConstantMotorSpeed);
     }
 
-    public void stopMotor() {
+    public void stop() {
         coneAcquisitionMotor.stopMotor();
     }
 }

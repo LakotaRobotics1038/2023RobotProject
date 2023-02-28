@@ -22,6 +22,6 @@ public class DisposeConeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        coneAcquisition.stopMotor();
+        coneAcquisition.stop();
     }
 }
