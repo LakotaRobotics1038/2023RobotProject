@@ -8,8 +8,8 @@ import frc.robot.constants.PneumaticsConstants;
 
 public class Arm extends SubsystemBase {
     private DoubleSolenoid armExtension = new DoubleSolenoid(PneumaticsConstants.kModuleType,
-            ArmConstants.kPushOutArmChannel,
-            ArmConstants.kPullInArmChannel);
+            ArmConstants.kPushOutChannel,
+            ArmConstants.kPullInChannel);
 
     public enum ArmExtensionStates {
         In, Out;

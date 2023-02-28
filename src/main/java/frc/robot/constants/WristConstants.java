@@ -2,11 +2,8 @@ package frc.robot.constants;
 
 public class WristConstants {
     public static final int kWristMotorPort = 11;
-    public static final double kWristP = 0.0;
-    public static final double kWristI = 0.0;
-    public static final double kWristD = 0.0;
-    public static final double kWristPIDMinimum = 0.05;
-    public static final double kWristPIDMaximum = 0.00;
-    public static final double kWristPIDSpeed = 0.00;
-    public static final double kWristPIDTolerance = 0;
+    public static final double kP = 0.0;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kTolerance = 0;
 }

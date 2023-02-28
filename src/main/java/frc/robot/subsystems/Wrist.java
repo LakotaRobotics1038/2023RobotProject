@@ -26,10 +26,10 @@ public class Wrist extends PIDSubsystem {
     }
 
     private Wrist() {
-        super(new PIDController(WristConstants.kWristP, WristConstants.kWristI,
-                WristConstants.kWristD));
+        super(new PIDController(WristConstants.kP, WristConstants.kI,
+                WristConstants.kD));
         getController().disableContinuousInput();
-        getController().setTolerance(WristConstants.kWristPIDTolerance);
+        getController().setTolerance(WristConstants.kTolerance);
     }
 
     @Override
