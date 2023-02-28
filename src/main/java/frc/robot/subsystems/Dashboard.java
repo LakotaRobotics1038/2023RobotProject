@@ -55,7 +55,7 @@ public class Dashboard extends SubsystemBase {
                 .withPosition(2, 0);
         // .withWidget(BuiltInWidgets.kGyro);
 
-        driversTab.addNumber("Shooter Speed", cubeShooter::getMeasurement);
+        driversTab.addNumber("Shooter Speed", cubeShooter::getVelocity);
     }
 
     @Override

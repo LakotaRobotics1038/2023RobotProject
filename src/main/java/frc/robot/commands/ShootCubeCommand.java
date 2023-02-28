@@ -21,8 +21,7 @@ public class ShootCubeCommand extends CommandBase {
     public void initialize() {
         this.overrideFeedOut = false;
         cubeAcquisition.setPosition(AcquisitionStates.Down);
-        cubeShooter.enable();
-        cubeShooter.setSetpoint(setpoint);
+        cubeShooter.enable(setpoint);
     }
 
     @Override

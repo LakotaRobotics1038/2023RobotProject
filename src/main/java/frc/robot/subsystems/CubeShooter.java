@@ -2,23 +2,27 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CubeShooterConstants;
 
-public class CubeShooter extends PIDSubsystem {
+public class CubeShooter extends SubsystemBase {
     private CANSparkMax feederMotor = new CANSparkMax(CubeShooterConstants.kFeederMotorPort, MotorType.kBrushless);
     private CANSparkMax leftShooterMotor = new CANSparkMax(CubeShooterConstants.kLeftMotorPort, MotorType.kBrushless);
     private CANSparkMax rightShooterMotor = new CANSparkMax(CubeShooterConstants.kRightMotorPort, MotorType.kBrushless);
-    private RelativeEncoder leftShooterEncoder = leftShooterMotor.getEncoder();
     private DigitalInput cubeLimitSwitch = new DigitalInput(CubeShooterConstants.kCubeLimitSwitchPort);
 
+    private RelativeEncoder leftShooterEncoder = leftShooterMotor.getEncoder();
+    private final SparkMaxPIDController leftShooterPidController = leftShooterMotor.getPIDController();
+
     private double shooterSpeed = CubeShooterConstants.kDefaultShooterSpeed;
+    private CubeShooterSetpoints setpoint;
 
     public enum CubeShooterSetpoints {
         low(CubeShooterConstants.kLowShooterSetpoint),
@@ -43,16 +47,18 @@ public class CubeShooter extends PIDSubsystem {
     }
 
     private CubeShooter() {
-        super(new PIDController(
-                CubeShooterConstants.kShooterP,
-                CubeShooterConstants.kShooterI,
-                CubeShooterConstants.kShooterD));
-        getController().setTolerance(CubeShooterConstants.kShooterTolerance);
-        getController().disableContinuousInput();
-
         leftShooterMotor.restoreFactoryDefaults();
         rightShooterMotor.restoreFactoryDefaults();
         feederMotor.restoreFactoryDefaults();
+
+        leftShooterPidController.setFeedbackDevice(leftShooterEncoder);
+        leftShooterEncoder.setVelocityConversionFactor(CubeShooterConstants.kShooterVelocityConversionFactor);
+
+        leftShooterPidController.setP(CubeShooterConstants.kP);
+        leftShooterPidController.setI(CubeShooterConstants.kI);
+        leftShooterPidController.setD(CubeShooterConstants.kD);
+        leftShooterPidController.setFF(CubeShooterConstants.kFF);
+        leftShooterPidController.setOutputRange(0, 1);
 
         feederMotor.setInverted(true);
         leftShooterMotor.setIdleMode(IdleMode.kCoast);
@@ -61,7 +67,8 @@ public class CubeShooter extends PIDSubsystem {
         leftShooterMotor.setInverted(true);
         rightShooterMotor.follow(leftShooterMotor, true);
 
-        leftShooterEncoder.setVelocityConversionFactor(CubeShooterConstants.kShooterVelocityConversionFactor);
+        leftShooterMotor.burnFlash();
+        rightShooterMotor.burnFlash();
     }
 
     public void loadCube() {
@@ -70,12 +77,6 @@ public class CubeShooter extends PIDSubsystem {
 
     public void unloadCube() {
         leftShooterMotor.set(-CubeShooterConstants.kCubeLoadSpeed);
-    }
-
-    @Override
-    protected void useOutput(double output, double setpoint) {
-        double power = MathUtil.clamp(output, 0, 1);
-        leftShooterMotor.set(power);
     }
 
     public void run() {
@@ -107,20 +108,26 @@ public class CubeShooter extends PIDSubsystem {
         leftShooterMotor.stopMotor();
     }
 
+    public void disable() {
+        leftShooterMotor.disable();
+    }
+
     public boolean getLimit() {
         return !cubeLimitSwitch.get();
     }
 
-    public void setSetpoint(CubeShooterSetpoints setpoint) {
-        super.setSetpoint(setpoint.value);
+    public void enable(CubeShooterSetpoints setpoint) {
+        this.setpoint = setpoint;
+        leftShooterPidController.setReference(setpoint.value, ControlType.kVelocity);
     }
 
-    @Override
-    protected double getMeasurement() {
+    protected double getVelocity() {
         return leftShooterEncoder.getVelocity();
     }
 
     public boolean onTarget() {
-        return getController().atSetpoint();
+        double velocity = this.getVelocity();
+        return velocity <= this.setpoint.value + CubeShooterConstants.kShooterTolerance &&
+                velocity >= this.setpoint.value - CubeShooterConstants.kShooterTolerance;
     }
 }
