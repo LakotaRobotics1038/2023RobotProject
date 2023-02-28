@@ -37,6 +37,7 @@
         "Coms",
         "deadband",
         "gryo",
+        "Odometry",
         "REVPH",
         "roborio",
         "setpoint",
