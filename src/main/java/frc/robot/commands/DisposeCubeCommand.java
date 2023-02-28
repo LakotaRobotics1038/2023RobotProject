@@ -22,7 +22,7 @@ public class DisposeCubeCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return cubeShooter.getLimit();
+        return false;
     }
 
     @Override
