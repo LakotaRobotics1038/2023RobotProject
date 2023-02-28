@@ -87,7 +87,7 @@ public class XboxController1038 extends XboxController {
      *         are joystick up
      */
     public double getLeftY() {
-        return deadband(-super.getLeftY());
+        return deadband(super.getLeftY());
     }
 
     /**
