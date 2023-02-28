@@ -2,15 +2,13 @@ package frc.robot;
 
 import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.AcquireConeCommand;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.ArmExtensionCommand;
-import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.DisposeConeCommand;
+import frc.robot.commands.DisposeCubeCommand;
 import frc.robot.commands.ManualShootCubeCommand;
 import frc.robot.commands.ShootCubeCommand;
-import frc.robot.commands.ShoulderPositionCommand;
 import frc.robot.constants.IOConstants;
 
 public class OperatorJoystick extends XboxController1038 {
@@ -34,8 +32,7 @@ public class OperatorJoystick extends XboxController1038 {
 
         // Cube Acquisition
         super.rightTrigger.whileTrue(new AcquireCubeCommand());
-        // TODO replace CubeAcquisitionPositionCommand() with DisposeCubeCommand()
-        super.rightBumper.onTrue(new CubeAcquisitionPositionCommand());
+        super.rightBumper.onTrue(new DisposeCubeCommand());
 
         // Cube Shooter
         ShootCubeCommand highShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.high);
