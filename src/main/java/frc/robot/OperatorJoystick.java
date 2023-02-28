@@ -27,8 +27,8 @@ public class OperatorJoystick extends XboxController1038 {
         super(IOConstants.kOperatorControllerPort);
 
         // Cone Acquisition
-        super.leftTrigger.whileTrue(new AcquireConeCommand());
-        super.leftBumper.whileTrue(new DisposeConeCommand());
+        // super.leftTrigger.whileTrue(new AcquireConeCommand());
+        // super.leftBumper.whileTrue(new DisposeConeCommand());
 
         // Cube Acquisition
         super.rightTrigger.whileTrue(new AcquireCubeCommand());
