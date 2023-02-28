@@ -203,4 +203,8 @@ public class DriveTrain extends SubsystemBase {
     public double getTurnRate() {
         return gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
+
+    public double getPitch() {
+        return gyro.getPitch();
+    }
 }

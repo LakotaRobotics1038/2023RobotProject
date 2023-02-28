@@ -16,6 +16,7 @@ public class ManualShootCubeCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        this.feedOut = false;
         cubeAcquisition.setPosition(AcquisitionStates.Down);
     }
 
