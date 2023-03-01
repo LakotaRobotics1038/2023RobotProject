@@ -28,10 +28,6 @@ public class Dashboard extends SubsystemBase {
             .withPosition(1, 1)
             .withWidget(BuiltInWidgets.kToggleButton)
             .getEntry();
-    private GenericEntry shooterPower = driversTab.add("Shooter Power", CubeShooterConstants.kDefaultShooterSpeed)
-            .withPosition(1, 2)
-            .withSize(1, 1)
-            .getEntry();
     private GenericEntry shooterP = driversTab.add("Shooter P", CubeShooterConstants.kP)
             .withPosition(1, 3)
             .withSize(1, 1)
@@ -72,6 +68,9 @@ public class Dashboard extends SubsystemBase {
                 .withPosition(2, 0);
         // .withWidget(BuiltInWidgets.kGyro);
 
+        driversTab.addNumber("Shooter Power", cubeShooter::getShooterSpeed)
+                .withPosition(1, 2);
+
         driversTab.addNumber("Shooter Speed", cubeShooter::getVelocity)
                 .withPosition(1, 1);
     }
@@ -83,7 +82,6 @@ public class Dashboard extends SubsystemBase {
             driveTrain.zeroHeading();
             resetGyro.setBoolean(false);
         }
-        cubeShooter.setShooterSpeed(shooterPower.getDouble(CubeShooterConstants.kDefaultShooterSpeed));
         cubeShooter.setP(shooterP.getDouble(CubeShooterConstants.kP));
         cubeShooter.setI(shooterI.getDouble(CubeShooterConstants.kI));
         cubeShooter.setD(shooterD.getDouble(CubeShooterConstants.kD));
