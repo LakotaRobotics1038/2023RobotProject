@@ -23,9 +23,8 @@ public class AutonSelector {
         this.autoChooser = Dashboard.getInstance().getAutoChooser();
 
         this.autoChooser.setDefaultOption("No Auto", null);
-        this.autoChooser.addOption("Test Auto", new TestPath());
-        this.autoChooser.addOption("Circle Auto", new CirclePath());
-        this.autoChooser.addOption("Two Meter Auto", new TwoMeterPath());
+        this.autoChooser.addOption("Leave Community Auto", new LeaveCommunityPath());
+        this.autoChooser.addOption("Mount Charge Station Auto", new MountChargeStationPath());
     }
 
     public Auton chooseAuton() {

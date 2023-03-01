@@ -6,14 +6,14 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import frc.robot.constants.AutoConstants;
 
 public class Trajectories {
-    public static PathPlannerTrajectory TestPath() {
-        return PathPlanner.loadPath("Test Path",
+    public static PathPlannerTrajectory LeaveCommunityPath() {
+        return PathPlanner.loadPath("Leave Community Path",
                 AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared);
     }
 
-    public static PathPlannerTrajectory CirclePath() {
-        return PathPlanner.loadPath("Circle Path",
+    public static PathPlannerTrajectory MountChargeStationPath() {
+        return PathPlanner.loadPath("Mount Charge Station Path",
                 AutoConstants.kMaxSpeedMetersPerSecond,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared);
     }
