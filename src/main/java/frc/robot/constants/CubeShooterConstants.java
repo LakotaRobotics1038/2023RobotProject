@@ -13,13 +13,13 @@ public final class CubeShooterConstants {
     public static final double kShooterSpeedIncrement = 0.05;
 
     public static final double kShooterVelocityConversionFactor = 1.0 / 5.0;
-    public static final double kP = 0.001;
-    public static final double kI = 0.000;
+    public static final double kP = 0.0005;
+    public static final double kI = 0.000002;
     public static final double kD = 0.000;
     public static final double kFF = 1 / NeoMotorConstants.kFreeSpeedRpm;
-    public static final double kShooterTolerance = 0.0;
+    public static final double kShooterTolerance = 5;
 
     public static final int kLowShooterSetpoint = 750;
-    public static final int kMidShooterSetpoint = 1400;
-    public static final int kHighShooterSetpoint = 1650;
+    public static final int kMidShooterSetpoint = 1000;
+    public static final int kHighShooterSetpoint = 1450;
 }
