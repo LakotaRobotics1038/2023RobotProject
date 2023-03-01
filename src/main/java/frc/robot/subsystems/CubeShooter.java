@@ -58,12 +58,11 @@ public class CubeShooter extends SubsystemBase {
         leftShooterPidController.setI(CubeShooterConstants.kI);
         leftShooterPidController.setD(CubeShooterConstants.kD);
         leftShooterPidController.setFF(CubeShooterConstants.kFF);
-        leftShooterPidController.setOutputRange(0, 1);
+        leftShooterPidController.setOutputRange(0.01, 1);
 
         feederMotor.setInverted(true);
         leftShooterMotor.setIdleMode(IdleMode.kCoast);
         rightShooterMotor.setIdleMode(IdleMode.kCoast);
-        leftShooterMotor.setIdleMode(IdleMode.kCoast);
         leftShooterMotor.setInverted(true);
         rightShooterMotor.follow(leftShooterMotor, true);
 
@@ -133,5 +132,21 @@ public class CubeShooter extends SubsystemBase {
         double velocity = this.getVelocity();
         return velocity <= this.setpoint.value + CubeShooterConstants.kShooterTolerance &&
                 velocity >= this.setpoint.value - CubeShooterConstants.kShooterTolerance;
+    }
+
+    public void setP(double p) {
+        this.leftShooterPidController.setP(p);
+    }
+
+    public void setI(double i) {
+        this.leftShooterPidController.setI(i);
+    }
+
+    public void setD(double d) {
+        this.leftShooterPidController.setD(d);
+    }
+
+    public void setFF(double ff) {
+        this.leftShooterPidController.setFF(ff);
     }
 }
