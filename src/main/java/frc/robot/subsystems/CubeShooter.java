@@ -88,6 +88,10 @@ public class CubeShooter extends SubsystemBase {
         shooterSpeed = p;
     }
 
+    public double getShooterSpeed() {
+        return this.shooterSpeed;
+    }
+
     public void feedIn() {
         if (this.getLimit()) {
             feederMotor.stopMotor();

@@ -1,16 +1,21 @@
 package frc.robot;
 
 import frc.robot.libraries.XboxController1038;
+import frc.robot.subsystems.CubeShooter;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.DisposeCubeCommand;
 import frc.robot.commands.ManualShootCubeCommand;
 import frc.robot.commands.ShootCubeCommand;
+import frc.robot.constants.CubeShooterConstants;
 import frc.robot.constants.IOConstants;
 
 public class OperatorJoystick extends XboxController1038 {
+    private CubeShooter cubeShooter = CubeShooter.getInstance();
+
     // Singleton Setup
     private static OperatorJoystick instance;
 
@@ -52,6 +57,13 @@ public class OperatorJoystick extends XboxController1038 {
         // Arm + Wrist + Shoulder
         // b toggle arms in and arms out
         super.bButton.onTrue(new CubeAcquisitionPositionCommand());
+
+        new Trigger(() -> super.getPOVPosition() == PovPositions.Up)
+                .onTrue(new InstantCommand(() -> cubeShooter
+                        .setShooterSpeed(cubeShooter.getShooterSpeed() + CubeShooterConstants.kShooterSpeedIncrement)));
+        new Trigger(() -> super.getPOVPosition() == PovPositions.Down)
+                .onTrue(new InstantCommand(() -> cubeShooter
+                        .setShooterSpeed(cubeShooter.getShooterSpeed() - CubeShooterConstants.kShooterSpeedIncrement)));
 
         // y manual revving shooter wheels
 
