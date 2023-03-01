@@ -12,7 +12,7 @@ public final class CubeShooterConstants {
     public static final double kDefaultShooterSpeed = 0.5;
     public static final double kShooterSpeedIncrement = 0.05;
 
-    public static final double kShooterVelocityConversionFactor = 1 / 5;
+    public static final double kShooterVelocityConversionFactor = 1.0 / 5.0;
     public static final double kP = 0.001;
     public static final double kI = 0.001;
     public static final double kD = 0.00;
