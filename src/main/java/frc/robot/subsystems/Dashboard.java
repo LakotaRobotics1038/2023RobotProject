@@ -17,9 +17,6 @@ public class Dashboard extends SubsystemBase {
     private DriveTrain driveTrain = DriveTrain.getInstance();
     private CubeShooter cubeShooter = CubeShooter.getInstance();
 
-    // Camera Setup
-    UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
-
     // Choosers
     private SendableChooser<Auton> autoChooser = new SendableChooser<>();
 
@@ -63,7 +60,7 @@ public class Dashboard extends SubsystemBase {
 
     private Dashboard() {
         super();
-        CameraServer.startAutomaticCapture();
+        UsbCamera camera = CameraServer.startAutomaticCapture();
         Shuffleboard.selectTab("Drivers");
 
         driversTab.add("Auton Choices", autoChooser)
@@ -80,7 +77,7 @@ public class Dashboard extends SubsystemBase {
         driversTab.addNumber("Shooter Speed", cubeShooter::getVelocity)
                 .withPosition(1, 1);
 
-        driversTab.add(usbCamera);
+        driversTab.add(camera);
     }
 
     @Override
