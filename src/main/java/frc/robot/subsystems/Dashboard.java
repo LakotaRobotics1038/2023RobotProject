@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -19,7 +19,6 @@ public class Dashboard extends SubsystemBase {
 
     // Camera Setup
     UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
-    MjpegServer mjpegServer1 = new MjpegServer("serve_USB Camera 0", 1181);
 
     // Choosers
     private SendableChooser<Auton> autoChooser = new SendableChooser<>();
@@ -64,7 +63,7 @@ public class Dashboard extends SubsystemBase {
 
     private Dashboard() {
         super();
-        mjpegServer1.setSource(usbCamera);
+        CameraServer.startAutomaticCapture();
         Shuffleboard.selectTab("Drivers");
 
         driversTab.add("Auton Choices", autoChooser)
