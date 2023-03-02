@@ -72,10 +72,12 @@ public class CubeShooter extends SubsystemBase {
 
     public void loadCube() {
         leftShooterMotor.set(CubeShooterConstants.kCubeLoadSpeed);
+        rightShooterMotor.set(-CubeShooterConstants.kCubeLoadSpeed);
     }
 
     public void unloadCube() {
         leftShooterMotor.set(-CubeShooterConstants.kCubeLoadSpeed);
+        rightShooterMotor.set(-CubeShooterConstants.kCubeLoadSpeed);
     }
 
     public void runShooter() {
