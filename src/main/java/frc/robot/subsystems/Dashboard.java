@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -14,6 +16,10 @@ public class Dashboard extends SubsystemBase {
     // Inputs
     private DriveTrain driveTrain = DriveTrain.getInstance();
     private CubeShooter cubeShooter = CubeShooter.getInstance();
+
+    // Camera Setup
+    UsbCamera usbCamera = new UsbCamera("USB Camera 0", 0);
+    MjpegServer mjpegServer1 = new MjpegServer("serve_USB Camera 0", 1181);
 
     // Choosers
     private SendableChooser<Auton> autoChooser = new SendableChooser<>();
@@ -58,6 +64,7 @@ public class Dashboard extends SubsystemBase {
 
     private Dashboard() {
         super();
+        mjpegServer1.setSource(usbCamera);
         Shuffleboard.selectTab("Drivers");
 
         driversTab.add("Auton Choices", autoChooser)
@@ -73,6 +80,8 @@ public class Dashboard extends SubsystemBase {
 
         driversTab.addNumber("Shooter Speed", cubeShooter::getVelocity)
                 .withPosition(1, 1);
+
+        driversTab.add(usbCamera);
     }
 
     @Override
