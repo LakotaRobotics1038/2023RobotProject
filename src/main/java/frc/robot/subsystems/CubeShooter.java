@@ -64,23 +64,23 @@ public class CubeShooter extends SubsystemBase {
         leftShooterMotor.setIdleMode(IdleMode.kCoast);
         rightShooterMotor.setIdleMode(IdleMode.kCoast);
         leftShooterMotor.setInverted(true);
-        rightShooterMotor.follow(leftShooterMotor, true);
 
         leftShooterMotor.burnFlash();
         rightShooterMotor.burnFlash();
     }
 
     public void loadCube() {
+        rightShooterMotor.follow(leftShooterMotor, false);
         leftShooterMotor.set(CubeShooterConstants.kCubeLoadSpeed);
-        rightShooterMotor.set(-CubeShooterConstants.kCubeLoadSpeed);
     }
 
     public void unloadCube() {
+        rightShooterMotor.follow(leftShooterMotor, true);
         leftShooterMotor.set(-CubeShooterConstants.kCubeLoadSpeed);
-        rightShooterMotor.set(-CubeShooterConstants.kCubeLoadSpeed);
     }
 
     public void runShooter() {
+        rightShooterMotor.follow(leftShooterMotor, true);
         leftShooterMotor.set(shooterSpeed);
     }
 
