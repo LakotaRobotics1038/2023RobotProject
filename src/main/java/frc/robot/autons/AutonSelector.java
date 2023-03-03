@@ -32,8 +32,7 @@ public class AutonSelector {
         this.autoChooser.setDefaultOption("No Auto", null);
         // this.autoChooser.addOption("Leave Community Center Auto",
         // AutonChoices.kLeaveCommunityCenterAuto);
-        // this.autoChooser.addOption("Leave Community Scoring Table Auto",
-        // AutonChoices.kLeaveCommunityScoringAuto);
+        this.autoChooser.addOption("Leave Community Scoring Table Auto", AutonChoices.kLeaveCommunityScoringAuto);
         // this.autoChooser.addOption("Leave Community Substation Auto",
         // AutonChoices.kLeaveCommunitySubstationAuto);
         this.autoChooser.addOption("Mount Charge Station Auto", AutonChoices.kMountChargeStationAuto);
