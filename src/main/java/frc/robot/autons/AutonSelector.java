@@ -5,8 +5,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.Dashboard;
 
 public class AutonSelector {
+    public enum AutonChoices {
+        kLeaveCommunityCenterAuto,
+        kLeaveCommunityScoringAuto,
+        kLeaveCommunitySubstationAuto,
+        kMountChargeStationAuto;
+    }
+
     // Choosers
-    SendableChooser<Auton> autoChooser;
+    SendableChooser<AutonChoices> autoChooser;
 
     // Singleton Setup
     private static AutonSelector instance;
@@ -23,16 +30,27 @@ public class AutonSelector {
         this.autoChooser = Dashboard.getInstance().getAutoChooser();
 
         this.autoChooser.setDefaultOption("No Auto", null);
-        // this.autoChooser.addOption("Leave Community Center Auto", new
-        // LeaveCommunityPathCenter());
-        // this.autoChooser.addOption("Leave Community Scoring Table Auto", new
-        // LeaveCommunityPathScoringTable());
-        // this.autoChooser.addOption("Leave Community Substation Auto", new
-        // LeaveCommunityPathSubstation());
-        this.autoChooser.addOption("Mount Charge Station Auto", new MountChargeStationPath());
+        // this.autoChooser.addOption("Leave Community Center Auto",
+        // AutonChoices.kLeaveCommunityCenterAuto);
+        // this.autoChooser.addOption("Leave Community Scoring Table Auto",
+        // AutonChoices.kLeaveCommunityScoringAuto);
+        // this.autoChooser.addOption("Leave Community Substation Auto",
+        // AutonChoices.kLeaveCommunitySubstationAuto);
+        this.autoChooser.addOption("Mount Charge Station Auto", AutonChoices.kMountChargeStationAuto);
     }
 
     public Auton chooseAuton() {
-        return this.autoChooser.getSelected();
+        switch (this.autoChooser.getSelected()) {
+            case kLeaveCommunityCenterAuto:
+                return new LeaveCommunityPathCenter();
+            case kLeaveCommunityScoringAuto:
+                return new LeaveCommunityPathScoringTable();
+            case kLeaveCommunitySubstationAuto:
+                return new LeaveCommunityPathSubstation();
+            case kMountChargeStationAuto:
+                return new MountChargeStationPath();
+            default:
+                return null;
+        }
     }
 }
