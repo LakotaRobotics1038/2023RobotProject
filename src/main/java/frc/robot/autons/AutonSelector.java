@@ -1,5 +1,7 @@
 package frc.robot.autons;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import frc.robot.subsystems.Dashboard;
@@ -39,15 +41,16 @@ public class AutonSelector {
     }
 
     public Auton chooseAuton() {
+        Alliance alliance = DriverStation.getAlliance();
         switch (this.autoChooser.getSelected()) {
             case kLeaveCommunityCenterAuto:
-                return new LeaveCommunityPathCenter();
+                return new LeaveCommunityPathCenter(alliance);
             case kLeaveCommunityScoringAuto:
-                return new LeaveCommunityPathScoringTable();
+                return new LeaveCommunityPathScoringTable(alliance);
             case kLeaveCommunitySubstationAuto:
-                return new LeaveCommunityPathSubstation();
+                return new LeaveCommunityPathSubstation(alliance);
             case kMountChargeStationAuto:
-                return new MountChargeStationPath();
+                return new MountChargeStationPath(alliance);
             default:
                 return null;
         }
