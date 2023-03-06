@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.autons.Auton;
+import frc.robot.autons.AutonSelector.AutonChoices;
 import frc.robot.constants.CubeShooterConstants;
 
 public class Dashboard extends SubsystemBase {
@@ -18,7 +19,7 @@ public class Dashboard extends SubsystemBase {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
 
     // Choosers
-    private SendableChooser<Auton> autoChooser = new SendableChooser<>();
+    private SendableChooser<AutonChoices> autoChooser = new SendableChooser<>();
 
     // Tabs
     private ShuffleboardTab driversTab = Shuffleboard.getTab("Drivers");
@@ -93,7 +94,7 @@ public class Dashboard extends SubsystemBase {
         cubeShooter.setFF(shooterFF.getDouble(CubeShooterConstants.kFF));
     }
 
-    public SendableChooser<Auton> getAutoChooser() {
+    public SendableChooser<AutonChoices> getAutoChooser() {
         return autoChooser;
     }
 }

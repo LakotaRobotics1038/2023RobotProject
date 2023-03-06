@@ -1,12 +1,21 @@
 package frc.robot.autons;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import frc.robot.subsystems.Dashboard;
 
 public class AutonSelector {
+    public enum AutonChoices {
+        kLeaveCommunityCenterAuto,
+        kLeaveCommunityScoringAuto,
+        kLeaveCommunitySubstationAuto,
+        kMountChargeStationAuto;
+    }
+
     // Choosers
-    SendableChooser<Auton> autoChooser;
+    SendableChooser<AutonChoices> autoChooser;
 
     // Singleton Setup
     private static AutonSelector instance;
@@ -23,13 +32,25 @@ public class AutonSelector {
         this.autoChooser = Dashboard.getInstance().getAutoChooser();
 
         this.autoChooser.setDefaultOption("No Auto", null);
-        this.autoChooser.addOption("Leave Community Center Auto", new LeaveCommunityPathCenter());
-        this.autoChooser.addOption("Leave Community Scoring Table Auto", new LeaveCommunityPathScoringTable());
-        this.autoChooser.addOption("Leave Community Substation Auto", new LeaveCommunityPathSubstation());
-        this.autoChooser.addOption("Mount Charge Station Auto", new MountChargeStationPath());
+        this.autoChooser.addOption("Leave Community Center Auto", AutonChoices.kLeaveCommunityCenterAuto);
+        this.autoChooser.addOption("Leave Community Scoring Table Auto", AutonChoices.kLeaveCommunityScoringAuto);
+        this.autoChooser.addOption("Leave Community Substation Auto", AutonChoices.kLeaveCommunitySubstationAuto);
+        this.autoChooser.addOption("Mount Charge Station Auto", AutonChoices.kMountChargeStationAuto);
     }
 
     public Auton chooseAuton() {
-        return this.autoChooser.getSelected();
+        Alliance alliance = DriverStation.getAlliance();
+        switch (this.autoChooser.getSelected()) {
+            case kLeaveCommunityCenterAuto:
+                return new LeaveCommunityPathCenter(alliance);
+            case kLeaveCommunityScoringAuto:
+                return new LeaveCommunityPathScoringTable(alliance);
+            case kLeaveCommunitySubstationAuto:
+                return new LeaveCommunityPathSubstation(alliance);
+            case kMountChargeStationAuto:
+                return new MountChargeStationPath(alliance);
+            default:
+                return null;
+        }
     }
 }
