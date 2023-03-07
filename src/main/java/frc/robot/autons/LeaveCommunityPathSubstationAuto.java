@@ -4,8 +4,8 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 
-public class LeaveCommunityPathSubstation extends Auton {
-    public LeaveCommunityPathSubstation(Alliance alliance) {
+public class LeaveCommunityPathSubstationAuto extends Auton {
+    public LeaveCommunityPathSubstationAuto(Alliance alliance) {
         super(alliance);
         PathPlannerTrajectory trajectory = alliance == Alliance.Blue ? Trajectories.LeaveCommunityPathSubstationBlue()
                 : Trajectories.LeaveCommunityPathSubstationRed();

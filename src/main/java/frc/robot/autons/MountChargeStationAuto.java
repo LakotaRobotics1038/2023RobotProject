@@ -5,8 +5,8 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
-public class MountChargeStationPath extends Auton {
-    public MountChargeStationPath(Alliance alliance) {
+public class MountChargeStationAuto extends Auton {
+    public MountChargeStationAuto(Alliance alliance) {
         super(alliance);
         PathPlannerTrajectory trajectory = alliance == Alliance.Blue ? Trajectories.MountChargeStationPathBlue()
                 : Trajectories.MountChargeStationPathRed();
