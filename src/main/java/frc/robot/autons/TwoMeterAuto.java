@@ -7,14 +7,15 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
+import frc.robot.commands.CubeAcquisitionPositionCommand;
+import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 
-public class TwoMeterPath extends Auton {
+public class TwoMeterAuto extends Auton {
     private HashMap<String, Command> eventMap = new HashMap<>();
 
-    public TwoMeterPath(Alliance alliance) {
+    public TwoMeterAuto(Alliance alliance) {
         super(alliance);
-        eventMap.put("marker1", new PrintCommand("Passed marker 1"));
+        eventMap.put("AcqDown", new CubeAcquisitionPositionCommand(AcquisitionStates.Down));
         PathPlannerTrajectory trajectory = Trajectories.TwoMeterPath();
         super.addCommands(
                 new FollowPathWithEvents(
