@@ -43,7 +43,7 @@ public class Shoulder extends PIDSubsystem {
 
     @Override
     protected void useOutput(double output, double setpoint) {
-        double power = MathUtil.clamp(output, -0.5, 0.5);
+        double power = MathUtil.clamp(output, -ShoulderConstants.kMaxPower, ShoulderConstants.kMaxPower);
         shoulderMotor.set(power);
     }
 
