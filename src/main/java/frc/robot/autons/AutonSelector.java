@@ -8,6 +8,7 @@ import frc.robot.subsystems.Dashboard;
 
 public class AutonSelector {
     public enum AutonChoices {
+        kNoAuto,
         kLeaveCommunityCenterAuto,
         kLeaveCommunityScoringAuto,
         kLeaveCommunitySubstationAuto,
@@ -31,7 +32,7 @@ public class AutonSelector {
     private AutonSelector() {
         this.autoChooser = Dashboard.getInstance().getAutoChooser();
 
-        this.autoChooser.setDefaultOption("No Auto", null);
+        this.autoChooser.setDefaultOption("No Auto", AutonChoices.kNoAuto);
         this.autoChooser.addOption("Leave Community Center Auto", AutonChoices.kLeaveCommunityCenterAuto);
         this.autoChooser.addOption("Leave Community Scoring Table Auto", AutonChoices.kLeaveCommunityScoringAuto);
         this.autoChooser.addOption("Leave Community Substation Auto", AutonChoices.kLeaveCommunitySubstationAuto);
