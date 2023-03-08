@@ -6,10 +6,17 @@ import frc.robot.subsystems.Wrist;
 public class WristPositionCommand extends CommandBase {
     private Wrist wrist = Wrist.getInstance();
     private double wristSetpoint;
+    private boolean noFinish = false;
 
     public WristPositionCommand(double wristSetpoint) {
         this.addRequirements(wrist);
         this.wristSetpoint = wristSetpoint;
+    }
+
+    public WristPositionCommand(double wristSetpoint, boolean noFinish) {
+        this.addRequirements(wrist);
+        this.wristSetpoint = wristSetpoint;
+        this.noFinish = noFinish;
     }
 
     @Override
@@ -20,7 +27,7 @@ public class WristPositionCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return wrist.onTarget();
+        return !noFinish && wrist.onTarget();
     }
 
     @Override

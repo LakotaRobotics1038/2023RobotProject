@@ -10,12 +10,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.autons.AutonSelector.AutonChoices;
-import frc.robot.constants.ShoulderConstants;
+import frc.robot.constants.WristConstants;
 
 public class Dashboard extends SubsystemBase {
     // Inputs
     private DriveTrain driveTrain = DriveTrain.getInstance();
     private CubeShooter cubeShooter = CubeShooter.getInstance();
+    private Shoulder shoulder = Shoulder.getInstance();
+    private Wrist wrist = Wrist.getInstance();
 
     // Choosers
     private SendableChooser<AutonChoices> autoChooser = new SendableChooser<>();
@@ -30,19 +32,15 @@ public class Dashboard extends SubsystemBase {
             .withPosition(1, 1)
             .withWidget(BuiltInWidgets.kToggleButton)
             .getEntry();
-    private GenericEntry shooterP = driversTab.add("Shooter P", CubeShooterConstants.kP)
-            .withPosition(1, 3)
-            .withSize(1, 1)
-            .getEntry();
-    private GenericEntry shooterI = driversTab.add("Shooter I", CubeShooterConstants.kI)
+    private GenericEntry wristP = driversTab.add("Wrist P", WristConstants.kP)
             .withPosition(2, 3)
             .withSize(1, 1)
             .getEntry();
-    private GenericEntry shooterD = driversTab.add("Shooter D", CubeShooterConstants.kD)
+    private GenericEntry wristI = driversTab.add("Wrist I", WristConstants.kI)
             .withPosition(3, 3)
             .withSize(1, 1)
             .getEntry();
-    private GenericEntry shooterFF = driversTab.add("Shooter FF", CubeShooterConstants.kFF)
+    private GenericEntry wristD = driversTab.add("Wrist D", WristConstants.kD)
             .withPosition(4, 3)
             .withSize(1, 1)
             .getEntry();
@@ -71,13 +69,27 @@ public class Dashboard extends SubsystemBase {
                 .withPosition(2, 0);
         // .withWidget(BuiltInWidgets.kGyro);
 
-        driversTab.addNumber("Shooter Power", cubeShooter::getShooterSpeed)
-                .withPosition(1, 2);
-
         driversTab.addNumber("Shooter Speed", cubeShooter::getVelocity)
+                .withPosition(0, 1);
+
+        driversTab.addNumber("Shooter Power", cubeShooter::getShooterSpeed)
                 .withPosition(1, 1);
 
-        driversTab.add(camera);
+        driversTab.addNumber("Shoulder Position", shoulder::getPosition)
+                .withPosition(0, 2);
+
+        driversTab.addNumber("Shoulder Setpoint", shoulder::getSetpoint)
+                .withPosition(1, 2);
+
+        driversTab.addNumber("Wrist Position", wrist::getPosition)
+                .withPosition(0, 3);
+
+        driversTab.addNumber("Wrist Setpoint", wrist::getSetpoint)
+                .withPosition(1, 3);
+
+        driversTab.add(camera)
+                .withPosition(5, 0)
+                .withSize(4, 4);
     }
 
     @Override
@@ -87,10 +99,9 @@ public class Dashboard extends SubsystemBase {
             driveTrain.zeroHeading();
             resetGyro.setBoolean(false);
         }
-        cubeShooter.setP(shooterP.getDouble(CubeShooterConstants.kP));
-        cubeShooter.setI(shooterI.getDouble(CubeShooterConstants.kI));
-        cubeShooter.setD(shooterD.getDouble(CubeShooterConstants.kD));
-        cubeShooter.setFF(shooterFF.getDouble(CubeShooterConstants.kFF));
+        wrist.setP(wristP.getDouble(WristConstants.kP));
+        wrist.setI(wristI.getDouble(WristConstants.kI));
+        wrist.setD(wristD.getDouble(WristConstants.kD));
     }
 
     public SendableChooser<AutonChoices> getAutoChooser() {

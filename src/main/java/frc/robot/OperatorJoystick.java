@@ -1,23 +1,27 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.CubeShooter;
 import frc.robot.subsystems.Shoulder;
+import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.DisposeCubeCommand;
 import frc.robot.commands.ManualShootCubeCommand;
 import frc.robot.commands.ShootCubeCommand;
 import frc.robot.commands.ShoulderPositionCommand;
+import frc.robot.commands.WristPositionCommand;
 import frc.robot.constants.CubeShooterConstants;
 import frc.robot.constants.IOConstants;
 
 public class OperatorJoystick extends XboxController1038 {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
+    private Wrist wrist = Wrist.getInstance();
 
     // Singleton Setup
     private static OperatorJoystick instance;
@@ -72,6 +76,9 @@ public class OperatorJoystick extends XboxController1038 {
         new Trigger(() -> super.getPOVPosition() == PovPositions.Left)
                 .whileTrue(new ShoulderPositionCommand(60, true));
         shoulder.setDefaultCommand(new ShoulderPositionCommand(0, true));
+        new Trigger(() -> super.getPOVPosition() == PovPositions.Right)
+                .whileTrue(new WristPositionCommand(30, true));
+        wrist.setDefaultCommand(new WristPositionCommand(0, true));
 
         /*
          * TODO we have options for controlling the robot:

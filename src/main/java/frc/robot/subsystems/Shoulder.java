@@ -37,7 +37,7 @@ public class Shoulder extends PIDSubsystem {
         shoulderEncoder.setPositionConversionFactor(ShoulderConstants.kEncoderConversion);
         shoulderEncoder.setInverted(true);
         getController().setTolerance(ShoulderConstants.kTolerance);
-        getController().disableContinuousInput();
+        getController().enableContinuousInput(0, ShoulderConstants.kEncoderConversion);
         shoulderMotor.burnFlash();
     }
 
