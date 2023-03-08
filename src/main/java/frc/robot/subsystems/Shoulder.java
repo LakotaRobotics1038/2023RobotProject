@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.AbsoluteEncoder;
@@ -31,13 +32,18 @@ public class Shoulder extends PIDSubsystem {
     private Shoulder() {
         super(new PIDController(ShoulderConstants.kP, ShoulderConstants.kI, ShoulderConstants.kD));
         shoulderMotor.restoreFactoryDefaults();
+        shoulderMotor.setInverted(true);
+        shoulderMotor.setIdleMode(IdleMode.kBrake);
+        shoulderEncoder.setPositionConversionFactor(ShoulderConstants.kEncoderConversion);
+        shoulderEncoder.setInverted(true);
         getController().setTolerance(ShoulderConstants.kTolerance);
         getController().disableContinuousInput();
+        shoulderMotor.burnFlash();
     }
 
     @Override
     protected void useOutput(double output, double setpoint) {
-        double power = MathUtil.clamp(output, -1, 1);
+        double power = MathUtil.clamp(output, -0.5, 0.5);
         shoulderMotor.set(power);
     }
 

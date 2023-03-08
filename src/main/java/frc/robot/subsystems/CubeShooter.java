@@ -133,20 +133,4 @@ public class CubeShooter extends SubsystemBase {
         return velocity <= this.setpoint.value + CubeShooterConstants.kShooterTolerance &&
                 velocity >= this.setpoint.value - CubeShooterConstants.kShooterTolerance;
     }
-
-    public void setP(double p) {
-        this.leftShooterPidController.setP(p);
-    }
-
-    public void setI(double i) {
-        this.leftShooterPidController.setI(i);
-    }
-
-    public void setD(double d) {
-        this.leftShooterPidController.setD(d);
-    }
-
-    public void setFF(double ff) {
-        this.leftShooterPidController.setFF(ff);
-    }
 }

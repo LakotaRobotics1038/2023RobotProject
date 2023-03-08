@@ -9,9 +9,8 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.autons.Auton;
 import frc.robot.autons.AutonSelector.AutonChoices;
-import frc.robot.constants.CubeShooterConstants;
+import frc.robot.constants.ShoulderConstants;
 
 public class Dashboard extends SubsystemBase {
     // Inputs

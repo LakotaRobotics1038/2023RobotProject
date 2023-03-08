@@ -47,7 +47,7 @@ public class DriverXboxController extends XboxController1038 {
             prevY = y;
             prevZ = z;
 
-            driveTrain.drive(-forward, -sideways, -rotate, true);
+            driveTrain.drive(forward, -sideways, -rotate, true);
         }, driveTrain));
 
         // Re-orient robot to the field
