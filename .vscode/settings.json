@@ -46,5 +46,6 @@
     ],
     "editor.bracketPairColorization.enabled": true,
     "editor.guides.bracketPairs": "active",
-    "editor.tabSize": 4
+    "editor.tabSize": 4,
+    "editor.parameterHints.enabled": true
 }
