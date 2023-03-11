@@ -15,6 +15,8 @@ public class Arm extends SubsystemBase {
         In, Out;
     }
 
+    private ArmExtensionStates currentState;
+
     // Singleton Setup
     private static Arm instance;
 
@@ -26,7 +28,7 @@ public class Arm extends SubsystemBase {
     }
 
     private Arm() {
-
+        setPosition(ArmExtensionStates.In);
     }
 
     public void setPosition(ArmExtensionStates state) {
@@ -35,5 +37,10 @@ public class Arm extends SubsystemBase {
         } else {
             armExtension.set(DoubleSolenoid.Value.kForward);
         }
+        currentState = state;
+    }
+
+    public ArmExtensionStates getPosition() {
+        return currentState;
     }
 }

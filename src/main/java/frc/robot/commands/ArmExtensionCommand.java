@@ -23,7 +23,7 @@ public class ArmExtensionCommand extends CommandBase {
         if (this.state != null) {
             this.arm.setPosition(state);
         } else {
-            switch (state) {
+            switch (arm.getPosition()) {
                 case In:
                     this.arm.setPosition(ArmExtensionStates.Out);
                     break;
