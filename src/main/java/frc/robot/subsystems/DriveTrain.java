@@ -205,7 +205,7 @@ public class DriveTrain extends SubsystemBase {
         return gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
-    public double getPitch() {
-        return gyro.getPitch();
+    public double getRoll() {
+        return gyro.getRoll();
     }
 }

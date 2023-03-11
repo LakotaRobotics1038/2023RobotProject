@@ -29,7 +29,7 @@ public class Dashboard extends SubsystemBase {
     // Controls Tab Inputs
     private GenericEntry resetGyro = controlsTab.add("Reset Gyro", false)
             .withSize(1, 1)
-            .withPosition(1, 1)
+            .withPosition(0, 0)
             .withWidget(BuiltInWidgets.kToggleButton)
             .getEntry();
     // private GenericEntry shoulderP = driversTab.add("Shoulder P",
@@ -79,7 +79,7 @@ public class Dashboard extends SubsystemBase {
         String[] serverAddress = { "mjpeg:http://team1038.local:1180/?action=stream" };
         piCamTable.getEntry("/CameraPublisher/JetsonCamera/streams").setStringArray(serverAddress);
 
-        Shuffleboard.selectTab("Drivers");
+        // Shuffleboard.selectTab("Drivers");
 
         driversTab.add("Auton Choices", autoChooser)
                 .withPosition(0, 0)
@@ -106,6 +106,9 @@ public class Dashboard extends SubsystemBase {
 
         driversTab.addNumber("Wrist Setpoint", wrist::getSetpoint)
                 .withPosition(1, 3);
+
+        controlsTab.addNumber("Roll", driveTrain::getRoll)
+                .withPosition(1, 0);
 
         driversTab.add(camera)
                 .withPosition(5, 0)
