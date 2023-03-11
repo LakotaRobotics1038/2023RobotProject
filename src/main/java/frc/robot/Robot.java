@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.autons.Auton;
 import frc.robot.autons.AutonSelector;
+import frc.robot.constants.SwerveModuleConstants;
 import frc.robot.subsystems.Compressor1038;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.DriveTrain;
@@ -65,6 +66,7 @@ public class Robot extends TimedRobot {
 
         if (autonomousCommand != null) {
             driveTrain.resetOdometry(autonomousCommand.getInitialPose());
+            driveTrain.setDrivingIdleMode(SwerveModuleConstants.kAutoDrivingMotorIdleMode);
             autonomousCommand.schedule();
         }
     }
@@ -82,6 +84,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        driveTrain.setDrivingIdleMode(SwerveModuleConstants.kTeleopDrivingMotorIdleMode);
     }
 
     @Override

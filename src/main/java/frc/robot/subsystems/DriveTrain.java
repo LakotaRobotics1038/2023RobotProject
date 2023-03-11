@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -174,6 +175,13 @@ public class DriveTrain extends SubsystemBase {
                 .andThen(() -> drive(0, 0, 0, false));
     }
 
+    public void setDrivingIdleMode(IdleMode mode) {
+        frontLeft.setDrivingIdleMode(mode);
+        rearLeft.setDrivingIdleMode(mode);
+        frontRight.setDrivingIdleMode(mode);
+        rearRight.setDrivingIdleMode(mode);
+    }
+
     /** Resets the drive encoders to currently read a position of 0. */
     public void resetEncoders() {
         frontLeft.resetEncoders();
@@ -205,6 +213,11 @@ public class DriveTrain extends SubsystemBase {
         return gyro.getRate() * (DriveConstants.kGyroReversed ? -1.0 : 1.0);
     }
 
+    /**
+     * Returns the roll value of the robot.
+     *
+     * @return the robot's roll in degrees, from 0 to 360
+     */
     public double getRoll() {
         return gyro.getRoll();
     }
