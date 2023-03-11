@@ -86,7 +86,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
-        Compressor1038.run();
+        Compressor1038.getInstance().run();
     }
 
     @Override

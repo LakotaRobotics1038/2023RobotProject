@@ -18,6 +18,7 @@ public class Dashboard extends SubsystemBase {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
     private Wrist wrist = Wrist.getInstance();
+    private Compressor1038 compressor = Compressor1038.getInstance();
 
     // Choosers
     private SendableChooser<AutonChoices> autoChooser = new SendableChooser<>();
@@ -86,7 +87,8 @@ public class Dashboard extends SubsystemBase {
                 .withSize(2, 1);
 
         driversTab.addNumber("Gyro", driveTrain::getHeading)
-                .withPosition(2, 0);
+                .withPosition(2, 0)
+                .withSize(2, 2);
         // .withWidget(BuiltInWidgets.kGyro);
 
         driversTab.addNumber("Shooter Speed", cubeShooter::getVelocity)
@@ -109,6 +111,9 @@ public class Dashboard extends SubsystemBase {
 
         controlsTab.addNumber("Roll", driveTrain::getRoll)
                 .withPosition(1, 0);
+
+        driversTab.addNumber("Air Pressure", compressor::getPressure)
+                .withPosition(4, 0);
 
         driversTab.add(camera)
                 .withPosition(5, 0)
