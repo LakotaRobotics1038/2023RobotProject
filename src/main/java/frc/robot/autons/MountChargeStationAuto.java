@@ -14,8 +14,9 @@ import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
 public class MountChargeStationAuto extends Auton {
     public MountChargeStationAuto(Alliance alliance) {
         super(alliance);
-        PathPlannerTrajectory trajectory = alliance == Alliance.Blue ? Trajectories.MountChargeStationPathBlue()
-                : Trajectories.MountChargeStationPathRed();
+
+        PathPlannerTrajectory trajectory = Trajectories.MountChargeStationPath();
+
         super.addCommands(
                 new ShootCubeCommand(CubeShooterSetpoints.high, 1.0),
                 new ParallelCommandGroup(
@@ -23,6 +24,7 @@ public class MountChargeStationAuto extends Auton {
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up)),
                 new BalanceRobotCommand(),
                 new RunCommand(() -> driveTrain.setX(), driveTrain));
+
         this.setInitialPose(trajectory);
     }
 }

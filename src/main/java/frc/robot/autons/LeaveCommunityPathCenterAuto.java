@@ -8,8 +8,7 @@ public class LeaveCommunityPathCenterAuto extends Auton {
     public LeaveCommunityPathCenterAuto(Alliance alliance) {
         super(alliance);
 
-        PathPlannerTrajectory trajectory = alliance == Alliance.Blue ? Trajectories.LeaveCommunityPathCenterBlue()
-                : Trajectories.LeaveCommunityPathCenterRed();
+        PathPlannerTrajectory trajectory = Trajectories.LeaveCommunityPathCenter();
 
         super.addCommands(
                 this.driveTrain.getTrajectoryCommand(trajectory));

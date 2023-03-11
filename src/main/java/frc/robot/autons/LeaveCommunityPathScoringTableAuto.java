@@ -7,10 +7,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 public class LeaveCommunityPathScoringTableAuto extends Auton {
     public LeaveCommunityPathScoringTableAuto(Alliance alliance) {
         super(alliance);
-        PathPlannerTrajectory trajectory = alliance == Alliance.Blue ? Trajectories.LeaveCommunityPathScoringTableBlue()
-                : Trajectories.LeaveCommunityPathScoringTableRed();
+
+        PathPlannerTrajectory trajectory = Trajectories.LeaveCommunityPathScoringTable();
 
         super.addCommands(this.driveTrain.getTrajectoryCommand(trajectory));
+
         this.setInitialPose(trajectory);
     }
 }

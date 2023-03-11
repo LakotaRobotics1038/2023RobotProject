@@ -33,12 +33,12 @@ public class AutonSelector {
     private AutonSelector() {
         this.autoChooser = Dashboard.getInstance().getAutoChooser();
 
-        // this.autoChooser.setDefaultOption("No Auto", AutonChoices.kNoAuto);
+        this.autoChooser.setDefaultOption("No Auto", AutonChoices.kNoAuto);
         this.autoChooser.addOption("Leave Community Center Auto", AutonChoices.kLeaveCommunityCenterAuto);
         this.autoChooser.addOption("Leave Community Scoring Table Auto", AutonChoices.kLeaveCommunityScoringAuto);
         this.autoChooser.addOption("Leave Community Substation Auto", AutonChoices.kLeaveCommunitySubstationAuto);
         this.autoChooser.addOption("Mount Charge Station Auto", AutonChoices.kMountChargeStationAuto);
-        this.autoChooser.setDefaultOption("Test Auto", AutonChoices.kTest);
+        this.autoChooser.addOption("Test Auto", AutonChoices.kTest);
     }
 
     public Auton chooseAuton() {

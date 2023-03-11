@@ -6,50 +6,26 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import frc.robot.constants.AutoConstants;
 
 public class Trajectories {
-    public static PathPlannerTrajectory LeaveCommunityPathCenterBlue() {
-        return PathPlanner.loadPath("Leave Community Path (Center, Blue)",
+    public static PathPlannerTrajectory LeaveCommunityPathCenter() {
+        return PathPlanner.loadPath("Leave Community Path (Center)",
                 AutoConstants.kMaxSpeedMetersPerSecond / 2,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
 
-    public static PathPlannerTrajectory LeaveCommunityPathCenterRed() {
-        return PathPlanner.loadPath("Leave Community Path (Center, Red)",
+    public static PathPlannerTrajectory LeaveCommunityPathScoringTable() {
+        return PathPlanner.loadPath("Leave Community Path (Scoring Table)",
                 AutoConstants.kMaxSpeedMetersPerSecond / 2,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
 
-    public static PathPlannerTrajectory LeaveCommunityPathScoringTableBlue() {
-        return PathPlanner.loadPath("Leave Community Path (Scoring Table, Blue)",
+    public static PathPlannerTrajectory LeaveCommunityPathSubstation() {
+        return PathPlanner.loadPath("Leave Community Path (Substation)",
                 AutoConstants.kMaxSpeedMetersPerSecond / 2,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
 
-    public static PathPlannerTrajectory LeaveCommunityPathScoringTableRed() {
-        return PathPlanner.loadPath("Leave Community Path (Scoring Table, Red)",
-                AutoConstants.kMaxSpeedMetersPerSecond / 2,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
-    }
-
-    public static PathPlannerTrajectory LeaveCommunityPathSubstationBlue() {
-        return PathPlanner.loadPath("Leave Community Path (Substation, Blue)",
-                AutoConstants.kMaxSpeedMetersPerSecond / 2,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
-    }
-
-    public static PathPlannerTrajectory LeaveCommunityPathSubstationRed() {
-        return PathPlanner.loadPath("Leave Community Path (Substation, Red)",
-                AutoConstants.kMaxSpeedMetersPerSecond / 2,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
-    }
-
-    public static PathPlannerTrajectory MountChargeStationPathBlue() {
-        return PathPlanner.loadPath("Mount Charge Station Path (Blue)",
-                AutoConstants.kMaxSpeedMetersPerSecond / 2,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
-    }
-
-    public static PathPlannerTrajectory MountChargeStationPathRed() {
-        return PathPlanner.loadPath("Mount Charge Station Path (Red)",
+    public static PathPlannerTrajectory MountChargeStationPath() {
+        return PathPlanner.loadPath("Mount Charge Station Path",
                 AutoConstants.kMaxSpeedMetersPerSecond / 2,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
