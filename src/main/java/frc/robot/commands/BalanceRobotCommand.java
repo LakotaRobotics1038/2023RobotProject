@@ -43,5 +43,4 @@ public class BalanceRobotCommand extends PIDCommand {
         return getController().atSetpoint() &&
                 this.startTime + this.delayFinish < Timer.getFPGATimestamp();
     }
-    }
 }
