@@ -19,6 +19,19 @@ public class Wrist extends PIDSubsystem {
     private CANSparkMax wristMotor = new CANSparkMax(WristConstants.kWristMotorPort, MotorType.kBrushless);
     private AbsoluteEncoder wristEncoder = wristMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
+    public enum WristSetpoints {
+        storage(WristConstants.kStorageSetpoint),
+        acquire(WristConstants.kAcquireSetpoint),
+        mid(WristConstants.kMidSetpoint),
+        high(WristConstants.kHighSetpoint);
+
+        public final int value;
+
+        WristSetpoints(int value) {
+            this.value = value;
+        }
+    }
+
     public static Wrist getInstance() {
         if (wristInstance == null) {
             wristInstance = new Wrist();
@@ -62,6 +75,10 @@ public class Wrist extends PIDSubsystem {
     public void setSetpoint(double setpoint) {
         setpoint = MathUtil.clamp(setpoint, 0, WristConstants.kMaxDistance);
         super.setSetpoint(setpoint);
+    }
+
+    public void setSetpoint(WristSetpoints setpoint) {
+        setSetpoint(setpoint.value);
     }
 
     public void setP(double p) {

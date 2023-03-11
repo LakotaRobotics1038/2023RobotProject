@@ -18,6 +18,19 @@ public class Shoulder extends PIDSubsystem {
 
     private AbsoluteEncoder shoulderEncoder = shoulderMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
+    public enum ShoulderSetpoints {
+        storage(ShoulderConstants.kStorageSetpoint),
+        acquire(ShoulderConstants.kAcquireSetpoint),
+        mid(ShoulderConstants.kMidSetpoint),
+        high(ShoulderConstants.kHighSetpoint);
+
+        public final int value;
+
+        ShoulderSetpoints(int value) {
+            this.value = value;
+        }
+    }
+
     // Singleton setup
     private static Shoulder instance;
 
@@ -64,6 +77,10 @@ public class Shoulder extends PIDSubsystem {
     public void setSetpoint(double setpoint) {
         setpoint = MathUtil.clamp(setpoint, 0, ShoulderConstants.kMaxDistance);
         super.setSetpoint(setpoint);
+    }
+
+    public void setSetpoint(ShoulderSetpoints setpoint) {
+        setSetpoint(setpoint.value);
     }
 
     public void setP(double p) {

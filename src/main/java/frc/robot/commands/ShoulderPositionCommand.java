@@ -2,19 +2,19 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shoulder;
+import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 
 public class ShoulderPositionCommand extends CommandBase {
-
-    private double setpoint = 0;
     private Shoulder shoulder = Shoulder.getInstance();
+    private ShoulderSetpoints setpoint;
     private boolean noFinish = false;
 
-    public ShoulderPositionCommand(double setpoint) {
+    public ShoulderPositionCommand(ShoulderSetpoints setpoint) {
         this.setpoint = setpoint;
         addRequirements(shoulder);
     }
 
-    public ShoulderPositionCommand(double setpoint, boolean noFinish) {
+    public ShoulderPositionCommand(ShoulderSetpoints setpoint, boolean noFinish) {
         this.setpoint = setpoint;
         this.noFinish = noFinish;
         addRequirements(shoulder);
