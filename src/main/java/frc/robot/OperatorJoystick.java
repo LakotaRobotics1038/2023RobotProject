@@ -9,6 +9,8 @@ import frc.robot.subsystems.Shoulder;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
+import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
+import frc.robot.subsystems.Wrist.WristSetpoints;
 import frc.robot.commands.AcquireConeCommand;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
@@ -46,8 +48,8 @@ public class OperatorJoystick extends XboxController1038 {
                 .onTrue(new InstantCommand(() -> {
                     this.isCube = !this.isCube;
                     if (this.isCube) {
-                        new ShoulderPositionCommand(0, true)
-                                .alongWith(new WristPositionCommand(0, true)).schedule();
+                        new ShoulderPositionCommand(ShoulderSetpoints.storage, true)
+                                .alongWith(new WristPositionCommand(WristSetpoints.storage, true)).schedule();
                     } else {
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
                     }
@@ -112,28 +114,28 @@ public class OperatorJoystick extends XboxController1038 {
         // High
         yButton
                 .and(() -> !this.isCube)
-                .toggleOnTrue(new ShoulderPositionCommand(60, true)
-                        .alongWith(new WristPositionCommand(130, true)));
+                .toggleOnTrue(new ShoulderPositionCommand(ShoulderSetpoints.high, true)
+                        .alongWith(new WristPositionCommand(WristSetpoints.high, true)));
 
         // Mid
         xButton
                 .and(() -> !this.isCube)
-                .toggleOnTrue(new ShoulderPositionCommand(60, true)
-                        .alongWith(new WristPositionCommand(130, true)));
+                .toggleOnTrue(new ShoulderPositionCommand(ShoulderSetpoints.mid, true)
+                        .alongWith(new WristPositionCommand(WristSetpoints.mid, true)));
 
         // Low
         aButton
                 .and(() -> !this.isCube)
-                .toggleOnTrue(new ShoulderPositionCommand(60, true)
-                        .alongWith(new WristPositionCommand(130, true)));
+                .toggleOnTrue(new ShoulderPositionCommand(ShoulderSetpoints.acquire, true)
+                        .alongWith(new WristPositionCommand(WristSetpoints.acquire, true)));
 
         // Storage
         bButton
                 .and(() -> !this.isCube)
-                .onTrue(new ShoulderPositionCommand(0, true)
-                        .alongWith(new WristPositionCommand(0, true)));
+                .onTrue(new ShoulderPositionCommand(ShoulderSetpoints.storage, true)
+                        .alongWith(new WristPositionCommand(WristSetpoints.storage, true)));
 
-        shoulder.setDefaultCommand(new ShoulderPositionCommand(0, true));
-        wrist.setDefaultCommand(new WristPositionCommand(0, true));
+        shoulder.setDefaultCommand(new ShoulderPositionCommand(ShoulderSetpoints.storage, true));
+        wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.storage, true));
     }
 }
