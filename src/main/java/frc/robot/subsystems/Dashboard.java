@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.Map;
+
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.GenericEntry;
@@ -113,7 +115,9 @@ public class Dashboard extends SubsystemBase {
                 .withPosition(1, 0);
 
         driversTab.addNumber("Air Pressure", compressor::getPressure)
-                .withPosition(4, 0);
+                .withPosition(4, 0)
+                .withWidget(BuiltInWidgets.kDial)
+                .withProperties(Map.of("min", 0, "max", 120));
 
         driversTab.add(camera)
                 .withPosition(5, 0)
