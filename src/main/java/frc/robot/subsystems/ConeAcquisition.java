@@ -38,11 +38,11 @@ public class ConeAcquisition extends SubsystemBase {
     }
 
     public void acquire() {
-        coneAcquisitionMotor.set(ConeAcquisitionConstants.kConstantMotorSpeed);
+        coneAcquisitionMotor.set(ConeAcquisitionConstants.kAcquireSpeed);
     }
 
     public void disposeCone() {
-        coneAcquisitionMotor.set(-ConeAcquisitionConstants.kConstantMotorSpeed);
+        coneAcquisitionMotor.set(-ConeAcquisitionConstants.kAcquireSpeed);
     }
 
     public void stop() {
