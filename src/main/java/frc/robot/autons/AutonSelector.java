@@ -12,7 +12,8 @@ public class AutonSelector {
         kLeaveCommunityCenterAuto,
         kLeaveCommunityScoringAuto,
         kLeaveCommunitySubstationAuto,
-        kMountChargeStationAuto;
+        kMountChargeStationAuto,
+        kTest;
     }
 
     // Choosers
@@ -37,6 +38,7 @@ public class AutonSelector {
         this.autoChooser.addOption("Leave Community Scoring Table Auto", AutonChoices.kLeaveCommunityScoringAuto);
         this.autoChooser.addOption("Leave Community Substation Auto", AutonChoices.kLeaveCommunitySubstationAuto);
         this.autoChooser.addOption("Mount Charge Station Auto", AutonChoices.kMountChargeStationAuto);
+        this.autoChooser.addOption("Test Auto", AutonChoices.kTest);
     }
 
     public Auton chooseAuton() {
@@ -50,6 +52,8 @@ public class AutonSelector {
                 return new LeaveCommunityPathSubstationAuto(alliance);
             case kMountChargeStationAuto:
                 return new MountChargeStationAuto(alliance);
+            case kTest:
+                return new TwoMeterAuto(alliance);
             default:
                 return null;
         }

@@ -169,7 +169,7 @@ public class DriveTrain extends SubsystemBase {
                 new PIDController(AutoConstants.kPYController, 0, 0),
                 new PIDController(AutoConstants.kPThetaController, 0, 0),
                 this::setModuleStates,
-                false,
+                true,
                 this)
                 .andThen(() -> drive(0, 0, 0, false));
     }
