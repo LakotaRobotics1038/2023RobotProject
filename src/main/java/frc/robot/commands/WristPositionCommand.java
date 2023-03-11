@@ -9,6 +9,11 @@ public class WristPositionCommand extends CommandBase {
     private WristSetpoints setpoint;
     private boolean noFinish = false;
 
+    /**
+     * @deprecated
+     *             Use {@link ConeAcquisitionCommand} instead
+     */
+    @Deprecated
     public WristPositionCommand(WristSetpoints setpoint) {
         this.addRequirements(wrist);
         this.setpoint = setpoint;

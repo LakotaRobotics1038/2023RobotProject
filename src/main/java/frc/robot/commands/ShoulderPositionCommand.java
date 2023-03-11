@@ -9,6 +9,11 @@ public class ShoulderPositionCommand extends CommandBase {
     private ShoulderSetpoints setpoint;
     private boolean noFinish = false;
 
+    /**
+     * @deprecated
+     *             Use {@link ConeAcquisitionCommand} instead
+     */
+    @Deprecated
     public ShoulderPositionCommand(ShoulderSetpoints setpoint) {
         this.setpoint = setpoint;
         addRequirements(shoulder);

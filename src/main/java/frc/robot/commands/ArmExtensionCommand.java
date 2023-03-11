@@ -4,6 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Arm.ArmExtensionStates;
 
+/**
+ * @deprecated
+ *             Use {@link ConeAcquisitionCommand} instead
+ */
+@Deprecated
 public class ArmExtensionCommand extends CommandBase {
     private Arm arm = Arm.getInstance();
 

@@ -10,6 +10,7 @@ public class ShoulderConstants {
     public static final double kI = 0.000;
     public static final double kD = 0.000;
 
+    public static final int kMinExtensionPosition = 10;
     public static final int kStorageSetpoint = 0;
     public static final int kAcquireSetpoint = 10;
     public static final int kMidSetpoint = 40;
