@@ -32,6 +32,11 @@ public class Pigeon1038 extends Pigeon2 implements Gyro {
     }
 
     @Override
+    public double getRoll() {
+        return -super.getRoll();
+    }
+
+    @Override
     public double getRate() {
         double[] rate_xyz = {};
         super.getRawGyro(rate_xyz);

@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
@@ -12,13 +13,16 @@ public class BalanceRobotCommand extends PIDCommand {
 
     public BalanceRobotCommand() {
         super(new PIDController(BalanceConstants.kP, BalanceConstants.kI, BalanceConstants.kD),
-                driveTrain::getPitch,
+                driveTrain::getRoll,
                 BalanceConstants.kSetpoint,
-                output -> driveTrain.drive(output, 0, 0, true),
+                output -> {
+                    output = MathUtil.clamp(output, -BalanceConstants.kMaxSpeed, BalanceConstants.kMaxSpeed);
+                    driveTrain.drive(output, 0, 0, true);
+                },
                 driveTrain);
 
         getController().disableContinuousInput();
-        getController().setTolerance(0);
+        getController().setTolerance(BalanceConstants.kTolerance);
     }
 
     @Override
