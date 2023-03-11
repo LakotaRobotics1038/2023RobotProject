@@ -73,11 +73,10 @@ public class OperatorJoystick extends XboxController1038 {
         // Arm + Wrist + Shoulder
         // b toggle arms in and arms out
 
-        new Trigger(() -> super.getPOVPosition() == PovPositions.Left)
-                .whileTrue(new ShoulderPositionCommand(60, true));
+        leftBumper
+                .whileTrue(new ShoulderPositionCommand(60, true))
+                .whileTrue(new WristPositionCommand(130, true));
         shoulder.setDefaultCommand(new ShoulderPositionCommand(0, true));
-        new Trigger(() -> super.getPOVPosition() == PovPositions.Right)
-                .whileTrue(new WristPositionCommand(30, true));
         wrist.setDefaultCommand(new WristPositionCommand(0, true));
 
         /*

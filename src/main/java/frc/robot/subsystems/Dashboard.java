@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -10,7 +11,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.autons.AutonSelector.AutonChoices;
-import frc.robot.constants.WristConstants;
 
 public class Dashboard extends SubsystemBase {
     // Inputs
@@ -32,18 +32,33 @@ public class Dashboard extends SubsystemBase {
             .withPosition(1, 1)
             .withWidget(BuiltInWidgets.kToggleButton)
             .getEntry();
-    private GenericEntry wristP = driversTab.add("Wrist P", WristConstants.kP)
-            .withPosition(2, 3)
-            .withSize(1, 1)
-            .getEntry();
-    private GenericEntry wristI = driversTab.add("Wrist I", WristConstants.kI)
-            .withPosition(3, 3)
-            .withSize(1, 1)
-            .getEntry();
-    private GenericEntry wristD = driversTab.add("Wrist D", WristConstants.kD)
-            .withPosition(4, 3)
-            .withSize(1, 1)
-            .getEntry();
+    // private GenericEntry shoulderP = driversTab.add("Shoulder P",
+    // ShoulderConstants.kP)
+    // .withPosition(2, 2)
+    // .withSize(1, 1)
+    // .getEntry();
+    // private GenericEntry shoulderI = driversTab.add("Shoulder I",
+    // ShoulderConstants.kI)
+    // .withPosition(3, 2)
+    // .withSize(1, 1)
+    // .getEntry();
+    // private GenericEntry shoulderD = driversTab.add("Shoulder D",
+    // ShoulderConstants.kD)
+    // .withPosition(4, 2)
+    // .withSize(1, 1)
+    // .getEntry();
+    // private GenericEntry wristP = driversTab.add("Wrist P", WristConstants.kP)
+    // .withPosition(2, 3)
+    // .withSize(1, 1)
+    // .getEntry();
+    // private GenericEntry wristI = driversTab.add("Wrist I", WristConstants.kI)
+    // .withPosition(3, 3)
+    // .withSize(1, 1)
+    // .getEntry();
+    // private GenericEntry wristD = driversTab.add("Wrist D", WristConstants.kD)
+    // .withPosition(4, 3)
+    // .withSize(1, 1)
+    // .getEntry();
 
     // Singleton Setup
     private static Dashboard instance;
@@ -59,6 +74,11 @@ public class Dashboard extends SubsystemBase {
     private Dashboard() {
         super();
         UsbCamera camera = CameraServer.startAutomaticCapture();
+
+        NetworkTableInstance piCamTable = NetworkTableInstance.getDefault();
+        String[] serverAddress = { "mjpeg:http://team1038.local:1180/?action=stream" };
+        piCamTable.getEntry("/CameraPublisher/JetsonCamera/streams").setStringArray(serverAddress);
+
         Shuffleboard.selectTab("Drivers");
 
         driversTab.add("Auton Choices", autoChooser)
@@ -99,9 +119,12 @@ public class Dashboard extends SubsystemBase {
             driveTrain.zeroHeading();
             resetGyro.setBoolean(false);
         }
-        wrist.setP(wristP.getDouble(WristConstants.kP));
-        wrist.setI(wristI.getDouble(WristConstants.kI));
-        wrist.setD(wristD.getDouble(WristConstants.kD));
+        // shoulder.setP(shoulderP.getDouble(ShoulderConstants.kP));
+        // shoulder.setI(shoulderI.getDouble(ShoulderConstants.kI));
+        // shoulder.setD(shoulderD.getDouble(ShoulderConstants.kD));
+        // wrist.setP(wristP.getDouble(WristConstants.kP));
+        // wrist.setI(wristI.getDouble(WristConstants.kI));
+        // wrist.setD(wristD.getDouble(WristConstants.kD));
     }
 
     public SendableChooser<AutonChoices> getAutoChooser() {

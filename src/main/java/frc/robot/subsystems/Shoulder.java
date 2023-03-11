@@ -65,4 +65,16 @@ public class Shoulder extends PIDSubsystem {
         setpoint = MathUtil.clamp(setpoint, 0, ShoulderConstants.kMaxDistance);
         super.setSetpoint(setpoint);
     }
+
+    public void setP(double p) {
+        getController().setP(p);
+    }
+
+    public void setI(double i) {
+        getController().setI(i);
+    }
+
+    public void setD(double d) {
+        getController().setD(d);
+    }
 }
