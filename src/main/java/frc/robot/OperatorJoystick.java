@@ -7,9 +7,12 @@ import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.CubeShooter;
 import frc.robot.subsystems.Shoulder;
 import frc.robot.subsystems.Wrist;
+import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
+import frc.robot.commands.AcquireConeCommand;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
+import frc.robot.commands.DisposeConeCommand;
 import frc.robot.commands.DisposeCubeCommand;
 import frc.robot.commands.ManualShootCubeCommand;
 import frc.robot.commands.ShootCubeCommand;
@@ -22,6 +25,7 @@ public class OperatorJoystick extends XboxController1038 {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
     private Wrist wrist = Wrist.getInstance();
+    private boolean isCube = true;
 
     // Singleton Setup
     private static OperatorJoystick instance;
@@ -37,56 +41,99 @@ public class OperatorJoystick extends XboxController1038 {
     private OperatorJoystick() {
         super(IOConstants.kOperatorControllerPort);
 
-        // Cone Acquisition
-        // super.leftTrigger.whileTrue(new AcquireConeCommand());
-        // super.leftBumper.whileTrue(new DisposeConeCommand());
+        // Mode Toggle
+        startButton
+                .onTrue(new InstantCommand(() -> {
+                    this.isCube = !this.isCube;
+                    if (this.isCube) {
+                        new ShoulderPositionCommand(0, true)
+                                .alongWith(new WristPositionCommand(0, true)).schedule();
+                    } else {
+                        new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
+                    }
+                }));
 
         // Cube Acquisition
-        super.rightTrigger.whileTrue(new AcquireCubeCommand());
-        super.rightBumper.whileTrue(new DisposeCubeCommand());
+        rightTrigger
+                .and(() -> this.isCube)
+                .whileTrue(new AcquireCubeCommand());
+        rightBumper
+                .and(() -> this.isCube)
+                .whileTrue(new DisposeCubeCommand());
+        bButton
+                .and(() -> this.isCube)
+                .onTrue(new CubeAcquisitionPositionCommand());
+
+        // Cone Acquisition
+        rightTrigger
+                .and(() -> !this.isCube)
+                .whileTrue(new AcquireConeCommand());
+        rightBumper
+                .and(() -> !this.isCube)
+                .whileTrue(new DisposeConeCommand());
 
         // Cube Shooter
+        // High
         ShootCubeCommand highShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.high);
-        super.xButton.whileTrue(highShootCubeCommand);
+        yButton
+                .and(() -> this.isCube)
+                .whileTrue(highShootCubeCommand);
 
+        // Mid
         ShootCubeCommand midShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.mid);
-        super.aButton.whileTrue(midShootCubeCommand);
+        xButton
+                .and(() -> this.isCube)
+                .whileTrue(midShootCubeCommand);
 
+        // Manual
         ManualShootCubeCommand manualShootCommand = new ManualShootCubeCommand();
-        super.yButton.whileTrue(manualShootCommand);
+        aButton
+                .and(() -> this.isCube)
+                .whileTrue(manualShootCommand);
 
-        super.leftTrigger.onTrue(new InstantCommand(() -> {
-            highShootCubeCommand.overrideFeed();
-            midShootCubeCommand.overrideFeed();
-            manualShootCommand.feedOut();
-        }));
+        leftTrigger
+                .and(() -> this.isCube)
+                .onTrue(new InstantCommand(() -> {
+                    highShootCubeCommand.overrideFeed();
+                    midShootCubeCommand.overrideFeed();
+                    manualShootCommand.feedOut();
+                }));
 
-        super.bButton.onTrue(new CubeAcquisitionPositionCommand());
-
-        new Trigger(() -> super.getPOVPosition() == PovPositions.Up)
+        new Trigger(() -> getPOVPosition() == PovPositions.Up)
+                .and(() -> this.isCube)
                 .onTrue(new InstantCommand(() -> cubeShooter
                         .setShooterSpeed(cubeShooter.getShooterSpeed() + CubeShooterConstants.kShooterSpeedIncrement)));
-        new Trigger(() -> super.getPOVPosition() == PovPositions.Down)
+        new Trigger(() -> getPOVPosition() == PovPositions.Down)
+                .and(() -> this.isCube)
                 .onTrue(new InstantCommand(() -> cubeShooter
                         .setShooterSpeed(cubeShooter.getShooterSpeed() - CubeShooterConstants.kShooterSpeedIncrement)));
 
-        // Arm + Wrist + Shoulder
-        // b toggle arms in and arms out
+        // Wrist + Shoulder
+        // High
+        yButton
+                .and(() -> !this.isCube)
+                .toggleOnTrue(new ShoulderPositionCommand(60, true)
+                        .alongWith(new WristPositionCommand(130, true)));
 
-        leftBumper
-                .whileTrue(new ShoulderPositionCommand(60, true))
-                .whileTrue(new WristPositionCommand(130, true));
+        // Mid
+        xButton
+                .and(() -> !this.isCube)
+                .toggleOnTrue(new ShoulderPositionCommand(60, true)
+                        .alongWith(new WristPositionCommand(130, true)));
+
+        // Low
+        aButton
+                .and(() -> !this.isCube)
+                .toggleOnTrue(new ShoulderPositionCommand(60, true)
+                        .alongWith(new WristPositionCommand(130, true)));
+
+        // Storage
+        bButton
+                .and(() -> !this.isCube)
+                .onTrue(new ShoulderPositionCommand(0, true)
+                        .alongWith(new WristPositionCommand(0, true)));
+
         shoulder.setDefaultCommand(new ShoulderPositionCommand(0, true));
         wrist.setDefaultCommand(new WristPositionCommand(0, true));
-
-        /*
-         * TODO we have options for controlling the robot:
-         * 1. Use joystick with not PID to send direct power to the shoulder
-         * 2. Use joystick with PID to set a setpoint
-         * 3. Have buttons with predefined setpoints
-         */
-
-        // left stick move shoulder
-        // right stick move wrist
     }
 }
