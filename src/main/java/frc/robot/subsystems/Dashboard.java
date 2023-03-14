@@ -1,6 +1,9 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
 import java.util.Map;
+
+import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
@@ -9,6 +12,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -28,6 +32,7 @@ public class Dashboard extends SubsystemBase {
     // Tabs
     private ShuffleboardTab driversTab = Shuffleboard.getTab("Drivers");
     private ShuffleboardTab controlsTab = Shuffleboard.getTab("Controls");
+    private final Field2d field = new Field2d();
 
     // Controls Tab Inputs
     private GenericEntry resetGyro = controlsTab.add("Reset Gyro", false)
@@ -90,7 +95,7 @@ public class Dashboard extends SubsystemBase {
 
         driversTab.addNumber("Gyro", driveTrain::getHeading)
                 .withPosition(2, 0)
-                .withSize(2, 2);
+                .withSize(2, 1);
         // .withWidget(BuiltInWidgets.kGyro);
 
         driversTab.addNumber("Shooter Speed", cubeShooter::getVelocity)
@@ -119,8 +124,13 @@ public class Dashboard extends SubsystemBase {
                 .withWidget(BuiltInWidgets.kDial)
                 .withProperties(Map.of("min", 0, "max", 120));
 
+        driversTab.add(field)
+                .withPosition(2, 1)
+                .withSize(4, 3)
+                .withWidget(BuiltInWidgets.kField);
+
         driversTab.add(camera)
-                .withPosition(5, 0)
+                .withPosition(6, 0)
                 .withSize(4, 4);
     }
 
@@ -131,12 +141,21 @@ public class Dashboard extends SubsystemBase {
             driveTrain.zeroHeading();
             resetGyro.setBoolean(false);
         }
+        field.setRobotPose(driveTrain.getPose());
         // shoulder.setP(shoulderP.getDouble(ShoulderConstants.kP));
         // shoulder.setI(shoulderI.getDouble(ShoulderConstants.kI));
         // shoulder.setD(shoulderD.getDouble(ShoulderConstants.kD));
         // wrist.setP(wristP.getDouble(WristConstants.kP));
         // wrist.setI(wristI.getDouble(WristConstants.kI));
         // wrist.setD(wristD.getDouble(WristConstants.kD));
+    }
+
+    public void setTrajectory(PathPlannerTrajectory trajectory) {
+        this.field.getObject("traj").setTrajectory(trajectory);
+    }
+
+    public void clearTrajectory() {
+        this.field.getObject("traj").setPoses(new ArrayList<>());
     }
 
     public SendableChooser<AutonChoices> getAutoChooser() {
