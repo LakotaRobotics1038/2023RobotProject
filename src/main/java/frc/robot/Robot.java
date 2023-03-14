@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        Dashboard.getInstance().clearTrajectory();
         driveTrain.setDrivingIdleMode(SwerveModuleConstants.kTeleopDrivingMotorIdleMode);
     }
 
