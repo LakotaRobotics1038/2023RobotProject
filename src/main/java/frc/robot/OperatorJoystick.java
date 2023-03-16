@@ -5,10 +5,12 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.CubeShooter;
+import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.Shoulder;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
+import frc.robot.subsystems.Dashboard.Cameras;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Wrist.WristSetpoints;
 import frc.robot.commands.AcquireConeCommand;
@@ -25,6 +27,7 @@ import frc.robot.constants.CubeShooterConstants;
 import frc.robot.constants.IOConstants;
 
 public class OperatorJoystick extends XboxController1038 {
+    private Dashboard dashboard = Dashboard.getInstance();
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
     private Wrist wrist = Wrist.getInstance();
@@ -51,8 +54,10 @@ public class OperatorJoystick extends XboxController1038 {
                     if (this.isCube) {
                         new ConeAcquisitionCommand(WristSetpoints.storage, ShoulderSetpoints.storage, false)
                                 .schedule();
+                        dashboard.setCamera(Cameras.cubeCamera);
                     } else {
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
+                        dashboard.setCamera(Cameras.coneCamera);
                     }
                 }));
 

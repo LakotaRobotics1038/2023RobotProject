@@ -6,9 +6,10 @@ import java.util.Map;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -32,7 +33,18 @@ public class Dashboard extends SubsystemBase {
     // Tabs
     private ShuffleboardTab driversTab = Shuffleboard.getTab("Drivers");
     private ShuffleboardTab controlsTab = Shuffleboard.getTab("Controls");
+
+    // Variables
     private final Field2d field = new Field2d();
+    private final MjpegServer videoSink;
+    private UsbCamera cubeCam;
+    private UsbCamera coneCam;
+
+    // Enums
+    public enum Cameras {
+        coneCamera,
+        cubeCamera;
+    }
 
     // Controls Tab Inputs
     private GenericEntry resetGyro = controlsTab.add("Reset Gyro", false)
@@ -81,12 +93,22 @@ public class Dashboard extends SubsystemBase {
 
     private Dashboard() {
         super();
-        UsbCamera camera = CameraServer.startAutomaticCapture();
+        cubeCam = CameraServer.startAutomaticCapture(0);
+        cubeCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+        cubeCam.setConnectVerbose(0);
+        coneCam = CameraServer.startAutomaticCapture(1);
+        coneCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+        coneCam.setConnectVerbose(0);
 
-        NetworkTableInstance piCamTable = NetworkTableInstance.getDefault();
-        String[] serverAddress = { "mjpeg:http://team1038.local:1180/?action=stream" };
-        piCamTable.getEntry("/CameraPublisher/JetsonCamera/streams").setStringArray(serverAddress);
+        videoSink = CameraServer.addSwitchedCamera("Camera Stream");
 
+        // TODO: setup the jetson streams to replace the USB ports
+        // NetworkTableInstance piCamTable = NetworkTableInstance.getDefault();
+        // String[] serverAddress = { "mjpeg:http://team1038.local:1180/?action=stream"
+        // };
+        // piCamTable.getEntry("/CameraPublisher/JetsonCamera/streams").setStringArray(serverAddress);
+
+        // TODO: This prevents you from switching tabs for some reason
         // Shuffleboard.selectTab("Drivers");
 
         driversTab.add("Auton Choices", autoChooser)
@@ -129,9 +151,13 @@ public class Dashboard extends SubsystemBase {
                 .withSize(4, 3)
                 .withWidget(BuiltInWidgets.kField);
 
-        driversTab.add(camera)
+        driversTab.add("Camera Stream", videoSink.getSource())
                 .withPosition(6, 0)
                 .withSize(4, 4);
+        // If you set the camera before sending the source to the dashboard
+        // it will not toggle
+        this.setCamera(Cameras.cubeCamera);
+
     }
 
     @Override
@@ -156,6 +182,17 @@ public class Dashboard extends SubsystemBase {
 
     public void clearTrajectory() {
         this.field.getObject("traj").setPoses(new ArrayList<>());
+    }
+
+    public void setCamera(Cameras camera) {
+        switch (camera) {
+            case coneCamera:
+                videoSink.setSource(coneCam);
+                break;
+            case cubeCamera:
+                videoSink.setSource(cubeCam);
+                break;
+        }
     }
 
     public SendableChooser<AutonChoices> getAutoChooser() {
