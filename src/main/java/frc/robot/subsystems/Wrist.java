@@ -21,8 +21,10 @@ public class Wrist extends PIDSubsystem {
 
     public enum WristSetpoints {
         storage(WristConstants.kStorageSetpoint),
+        carry(WristConstants.kCarrySetpoint),
         acquire(WristConstants.kAcquireSetpoint),
         mid(WristConstants.kMidSetpoint),
+        humanPlayer(WristConstants.kHumanPlayerSetpoint),
         high(WristConstants.kHighSetpoint);
 
         public final int value;

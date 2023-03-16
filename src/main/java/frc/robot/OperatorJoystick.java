@@ -55,9 +55,11 @@ public class OperatorJoystick extends XboxController1038 {
                         new ConeAcquisitionCommand(WristSetpoints.storage, ShoulderSetpoints.storage, false)
                                 .schedule();
                         dashboard.setCamera(Cameras.cubeCamera);
+                        wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.storage, true));
                     } else {
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
                         dashboard.setCamera(Cameras.coneCamera);
+                        wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.carry, true));
                     }
                 }));
 
@@ -123,7 +125,7 @@ public class OperatorJoystick extends XboxController1038 {
                 .toggleOnTrue(new ConeAcquisitionCommand(
                         WristSetpoints.high,
                         ShoulderSetpoints.high,
-                        false,
+                        true,
                         true));
 
         // Mid
@@ -147,9 +149,9 @@ public class OperatorJoystick extends XboxController1038 {
         // Storage
         bButton
                 .and(() -> !this.isCube)
-                .onTrue(new ConeAcquisitionCommand(
-                        WristSetpoints.storage,
-                        ShoulderSetpoints.storage,
+                .toggleOnTrue(new ConeAcquisitionCommand(
+                        WristSetpoints.humanPlayer,
+                        ShoulderSetpoints.humanPlayer,
                         false,
                         true));
 

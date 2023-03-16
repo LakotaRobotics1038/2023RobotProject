@@ -22,6 +22,7 @@ public class Shoulder extends PIDSubsystem {
         storage(ShoulderConstants.kStorageSetpoint),
         acquire(ShoulderConstants.kAcquireSetpoint),
         mid(ShoulderConstants.kMidSetpoint),
+        humanPlayer(ShoulderConstants.kHumanPlayerSetpoint),
         high(ShoulderConstants.kHighSetpoint);
 
         public final int value;
