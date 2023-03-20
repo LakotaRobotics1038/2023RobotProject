@@ -13,6 +13,7 @@ public class AutonSelector {
         kLeaveCommunityScoringAuto,
         kLeaveCommunitySubstationAuto,
         kMountChargeStationAuto,
+        kShootCubeOnly,
         kTest;
     }
 
@@ -52,6 +53,8 @@ public class AutonSelector {
                 return new LeaveCommunityPathSubstationAuto(alliance);
             case kMountChargeStationAuto:
                 return new MountChargeStationAuto(alliance);
+            case kShootCubeOnly:
+                return new ShootCubeAuto(alliance);
             case kTest:
                 return new TwoMeterAuto(alliance);
             default:
