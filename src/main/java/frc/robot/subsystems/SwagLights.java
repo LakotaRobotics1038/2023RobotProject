@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class SwagLights implements Subsystem {
@@ -14,17 +13,6 @@ public class SwagLights implements Subsystem {
         public final String value;
 
         private RobotStates(String value) {
-            this.value = value;
-        }
-    }
-
-    public enum AllianceStates {
-        Red("R"),
-        Blue("B");
-
-        public final String value;
-
-        private AllianceStates(String value) {
             this.value = value;
         }
     }
@@ -46,7 +34,6 @@ public class SwagLights implements Subsystem {
 
     // States
     private RobotStates robotState = RobotStates.Disabled;
-    private AllianceStates allianceState = AllianceStates.Blue;
     private OperatorStates operatorState = OperatorStates.Cube;
 
     // Singleton Setup
@@ -80,8 +67,7 @@ public class SwagLights implements Subsystem {
         if (this.robotState == RobotStates.Enabled) {
             setLedStates(
                     this.robotState.value,
-                    this.operatorState.value,
-                    this.allianceState.value);
+                    this.operatorState.value);
         } else {
             setLedStates(this.robotState.value);
         }
@@ -89,7 +75,7 @@ public class SwagLights implements Subsystem {
 
     /**
      * Write an array of strings to the serial bus as a single sting
-     * 
+     *
      * @param values
      */
     private void setLedStates(String... values) {
@@ -111,15 +97,6 @@ public class SwagLights implements Subsystem {
      */
     public void setDisabled(boolean isDisabled) {
         this.robotState = isDisabled ? RobotStates.Disabled : RobotStates.Enabled;
-    }
-
-    /**
-     * Tells the swag lights what alliance we are on
-     *
-     * @param alliance
-     */
-    public void setAlliance(Alliance alliance) {
-        this.allianceState = alliance == Alliance.Blue ? AllianceStates.Blue : AllianceStates.Red;
     }
 
     /**
