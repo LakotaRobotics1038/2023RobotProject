@@ -99,6 +99,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopExit() {
+        driveTrain.setX();
     }
 
     @Override

@@ -21,5 +21,5 @@ public final class CubeShooterConstants {
 
     public static final int kLowShooterSetpoint = 750;
     public static final int kMidShooterSetpoint = 1000;
-    public static final int kHighShooterSetpoint = 1450; // Max setpoint is 2,200
+    public static final int kHighShooterSetpoint = 1380; // Max setpoint is 2,200
 }
