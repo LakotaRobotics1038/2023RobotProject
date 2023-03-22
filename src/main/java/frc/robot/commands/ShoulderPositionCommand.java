@@ -2,10 +2,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shoulder;
+import frc.robot.subsystems.Arm.ArmExtensionStates;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
+import frc.robot.subsystems.Arm;
 
 public class ShoulderPositionCommand extends CommandBase {
     private Shoulder shoulder = Shoulder.getInstance();
+    private Arm arm = Arm.getInstance();
     private ShoulderSetpoints setpoint;
     private boolean noFinish = false;
 
@@ -27,6 +30,9 @@ public class ShoulderPositionCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        if ((arm.getPosition() == ArmExtensionStates.Out) && (setpoint.equals(ShoulderSetpoints.storage))) {
+            arm.setPosition(ArmExtensionStates.In);
+        }
         shoulder.enable();
         shoulder.setSetpoint(setpoint);
     }
