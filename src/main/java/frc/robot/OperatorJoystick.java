@@ -7,6 +7,7 @@ import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.CubeShooter;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.Shoulder;
+import frc.robot.subsystems.SwagLights;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
@@ -31,6 +32,8 @@ public class OperatorJoystick extends XboxController1038 {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
     private Wrist wrist = Wrist.getInstance();
+    private SwagLights swagLights = SwagLights.getInstance();
+
     private boolean isCube = true;
 
     // Singleton Setup
@@ -46,11 +49,13 @@ public class OperatorJoystick extends XboxController1038 {
 
     private OperatorJoystick() {
         super(IOConstants.kOperatorControllerPort);
+        swagLights.setOperatorState(isCube);
 
         // Mode Toggle
         startButton
                 .onTrue(new InstantCommand(() -> {
                     this.isCube = !this.isCube;
+                    swagLights.setOperatorState(isCube);
                     if (this.isCube) {
                         new ConeAcquisitionCommand(WristSetpoints.storage, ShoulderSetpoints.storage, false)
                                 .schedule();
