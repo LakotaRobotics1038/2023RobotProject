@@ -1,16 +1,18 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Shoulder;
-import frc.robot.subsystems.Arm.ArmExtensionStates;
-import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Arm.ArmExtensionStates;
+import frc.robot.subsystems.Shoulder;
+import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 
 public class ShoulderPositionCommand extends CommandBase {
     private Shoulder shoulder = Shoulder.getInstance();
     private Arm arm = Arm.getInstance();
     private ShoulderSetpoints setpoint;
     private boolean noFinish = false;
+    private Timer delayTimer = new Timer();
 
     /**
      * @deprecated
@@ -32,8 +34,13 @@ public class ShoulderPositionCommand extends CommandBase {
     public void initialize() {
         if ((arm.getPosition() == ArmExtensionStates.Out) && (setpoint.equals(ShoulderSetpoints.storage))) {
             arm.setPosition(ArmExtensionStates.In);
+            delayTimer.start();
         }
-        shoulder.enable();
+
+        if (delayTimer.get() > 1.0) {
+            shoulder.enable();
+            delayTimer.stop();
+        }
         shoulder.setSetpoint(setpoint);
     }
 
