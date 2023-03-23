@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.constants.ConeAcquisitionConstants;
+import frc.robot.constants.NeoMotorConstants;
 
 public class ConeAcquisition extends SubsystemBase {
     private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(
@@ -30,6 +31,8 @@ public class ConeAcquisition extends SubsystemBase {
 
     private ConeAcquisition() {
         coneAcquisitionMotor.restoreFactoryDefaults();
+        coneAcquisitionMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
+        coneAcquisitionMotor.burnFlash();
     }
 
     public double getConeDistance() {

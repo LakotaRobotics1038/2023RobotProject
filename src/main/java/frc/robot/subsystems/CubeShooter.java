@@ -11,6 +11,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CubeShooterConstants;
+import frc.robot.constants.NeoMotorConstants;
 
 public class CubeShooter extends SubsystemBase {
     private CANSparkMax feederMotor = new CANSparkMax(CubeShooterConstants.kFeederMotorPort, MotorType.kBrushless);
@@ -66,8 +67,13 @@ public class CubeShooter extends SubsystemBase {
         leftShooterMotor.setInverted(true);
         rightShooterMotor.follow(leftShooterMotor, true);
 
+        feederMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
+        leftShooterMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
+        rightShooterMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
+
         leftShooterMotor.burnFlash();
         rightShooterMotor.burnFlash();
+        feederMotor.burnFlash();
     }
 
     public void loadCube() {
