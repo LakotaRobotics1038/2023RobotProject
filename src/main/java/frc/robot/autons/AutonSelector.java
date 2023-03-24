@@ -50,11 +50,11 @@ public class AutonSelector {
         Alliance alliance = DriverStation.getAlliance();
         switch (this.autoChooser.getSelected()) {
             case LeaveCommunityCenterAuto:
-                return new LeaveCommunityPathCenterAuto(alliance);
+                return new LeaveCommunityCenterAuto(alliance);
             case LeaveCommunityScoringAuto:
-                return new LeaveCommunityPathScoringTableAuto(alliance);
+                return new LeaveCommunityScoringTableAuto(alliance);
             case LeaveCommunitySubstationAuto:
-                return new LeaveCommunityPathSubstationAuto(alliance);
+                return new LeaveCommunitySubstationAuto(alliance);
             case MountChargeStationAuto:
                 return new MountChargeStationAuto(alliance);
             case ShootCubeOnly:
