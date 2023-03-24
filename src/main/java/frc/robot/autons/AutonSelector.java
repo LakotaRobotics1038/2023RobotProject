@@ -15,8 +15,7 @@ public class AutonSelector {
         MountChargeStationAuto,
         ShootCubeOnly,
         TwoBallScoringTableAuto,
-        TwoBallSubstationAuto,
-        Test;
+        TwoBallSubstationAuto;
     }
 
     // Choosers
@@ -43,7 +42,6 @@ public class AutonSelector {
         this.autoChooser.addOption("Mount Charge Station Auto", AutonChoices.MountChargeStationAuto);
         this.autoChooser.addOption("Two Ball Scoring Table Auto", AutonChoices.TwoBallScoringTableAuto);
         this.autoChooser.addOption("Two Ball Substation Auto", AutonChoices.TwoBallSubstationAuto);
-        this.autoChooser.addOption("Test Auto", AutonChoices.Test);
     }
 
     public Auton chooseAuton() {
@@ -63,8 +61,6 @@ public class AutonSelector {
                 return new TwoBallAuto(alliance, Trajectories.TwoBallScoringTable());
             case TwoBallSubstationAuto:
                 return new TwoBallAuto(alliance, Trajectories.TwoBallSubstation());
-            case Test:
-                return new TwoMeterAuto(alliance);
             default:
                 return null;
         }

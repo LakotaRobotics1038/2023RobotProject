@@ -43,10 +43,4 @@ public class Trajectories {
                 AutoConstants.kMaxSpeedMetersPerSecond / 2,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
-
-    public static PathPlannerTrajectory TwoMeterPath() {
-        return PathPlanner.loadPath("Two Meter Path",
-                AutoConstants.kMaxSpeedMetersPerSecond / 2,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
-    }
 }
