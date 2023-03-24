@@ -50,13 +50,6 @@ public class SwagLights implements Subsystem {
      * Initializes the serial communication
      */
     private SwagLights() {
-        this.initialize();
-    }
-
-    /**
-     * Creates serial port listener
-     */
-    public void initialize() {
         serialPort = new SerialPort(9600, SerialPort.Port.kMXP);
         serialPort.enableTermination();
         System.out.println("Created new serial reader");
