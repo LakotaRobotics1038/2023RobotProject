@@ -8,14 +8,15 @@ import frc.robot.subsystems.Dashboard;
 
 public class AutonSelector {
     public enum AutonChoices {
-        kNoAuto,
-        kLeaveCommunityCenterAuto,
-        kLeaveCommunityScoringAuto,
-        kLeaveCommunitySubstationAuto,
-        kMountChargeStationAuto,
-        kShootCubeOnly,
-        kTwoBallScoringTableAuto,
-        kTest;
+        NoAuto,
+        LeaveCommunityCenterAuto,
+        LeaveCommunityScoringAuto,
+        LeaveCommunitySubstationAuto,
+        MountChargeStationAuto,
+        ShootCubeOnly,
+        TwoBallScoringTableAuto,
+        TwoBallSubstationAuto,
+        Test;
     }
 
     // Choosers
@@ -35,31 +36,34 @@ public class AutonSelector {
     private AutonSelector() {
         this.autoChooser = Dashboard.getInstance().getAutoChooser();
 
-        this.autoChooser.setDefaultOption("No Auto", AutonChoices.kNoAuto);
-        this.autoChooser.addOption("Leave Community Center Auto", AutonChoices.kLeaveCommunityCenterAuto);
-        this.autoChooser.addOption("Leave Community Scoring Table Auto", AutonChoices.kLeaveCommunityScoringAuto);
-        this.autoChooser.addOption("Leave Community Substation Auto", AutonChoices.kLeaveCommunitySubstationAuto);
-        this.autoChooser.addOption("Mount Charge Station Auto", AutonChoices.kMountChargeStationAuto);
-        this.autoChooser.addOption("Two Ball Scoring Table Auto", AutonChoices.kTwoBallScoringTableAuto);
-        this.autoChooser.addOption("Test Auto", AutonChoices.kTest);
+        this.autoChooser.setDefaultOption("No Auto", AutonChoices.NoAuto);
+        this.autoChooser.addOption("Leave Community Center Auto", AutonChoices.LeaveCommunityCenterAuto);
+        this.autoChooser.addOption("Leave Community Scoring Table Auto", AutonChoices.LeaveCommunityScoringAuto);
+        this.autoChooser.addOption("Leave Community Substation Auto", AutonChoices.LeaveCommunitySubstationAuto);
+        this.autoChooser.addOption("Mount Charge Station Auto", AutonChoices.MountChargeStationAuto);
+        this.autoChooser.addOption("Two Ball Scoring Table Auto", AutonChoices.TwoBallScoringTableAuto);
+        this.autoChooser.addOption("Two Ball Substation Auto", AutonChoices.TwoBallSubstationAuto);
+        this.autoChooser.addOption("Test Auto", AutonChoices.Test);
     }
 
     public Auton chooseAuton() {
         Alliance alliance = DriverStation.getAlliance();
         switch (this.autoChooser.getSelected()) {
-            case kLeaveCommunityCenterAuto:
+            case LeaveCommunityCenterAuto:
                 return new LeaveCommunityPathCenterAuto(alliance);
-            case kLeaveCommunityScoringAuto:
+            case LeaveCommunityScoringAuto:
                 return new LeaveCommunityPathScoringTableAuto(alliance);
-            case kLeaveCommunitySubstationAuto:
+            case LeaveCommunitySubstationAuto:
                 return new LeaveCommunityPathSubstationAuto(alliance);
-            case kMountChargeStationAuto:
+            case MountChargeStationAuto:
                 return new MountChargeStationAuto(alliance);
-            case kShootCubeOnly:
+            case ShootCubeOnly:
                 return new ShootCubeAuto(alliance);
-            case kTwoBallScoringTableAuto:
+            case TwoBallScoringTableAuto:
                 return new TwoBallScoringTableAuto(alliance);
-            case kTest:
+            case TwoBallSubstationAuto:
+                return new TwoBallSubstationAuto(alliance);
+            case Test:
                 return new TwoMeterAuto(alliance);
             default:
                 return null;
