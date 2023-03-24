@@ -9,6 +9,7 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.MjpegServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -181,14 +182,36 @@ public class Dashboard extends SubsystemBase {
         // wrist.setD(wristD.getDouble(WristConstants.kD));
     }
 
+    /**
+     * Puts the given {@link PathPlannerTrajectory} on the dashboard
+     *
+     * @param trajectory
+     */
     public void setTrajectory(PathPlannerTrajectory trajectory) {
         this.field.getObject("traj").setTrajectory(trajectory);
     }
 
+    /**
+     * Puts the given {@link Trajectory} on the dashboard
+     *
+     * @param trajectory
+     */
+    public void setTrajectory(Trajectory trajectory) {
+        this.field.getObject("traj").setTrajectory(trajectory);
+    }
+
+    /**
+     * Removes the trajectory line from the dashboard
+     */
     public void clearTrajectory() {
         this.field.getObject("traj").setPoses(new ArrayList<>());
     }
 
+    /**
+     * Chooses which camera is visible on the dashboard
+     *
+     * @param camera
+     */
     public void setCamera(Cameras camera) {
         switch (camera) {
             case coneCamera:
@@ -200,6 +223,11 @@ public class Dashboard extends SubsystemBase {
         }
     }
 
+    /**
+     * Gets the sendable chooser for Auton Modes
+     * 
+     * @return
+     */
     public SendableChooser<AutonChoices> getAutoChooser() {
         return autoChooser;
     }

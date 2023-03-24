@@ -25,8 +25,9 @@ public class TwoBallScoringTableAuto extends Auton {
         List<PathPlannerTrajectory> trajectories = Trajectories.TwoBallScoringTable();
 
         PathPlannerTrajectory initialTrajectory = trajectories.get(0);
+        PathPlannerTrajectory returnTrajectory = trajectories.get(1);
 
-        Dashboard.getInstance().setTrajectory(initialTrajectory);
+        Dashboard.getInstance().setTrajectory(initialTrajectory.concatenate(returnTrajectory));
 
         super.addCommands(
                 new ShootCubeCommand(CubeShooterSetpoints.high, 1.0),
@@ -38,7 +39,7 @@ public class TwoBallScoringTableAuto extends Auton {
                 new AcquireConeCommand(1.0),
                 new ConeAcquisitionPositionCommand(WristSetpoints.carry, ShoulderSetpoints.storage, false,
                         FinishActions.NoDisable),
-                this.driveTrain.getTrajectoryCommand(trajectories.get(1)));
+                this.driveTrain.getTrajectoryCommand(returnTrajectory));
 
         this.setInitialPose(initialTrajectory);
     }
