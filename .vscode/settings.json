@@ -33,16 +33,21 @@
     "files.trimTrailingWhitespace": true,
     "cSpell.words": [
         "auton",
+        "autons",
         "Brushless",
         "Coms",
         "deadband",
         "gryo",
+        "Jetson",
+        "Mjpeg",
         "Odometry",
         "REVPH",
+        "revrobotics",
         "roborio",
         "setpoint",
         "Setpoints",
-        "teleop"
+        "teleop",
+        "traj"
     ],
     "editor.bracketPairColorization.enabled": true,
     "editor.guides.bracketPairs": "active",
