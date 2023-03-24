@@ -1,9 +1,9 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SerialPort;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class SwagLights extends SubsystemBase {
+public class SwagLights implements Subsystem {
     // Enums
     public enum RobotStates {
         Enabled("A"),
@@ -17,12 +17,24 @@ public class SwagLights extends SubsystemBase {
         }
     }
 
+    public enum OperatorStates {
+        Cone("Y"),
+        Cube("P"),
+        AcquireSuccess("G");
+
+        public final String value;
+
+        private OperatorStates(String value) {
+            this.value = value;
+        }
+    }
+
     // Inputs and Outputs
     private SerialPort serialPort;
 
     // States
-    private boolean eStopped = false;
-    private boolean disabled = true;
+    private RobotStates robotState = RobotStates.Disabled;
+    private OperatorStates operatorState = OperatorStates.Cube;
 
     // Singleton Setup
     private static SwagLights instance;
@@ -50,22 +62,24 @@ public class SwagLights extends SubsystemBase {
         System.out.println("Created new serial reader");
     }
 
-    /**
-     * Use the state of the robot to send a command to the LEDs
-     *
-     * @param state Current state of the robot
-     */
-    public void setRobotState(RobotStates state) {
-        serialPort.writeString(state.value);
-    }
-
     @Override
     public void periodic() {
-        if (eStopped) {
-            this.setRobotState(RobotStates.EmergencyStop);
-        } else if (disabled) {
-            this.setRobotState(RobotStates.Disabled);
+        if (this.robotState == RobotStates.Enabled) {
+            setLedStates(
+                    this.robotState.value,
+                    this.operatorState.value);
+        } else {
+            setLedStates(this.robotState.value);
         }
+    }
+
+    /**
+     * Write an array of strings to the serial bus as a single sting
+     *
+     * @param values
+     */
+    private void setLedStates(String... values) {
+        serialPort.writeString(String.join("", values));
     }
 
     /**
@@ -82,13 +96,22 @@ public class SwagLights extends SubsystemBase {
      * @param isDisabled
      */
     public void setDisabled(boolean isDisabled) {
-        this.disabled = isDisabled;
+        this.robotState = isDisabled ? RobotStates.Disabled : RobotStates.Enabled;
     }
 
     /**
      * Tells the swag lights the robot is e-stopped
      */
     public void setEStop() {
-        this.eStopped = true;
+        this.robotState = RobotStates.EmergencyStop;
+    }
+
+    /**
+     * Tells the swag lights which operator mode we are in (cone or cube)
+     *
+     * @param isCube is the current mode the cube mode?
+     */
+    public void setOperatorState(boolean isCube) {
+        this.operatorState = isCube ? OperatorStates.Cube : OperatorStates.Cone;
     }
 }
