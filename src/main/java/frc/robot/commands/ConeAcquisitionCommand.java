@@ -59,7 +59,9 @@ public class ConeAcquisitionCommand extends CommandBase {
         }
 
         if (shoulder.getPosition() >= ShoulderConstants.kMinExtensionPosition && this.extendArm) {
-            arm.setPosition(ArmExtensionStates.Out);
+            if (shoulder.onTarget()) {
+                arm.setPosition(ArmExtensionStates.Out);
+            }
         } else {
             arm.setPosition(ArmExtensionStates.In);
         }
