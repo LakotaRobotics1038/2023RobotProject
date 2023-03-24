@@ -18,11 +18,9 @@ import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Wrist.WristSetpoints;
 
-public class TwoBallSubstationAuto extends Auton {
-    public TwoBallSubstationAuto(Alliance alliance) {
+public class TwoBallAuto extends Auton {
+    public TwoBallAuto(Alliance alliance, List<PathPlannerTrajectory> trajectories) {
         super(alliance);
-
-        List<PathPlannerTrajectory> trajectories = Trajectories.TwoBallSubstation();
 
         PathPlannerTrajectory initialTrajectory = trajectories.get(0);
         PathPlannerTrajectory returnTrajectory = trajectories.get(1);

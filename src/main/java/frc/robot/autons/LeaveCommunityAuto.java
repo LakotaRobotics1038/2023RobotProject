@@ -10,11 +10,9 @@ import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
 
-public class LeaveCommunitySubstationAuto extends Auton {
-    public LeaveCommunitySubstationAuto(Alliance alliance) {
+public class LeaveCommunityAuto extends Auton {
+    public LeaveCommunityAuto(Alliance alliance, PathPlannerTrajectory trajectory) {
         super(alliance);
-
-        PathPlannerTrajectory trajectory = Trajectories.LeaveCommunityPathSubstation();
 
         Dashboard.getInstance().setTrajectory(trajectory);
 

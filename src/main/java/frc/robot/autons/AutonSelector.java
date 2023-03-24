@@ -50,19 +50,19 @@ public class AutonSelector {
         Alliance alliance = DriverStation.getAlliance();
         switch (this.autoChooser.getSelected()) {
             case LeaveCommunityCenterAuto:
-                return new LeaveCommunityCenterAuto(alliance);
+                return new LeaveCommunityAuto(alliance, Trajectories.LeaveCommunityPathCenter());
             case LeaveCommunityScoringAuto:
-                return new LeaveCommunityScoringTableAuto(alliance);
+                return new LeaveCommunityAuto(alliance, Trajectories.LeaveCommunityPathScoringTable());
             case LeaveCommunitySubstationAuto:
-                return new LeaveCommunitySubstationAuto(alliance);
+                return new LeaveCommunityAuto(alliance, Trajectories.LeaveCommunityPathSubstation());
             case MountChargeStationAuto:
                 return new MountChargeStationAuto(alliance);
             case ShootCubeOnly:
                 return new ShootCubeAuto(alliance);
             case TwoBallScoringTableAuto:
-                return new TwoBallScoringTableAuto(alliance);
+                return new TwoBallAuto(alliance, Trajectories.TwoBallScoringTable());
             case TwoBallSubstationAuto:
-                return new TwoBallSubstationAuto(alliance);
+                return new TwoBallAuto(alliance, Trajectories.TwoBallSubstation());
             case Test:
                 return new TwoMeterAuto(alliance);
             default:
