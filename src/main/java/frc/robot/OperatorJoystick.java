@@ -162,11 +162,21 @@ public class OperatorJoystick extends XboxController1038 {
                         FinishActions.NoFinish));
     }
 
+    /**
+     * Sets the default command for the shoulder and wrist. This should be done in
+     * {@link Robot#teleopInit} so that the cone scoring mechanism goes to storage
+     * when the operator cancels their desired position
+     */
     public void enableDefaults() {
         shoulder.setDefaultCommand(new ShoulderPositionCommand(ShoulderSetpoints.storage, true));
         wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.storage, true));
     }
 
+    /**
+     * Removes the default command for the shoulder and wrist. This should be done
+     * in {@link Robot#autonomousInit} so that the cone scoring mechanism stays in
+     * each position until specifically instructed to change by the auton
+     */
     public void clearDefaults() {
         shoulder.removeDefaultCommand();
         wrist.removeDefaultCommand();
