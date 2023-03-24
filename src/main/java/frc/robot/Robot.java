@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
     // Singleton Instances
     private AutonSelector autonSelector = AutonSelector.getInstance();
     private SwagLights swagLights = SwagLights.getInstance();
+    private OperatorJoystick operatorJoystick = OperatorJoystick.getInstance();
 
     // Variables
     private Auton autonomousCommand;
@@ -33,7 +34,6 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         DriverXboxController.getInstance();
-        OperatorJoystick.getInstance();
         Dashboard.getInstance();
         addPeriodic(swagLights::periodic, 0.5);
     }
@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        operatorJoystick.clearDefaults();
         autonomousCommand = autonSelector.chooseAuton();
 
         if (autonomousCommand != null) {
@@ -91,6 +92,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         Dashboard.getInstance().clearTrajectory();
+        operatorJoystick.enableDefaults();
         driveTrain.setDrivingIdleMode(SwerveModuleConstants.kTeleopDrivingMotorIdleMode);
     }
 

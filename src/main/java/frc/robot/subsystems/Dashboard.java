@@ -154,10 +154,15 @@ public class Dashboard extends SubsystemBase {
         driversTab.add("Camera Stream", videoSink.getSource())
                 .withPosition(6, 0)
                 .withSize(4, 4);
+
         // If you set the camera before sending the source to the dashboard
         // it will not toggle
         this.setCamera(Cameras.cubeCamera);
 
+        controlsTab.add(field)
+                .withPosition(2, 0)
+                .withSize(8, 5)
+                .withWidget(BuiltInWidgets.kField);
     }
 
     @Override

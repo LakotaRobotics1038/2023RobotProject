@@ -9,29 +9,38 @@ import frc.robot.subsystems.Arm.ArmExtensionStates;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Wrist.WristSetpoints;
 
-public class ConeAcquisitionCommand extends CommandBase {
+public class ConeAcquisitionPositionCommand extends CommandBase {
     private Wrist wrist = Wrist.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
     private Arm arm = Arm.getInstance();
+
+    public enum FinishActions {
+        NoFinish,
+        NoDisable,
+        Default
+    }
+
     private WristSetpoints wristSetpoint;
     private ShoulderSetpoints shoulderSetpoint;
-    private boolean noFinish = false;
+    private FinishActions finishAction = FinishActions.Default;
     private boolean extendArm = false;
 
-    public ConeAcquisitionCommand(WristSetpoints wristSetpoint, ShoulderSetpoints shoulderSetpoint, boolean extendArm) {
+    public ConeAcquisitionPositionCommand(WristSetpoints wristSetpoint, ShoulderSetpoints shoulderSetpoint,
+            boolean extendArm) {
         this.addRequirements(wrist, shoulder, arm);
         this.wristSetpoint = wristSetpoint;
         this.shoulderSetpoint = shoulderSetpoint;
         this.extendArm = extendArm;
     }
 
-    public ConeAcquisitionCommand(WristSetpoints wristSetpoint, ShoulderSetpoints shoulderSetpoint, boolean extendArm,
-            boolean noFinish) {
+    public ConeAcquisitionPositionCommand(WristSetpoints wristSetpoint, ShoulderSetpoints shoulderSetpoint,
+            boolean extendArm,
+            FinishActions finishAction) {
         this.addRequirements(wrist, shoulder, arm);
         this.wristSetpoint = wristSetpoint;
         this.shoulderSetpoint = shoulderSetpoint;
         this.extendArm = extendArm;
-        this.noFinish = noFinish;
+        this.finishAction = finishAction;
     }
 
     @Override
@@ -56,13 +65,17 @@ public class ConeAcquisitionCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return !noFinish && wrist.onTarget() && shoulder.onTarget();
+        return finishAction != FinishActions.NoFinish &&
+                wrist.onTarget() &&
+                shoulder.onTarget();
     }
 
     @Override
     public void end(boolean interrupted) {
-        wrist.disable();
-        shoulder.disable();
-        arm.setPosition(ArmExtensionStates.In);
+        if (finishAction != FinishActions.NoDisable) {
+            wrist.disable();
+            shoulder.disable();
+            arm.setPosition(ArmExtensionStates.In);
+        }
     }
 }

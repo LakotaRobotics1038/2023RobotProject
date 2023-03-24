@@ -1,5 +1,7 @@
 package frc.robot.autons;
 
+import java.util.List;
+
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
@@ -26,6 +28,12 @@ public class Trajectories {
 
     public static PathPlannerTrajectory MountChargeStationPath() {
         return PathPlanner.loadPath("Mount Charge Station Path",
+                AutoConstants.kMaxSpeedMetersPerSecond / 2,
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
+    }
+
+    public static List<PathPlannerTrajectory> TwoBallScoringTable() {
+        return PathPlanner.loadPathGroup("Two Ball (Scoring Table)",
                 AutoConstants.kMaxSpeedMetersPerSecond / 2,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }

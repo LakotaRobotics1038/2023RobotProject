@@ -11,7 +11,7 @@ public class ShoulderPositionCommand extends CommandBase {
 
     /**
      * @deprecated
-     *             Use {@link ConeAcquisitionCommand} instead
+     *             Use {@link ConeAcquisitionPositionCommand} instead
      */
     @Deprecated
     public ShoulderPositionCommand(ShoulderSetpoints setpoint) {

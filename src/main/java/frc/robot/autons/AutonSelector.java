@@ -14,6 +14,7 @@ public class AutonSelector {
         kLeaveCommunitySubstationAuto,
         kMountChargeStationAuto,
         kShootCubeOnly,
+        kTwoBallScoringTableAuto,
         kTest;
     }
 
@@ -39,6 +40,7 @@ public class AutonSelector {
         this.autoChooser.addOption("Leave Community Scoring Table Auto", AutonChoices.kLeaveCommunityScoringAuto);
         this.autoChooser.addOption("Leave Community Substation Auto", AutonChoices.kLeaveCommunitySubstationAuto);
         this.autoChooser.addOption("Mount Charge Station Auto", AutonChoices.kMountChargeStationAuto);
+        this.autoChooser.addOption("Two Ball Scoring Table Auto", AutonChoices.kTwoBallScoringTableAuto);
         this.autoChooser.addOption("Test Auto", AutonChoices.kTest);
     }
 
@@ -55,6 +57,8 @@ public class AutonSelector {
                 return new MountChargeStationAuto(alliance);
             case kShootCubeOnly:
                 return new ShootCubeAuto(alliance);
+            case kTwoBallScoringTableAuto:
+                return new TwoBallScoringTableAuto(alliance);
             case kTest:
                 return new TwoMeterAuto(alliance);
             default:
