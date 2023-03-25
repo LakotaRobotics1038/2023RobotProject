@@ -1,11 +1,13 @@
 package frc.robot;
 
+import frc.robot.constants.DriveConstants;
 import frc.robot.constants.IOConstants;
 import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class DriverXboxController extends XboxController1038 {
     // Subsystem Dependencies
@@ -49,6 +51,19 @@ public class DriverXboxController extends XboxController1038 {
 
             driveTrain.drive(forward, -sideways, -rotate, true);
         }, driveTrain));
+
+        new Trigger(() -> getPOVPosition() == PovPositions.Up)
+                .whileTrue(new RunCommand(() -> driveTrain
+                        .drive(DriveConstants.kFineAdjustmentPercent, 0, 0, true)));
+        new Trigger(() -> getPOVPosition() == PovPositions.Down)
+                .whileTrue(new RunCommand(() -> driveTrain
+                        .drive(-DriveConstants.kFineAdjustmentPercent, 0, 0, true)));
+        new Trigger(() -> getPOVPosition() == PovPositions.Left)
+                .whileTrue(new RunCommand(() -> driveTrain
+                        .drive(0, DriveConstants.kFineAdjustmentPercent, 0, true)));
+        new Trigger(() -> getPOVPosition() == PovPositions.Right)
+                .whileTrue(new RunCommand(() -> driveTrain
+                        .drive(0, -DriveConstants.kFineAdjustmentPercent, 0, true)));
 
         // Re-orient robot to the field
         super.startButton.whileTrue(new InstantCommand(driveTrain::zeroHeading, driveTrain));

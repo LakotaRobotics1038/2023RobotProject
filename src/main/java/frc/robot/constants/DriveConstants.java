@@ -9,6 +9,7 @@ public final class DriveConstants {
     // the robot, rather the allowed maximum speeds
     public static final double kMaxSpeedMetersPerSecond = 4.8;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
+    public static final double kFineAdjustmentPercent = 0.1;
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.25);
