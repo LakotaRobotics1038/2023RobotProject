@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.constants.ShoulderConstants;
 import frc.robot.subsystems.Arm;
@@ -20,6 +21,7 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
         Default
     }
 
+    private Timer delayTimer = new Timer();
     private WristSetpoints wristSetpoint;
     private ShoulderSetpoints shoulderSetpoint;
     private FinishActions finishAction = FinishActions.Default;
@@ -45,15 +47,25 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        // TODO: What happens when this command is cancelled and the default takes over?
+        if (arm.getPosition() == ArmExtensionStates.Out && !this.extendArm) {
+            arm.setPosition(ArmExtensionStates.In);
+            delayTimer.start();
+        } else {
+            shoulder.enable();
+        }
         wrist.enable();
-        shoulder.enable();
         wrist.setSetpoint(wristSetpoint);
         shoulder.setSetpoint(shoulderSetpoint);
     }
 
     @Override
     public void execute() {
-        super.execute();
+        if (!shoulder.isEnabled() && delayTimer.get() > 1.0) {
+            shoulder.enable();
+            delayTimer.stop();
+        }
+
         if (shoulder.getPosition() >= ShoulderConstants.kMinExtensionPosition && this.extendArm) {
             if (shoulder.onTarget()) {
                 arm.setPosition(ArmExtensionStates.Out);
@@ -75,7 +87,6 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
         if (finishAction != FinishActions.NoDisable) {
             wrist.disable();
             shoulder.disable();
-            arm.setPosition(ArmExtensionStates.In);
         }
     }
 }
