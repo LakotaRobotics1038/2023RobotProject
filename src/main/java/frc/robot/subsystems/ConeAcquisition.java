@@ -40,6 +40,10 @@ public class ConeAcquisition extends SubsystemBase {
         return 0.0;
     }
 
+    public double getCurrent() {
+        return coneAcquisitionMotor.getOutputCurrent();
+    }
+
     public void acquire() {
         coneAcquisitionMotor.set(ConeAcquisitionConstants.kAcquireSpeed);
     }

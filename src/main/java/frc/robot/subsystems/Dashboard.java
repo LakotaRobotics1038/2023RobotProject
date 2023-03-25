@@ -26,6 +26,7 @@ public class Dashboard extends SubsystemBase {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
     private Wrist wrist = Wrist.getInstance();
+    private ConeAcquisition coneAcquisition = ConeAcquisition.getInstance();
     private Compressor1038 compressor = Compressor1038.getInstance();
 
     // Choosers
@@ -168,6 +169,9 @@ public class Dashboard extends SubsystemBase {
                 .withPosition(2, 0)
                 .withSize(8, 5)
                 .withWidget(BuiltInWidgets.kField);
+
+        controlsTab.addNumber("Cone Acq Current", coneAcquisition::getCurrent)
+                .withPosition(0, 1);
     }
 
     @Override
