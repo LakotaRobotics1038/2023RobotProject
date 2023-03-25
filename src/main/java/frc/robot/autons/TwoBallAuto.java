@@ -32,11 +32,13 @@ public class TwoBallAuto extends Auton {
                 new ParallelCommandGroup(
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up),
                         this.driveTrain.getTrajectoryCommand(initialTrajectory)),
-                new ConeAcquisitionPositionCommand(WristSetpoints.acquire, ShoulderSetpoints.acquire, true,
-                        FinishActions.NoDisable),
-                new AcquireConeCommand(1.0),
-                new ConeAcquisitionPositionCommand(WristSetpoints.carry, ShoulderSetpoints.storage, false,
-                        FinishActions.NoDisable),
+                // new ConeAcquisitionPositionCommand(WristSetpoints.acquire,
+                // ShoulderSetpoints.acquire, true,
+                // FinishActions.NoDisable),
+                // new AcquireConeCommand(1.0),
+                // new ConeAcquisitionPositionCommand(WristSetpoints.carry,
+                // ShoulderSetpoints.storage, false,
+                // FinishActions.NoDisable),
                 this.driveTrain.getTrajectoryCommand(returnTrajectory));
 
         this.setInitialPose(initialTrajectory);
