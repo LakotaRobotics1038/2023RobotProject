@@ -32,16 +32,22 @@ public class ShoulderPositionCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        if ((arm.getPosition() == ArmExtensionStates.Out) && (setpoint.equals(ShoulderSetpoints.storage))) {
+        if (arm.getPosition() == ArmExtensionStates.Out) {
             arm.setPosition(ArmExtensionStates.In);
             delayTimer.start();
+        } else {
+            shoulder.enable();
         }
 
-        if (delayTimer.get() > 1.0) {
+        shoulder.setSetpoint(setpoint);
+    }
+
+    @Override
+    public void execute() {
+        if (!shoulder.isEnabled() && delayTimer.get() > 1.0) {
             shoulder.enable();
             delayTimer.stop();
         }
-        shoulder.setSetpoint(setpoint);
     }
 
     @Override
