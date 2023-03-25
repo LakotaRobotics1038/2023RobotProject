@@ -47,7 +47,6 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        // TODO: What happens when this command is cancelled and the default takes over?
         if (arm.getPosition() == ArmExtensionStates.Out && !this.extendArm) {
             arm.setPosition(ArmExtensionStates.In);
             delayTimer.start();
@@ -61,7 +60,7 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (!shoulder.isEnabled() && delayTimer.get() > 1.0) {
+        if (!shoulder.isEnabled() && delayTimer.get() > 2.0) {
             shoulder.enable();
             delayTimer.stop();
         }
