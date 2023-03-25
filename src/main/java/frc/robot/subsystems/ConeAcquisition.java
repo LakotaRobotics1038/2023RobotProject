@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 // TODO: get this install working once we need this sensor
 // import com.revrobotics.Rev2mDistanceSensor;
@@ -31,6 +32,7 @@ public class ConeAcquisition extends SubsystemBase {
 
     private ConeAcquisition() {
         coneAcquisitionMotor.restoreFactoryDefaults();
+        coneAcquisitionMotor.setIdleMode(IdleMode.kBrake);
         coneAcquisitionMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
         coneAcquisitionMotor.burnFlash();
     }
