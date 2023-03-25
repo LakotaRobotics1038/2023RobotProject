@@ -116,7 +116,11 @@ public class Dashboard extends SubsystemBase {
                 .withPosition(0, 0)
                 .withSize(2, 1);
 
-        driversTab.addNumber("Gyro", driveTrain::getHeading)
+        driversTab.addNumber("Gyro", () -> {
+            double angle = driveTrain.getHeading();
+            angle %= 360;
+            return angle < 0 ? angle + 360 : angle;
+        })
                 .withPosition(2, 0)
                 .withSize(2, 1);
         // .withWidget(BuiltInWidgets.kGyro);
@@ -225,7 +229,7 @@ public class Dashboard extends SubsystemBase {
 
     /**
      * Gets the sendable chooser for Auton Modes
-     * 
+     *
      * @return
      */
     public SendableChooser<AutonChoices> getAutoChooser() {
