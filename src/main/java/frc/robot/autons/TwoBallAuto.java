@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import frc.robot.commands.AcquireConeCommand;
 import frc.robot.commands.ConeAcquisitionPositionCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
+import frc.robot.commands.DisposeConeCommand;
 import frc.robot.commands.ShootCubeCommand;
 import frc.robot.commands.ConeAcquisitionPositionCommand.FinishActions;
 import frc.robot.subsystems.Dashboard;
@@ -32,14 +33,21 @@ public class TwoBallAuto extends Auton {
                 new ParallelCommandGroup(
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up),
                         this.driveTrain.getTrajectoryCommand(initialTrajectory)),
-                // new ConeAcquisitionPositionCommand(WristSetpoints.acquire,
-                // ShoulderSetpoints.acquire, true,
-                // FinishActions.NoDisable),
-                // new AcquireConeCommand(1.0),
-                // new ConeAcquisitionPositionCommand(WristSetpoints.carry,
-                // ShoulderSetpoints.storage, false,
-                // FinishActions.NoDisable),
-                this.driveTrain.getTrajectoryCommand(returnTrajectory));
+                new ConeAcquisitionPositionCommand(WristSetpoints.acquire,
+                        ShoulderSetpoints.acquire, true,
+                        FinishActions.NoDisable),
+                new AcquireConeCommand(1.0),
+                new ConeAcquisitionPositionCommand(WristSetpoints.carry,
+                        ShoulderSetpoints.storage, false,
+                        FinishActions.NoDisable),
+                this.driveTrain.getTrajectoryCommand(returnTrajectory),
+                new ConeAcquisitionPositionCommand(WristSetpoints.carry,
+                        ShoulderSetpoints.high, false,
+                        FinishActions.NoDisable),
+                new DisposeConeCommand(1.0),
+                new ConeAcquisitionPositionCommand(WristSetpoints.storage,
+                        ShoulderSetpoints.storage, false,
+                        FinishActions.NoDisable));
 
         this.setInitialPose(initialTrajectory);
     }
