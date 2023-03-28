@@ -61,16 +61,19 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
             delayTimer.restart();
         } else {
             shoulder.enable();
+            shoulder.setSetpoint(shoulderSetpoint);
         }
         wrist.enable();
         wrist.setSetpoint(wristSetpoint);
-        shoulder.setSetpoint(shoulderSetpoint);
     }
 
     @Override
     public void execute() {
-        if (!shoulder.isEnabled() && delayTimer.get() > delayTime) {
-            shoulder.enable();
+        if (delayTimer.get() > delayTime) {
+            if (!shoulder.isEnabled()) {
+                shoulder.enable();
+            }
+            shoulder.setSetpoint(shoulderSetpoint);
             delayTimer.stop();
         }
 
