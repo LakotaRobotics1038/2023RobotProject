@@ -13,6 +13,7 @@ public class ShoulderPositionCommand extends CommandBase {
     private ShoulderSetpoints setpoint;
     private boolean noFinish = false;
     private Timer delayTimer = new Timer();
+    private double delayTime = 0;
 
     /**
      * @deprecated
@@ -34,7 +35,15 @@ public class ShoulderPositionCommand extends CommandBase {
     public void initialize() {
         if (arm.getPosition() == ArmExtensionStates.Out) {
             arm.setPosition(ArmExtensionStates.In);
-            delayTimer.start();
+
+            double currentSetpoint = shoulder.getSetpoint();
+            if (currentSetpoint == ShoulderSetpoints.high.value) {
+                this.delayTime = ShoulderSetpoints.high.armDelay;
+            } else if (currentSetpoint == ShoulderSetpoints.acquire.value) {
+                this.delayTime = ShoulderSetpoints.acquire.armDelay;
+            }
+
+            delayTimer.restart();
         } else {
             shoulder.enable();
         }
@@ -44,7 +53,7 @@ public class ShoulderPositionCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (!shoulder.isEnabled() && delayTimer.get() > 1.0) {
+        if (!shoulder.isEnabled() && delayTimer.get() > delayTime) {
             shoulder.enable();
             delayTimer.stop();
         }

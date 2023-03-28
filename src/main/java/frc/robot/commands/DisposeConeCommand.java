@@ -20,8 +20,7 @@ public class DisposeConeCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        timer.reset();
-        timer.start();
+        timer.restart();
         coneAcquisition.dispose();
     }
 

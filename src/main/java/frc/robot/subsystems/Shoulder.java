@@ -20,15 +20,22 @@ public class Shoulder extends PIDSubsystem {
 
     public enum ShoulderSetpoints {
         storage(ShoulderConstants.kStorageSetpoint),
-        acquire(ShoulderConstants.kAcquireSetpoint),
+        acquire(ShoulderConstants.kAcquireSetpoint, 1.0),
         mid(ShoulderConstants.kMidSetpoint),
         humanPlayer(ShoulderConstants.kHumanPlayerSetpoint),
-        high(ShoulderConstants.kHighSetpoint);
+        high(ShoulderConstants.kHighSetpoint, 0.15);
 
         public final int value;
+        public final double armDelay;
 
         ShoulderSetpoints(int value) {
             this.value = value;
+            this.armDelay = 0;
+        }
+
+        ShoulderSetpoints(int value, double armDelay) {
+            this.value = value;
+            this.armDelay = armDelay;
         }
     }
 

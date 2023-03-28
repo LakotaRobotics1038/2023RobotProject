@@ -26,6 +26,7 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
     private ShoulderSetpoints shoulderSetpoint;
     private FinishActions finishAction = FinishActions.Default;
     private boolean extendArm = false;
+    private double delayTime = 0;
 
     public ConeAcquisitionPositionCommand(WristSetpoints wristSetpoint, ShoulderSetpoints shoulderSetpoint,
             boolean extendArm) {
@@ -49,7 +50,15 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
     public void initialize() {
         if (arm.getPosition() == ArmExtensionStates.Out && !this.extendArm) {
             arm.setPosition(ArmExtensionStates.In);
-            delayTimer.start();
+
+            double currentSetpoint = shoulder.getSetpoint();
+            if (currentSetpoint == ShoulderSetpoints.high.value) {
+                this.delayTime = ShoulderSetpoints.high.armDelay;
+            } else if (currentSetpoint == ShoulderSetpoints.acquire.value) {
+                this.delayTime = ShoulderSetpoints.acquire.armDelay;
+            }
+
+            delayTimer.restart();
         } else {
             shoulder.enable();
         }
@@ -60,7 +69,7 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (!shoulder.isEnabled() && delayTimer.get() > 2.0) {
+        if (!shoulder.isEnabled() && delayTimer.get() > delayTime) {
             shoulder.enable();
             delayTimer.stop();
         }
