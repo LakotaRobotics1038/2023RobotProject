@@ -13,7 +13,9 @@ public class ShoulderConstants {
     public static final int kMinExtensionPosition = 10;
     public static final int kStorageSetpoint = 0;
     public static final int kAcquireSetpoint = 12;
+    public static final double kAcquireArmDelay = 1.0;
     public static final int kMidSetpoint = 50;
     public static final int kHumanPlayerSetpoint = 60;
     public static final int kHighSetpoint = 70;
+    public static final double kHighArmDelay = 0.15;
 }
