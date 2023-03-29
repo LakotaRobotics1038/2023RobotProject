@@ -21,8 +21,12 @@ public class Compressor1038 {
 
     }
 
-    public void run() {
+    public void enable() {
         compressor.enableAnalog(PneumaticsConstants.kMinPressure, PneumaticsConstants.kMaxPressure);
+    }
+
+    public void disable() {
+        compressor.disable();
     }
 
     public double getPressure() {

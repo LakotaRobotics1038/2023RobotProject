@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
     private AutonSelector autonSelector = AutonSelector.getInstance();
     private SwagLights swagLights = SwagLights.getInstance();
     private OperatorJoystick operatorJoystick = OperatorJoystick.getInstance();
+    private Compressor1038 compressor = Compressor1038.getInstance();
 
     // Variables
     private Auton autonomousCommand;
@@ -66,6 +67,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
         operatorJoystick.clearDefaults();
+        compressor.disable();
         autonomousCommand = autonSelector.chooseAuton();
 
         if (autonomousCommand != null) {
@@ -93,12 +95,12 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         Dashboard.getInstance().clearTrajectory();
         operatorJoystick.enableDefaults();
+        compressor.enable();
         driveTrain.setDrivingIdleMode(SwerveModuleConstants.kTeleopDrivingMotorIdleMode);
     }
 
     @Override
     public void teleopPeriodic() {
-        Compressor1038.getInstance().run();
     }
 
     @Override
