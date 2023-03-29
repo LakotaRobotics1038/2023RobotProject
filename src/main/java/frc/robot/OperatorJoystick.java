@@ -182,7 +182,7 @@ public class OperatorJoystick extends XboxController1038 {
         wrist.removeDefaultCommand();
     }
 
-    public boolean getCube() {
+    public boolean isCubeMode() {
         return isCube;
     }
 }

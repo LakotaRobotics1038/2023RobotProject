@@ -162,7 +162,7 @@ public class Dashboard extends SubsystemBase {
                 .withPosition(6, 0)
                 .withSize(4, 4);
 
-        driversTab.add("Operator Mode", operatorJoystick.getCube())
+        driversTab.addBoolean("Operator Mode", operatorJoystick::isCubeMode)
                 .withPosition(5, 0)
                 .withWidget(BuiltInWidgets.kBooleanBox)
                 .withProperties(Map.of("colorWhenTrue", "purple", "colorWhenFalse", "yellow"));
