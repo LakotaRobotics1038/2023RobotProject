@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.OperatorJoystick;
 import frc.robot.autons.AutonSelector.AutonChoices;
 
 public class Dashboard extends SubsystemBase {
@@ -28,6 +28,7 @@ public class Dashboard extends SubsystemBase {
     private Wrist wrist = Wrist.getInstance();
     private ConeAcquisition coneAcquisition = ConeAcquisition.getInstance();
     private Compressor1038 compressor = Compressor1038.getInstance();
+    private OperatorJoystick operatorJoystick = OperatorJoystick.getInstance();
 
     // Choosers
     private SendableChooser<AutonChoices> autoChooser = new SendableChooser<>();
@@ -160,6 +161,11 @@ public class Dashboard extends SubsystemBase {
         driversTab.add("Camera Stream", videoSink.getSource())
                 .withPosition(6, 0)
                 .withSize(4, 4);
+
+        driversTab.add("Operator Mode", operatorJoystick.getCube())
+                .withPosition(5, 0)
+                .withWidget(BuiltInWidgets.kBooleanBox)
+                .withProperties(Map.of("colorWhenTrue", "purple", "colorWhenFalse", "yellow"));
 
         // If you set the camera before sending the source to the dashboard
         // it will not toggle
