@@ -8,7 +8,7 @@ public final class AutoConstants {
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;
 
-    public static final double kPXController = 1.0;
+    public static final double kPXController = 0.8;
     public static final double kPYController = 2.0;
     public static final double kPThetaController = 1.5;
 
