@@ -188,6 +188,13 @@ public class Dashboard extends SubsystemBase {
             resetGyro.setBoolean(false);
         }
         field.setRobotPose(driveTrain.getPose());
+        boolean isCubeMode = operatorJoystick.isCubeMode();
+        // TODO: does this work?
+        if (isCubeMode && videoSink.getSource().equals(coneCam)) {
+            this.setCamera(Cameras.cubeCamera);
+        } else if (!isCubeMode && videoSink.getSource().equals(cubeCam)) {
+            this.setCamera(Cameras.coneCamera);
+        }
         // shoulder.setP(shoulderP.getDouble(ShoulderConstants.kP));
         // shoulder.setI(shoulderI.getDouble(ShoulderConstants.kI));
         // shoulder.setD(shoulderD.getDouble(ShoulderConstants.kD));
@@ -226,7 +233,7 @@ public class Dashboard extends SubsystemBase {
      *
      * @param camera
      */
-    public void setCamera(Cameras camera) {
+    private void setCamera(Cameras camera) {
         switch (camera) {
             case coneCamera:
                 videoSink.setSource(coneCam);

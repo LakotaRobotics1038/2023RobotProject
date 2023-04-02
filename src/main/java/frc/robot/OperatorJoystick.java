@@ -29,7 +29,6 @@ import frc.robot.constants.CubeShooterConstants;
 import frc.robot.constants.IOConstants;
 
 public class OperatorJoystick extends XboxController1038 {
-    private Dashboard dashboard = Dashboard.getInstance();
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
     private Wrist wrist = Wrist.getInstance();
@@ -60,11 +59,9 @@ public class OperatorJoystick extends XboxController1038 {
                     if (this.isCube) {
                         new ConeAcquisitionPositionCommand(WristSetpoints.storage, ShoulderSetpoints.storage, false)
                                 .schedule();
-                        dashboard.setCamera(Cameras.cubeCamera);
                         wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.storage, true));
                     } else {
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
-                        dashboard.setCamera(Cameras.coneCamera);
                         wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.carry, true));
                     }
                 }));
