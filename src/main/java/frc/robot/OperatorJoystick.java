@@ -5,13 +5,11 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.CubeShooter;
-import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.Shoulder;
 import frc.robot.subsystems.SwagLights;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
-import frc.robot.subsystems.Dashboard.Cameras;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Wrist.WristSetpoints;
 import frc.robot.commands.AcquireConeCommand;
@@ -25,6 +23,7 @@ import frc.robot.commands.ShootCubeCommand;
 import frc.robot.commands.ShoulderPositionCommand;
 import frc.robot.commands.WristPositionCommand;
 import frc.robot.commands.ConeAcquisitionPositionCommand.FinishActions;
+import frc.robot.constants.ConeAcquisitionConstants;
 import frc.robot.constants.CubeShooterConstants;
 import frc.robot.constants.IOConstants;
 
@@ -80,7 +79,8 @@ public class OperatorJoystick extends XboxController1038 {
         // Cone Acquisition
         rightTrigger
                 .and(() -> !this.isCube)
-                .whileTrue(new AcquireConeCommand());
+                .whileTrue(new AcquireConeCommand())
+                .onFalse(new AcquireConeCommand(ConeAcquisitionConstants.kHoldConeSpeed));
         rightBumper
                 .and(() -> !this.isCube)
                 .whileTrue(new DisposeConeCommand());

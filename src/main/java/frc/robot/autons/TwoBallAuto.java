@@ -16,6 +16,7 @@ import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.DisposeConeCommand;
 import frc.robot.commands.ShootCubeCommand;
 import frc.robot.commands.ConeAcquisitionPositionCommand.FinishActions;
+import frc.robot.constants.ConeAcquisitionConstants;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
@@ -47,7 +48,7 @@ public class TwoBallAuto extends Auton {
                                 this.driveTrain.getTrajectoryCommand(initialTrajectory),
                                 initialTrajectory.getMarkers(),
                                 eventMap)),
-                new AcquireConeCommand(2.0),
+                new AcquireConeCommand(ConeAcquisitionConstants.kAcquireSpeed, 1.0),
                 new ConeAcquisitionPositionCommand(WristSetpoints.carry,
                         ShoulderSetpoints.storage, false,
                         FinishActions.NoDisable),

@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 // import com.revrobotics.Rev2mDistanceSensor;
 // import com.revrobotics.Rev2mDistanceSensor.Port;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.constants.ConeAcquisitionConstants;
@@ -46,8 +47,9 @@ public class ConeAcquisition extends SubsystemBase {
         return coneAcquisitionMotor.getOutputCurrent();
     }
 
-    public void acquire() {
-        coneAcquisitionMotor.set(ConeAcquisitionConstants.kAcquireSpeed);
+    public void acquire(double speed) {
+        speed = MathUtil.clamp(speed, NeoMotorConstants.kMinPower, NeoMotorConstants.kMaxPower);
+        coneAcquisitionMotor.set(speed);
     }
 
     public void dispose() {
