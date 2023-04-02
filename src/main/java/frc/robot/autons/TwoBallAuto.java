@@ -9,7 +9,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AcquireConeCommand;
 import frc.robot.commands.ConeAcquisitionPositionCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
@@ -49,13 +49,16 @@ public class TwoBallAuto extends Auton {
                                 initialTrajectory.getMarkers(),
                                 eventMap)),
                 new AcquireConeCommand(ConeAcquisitionConstants.kAcquireSpeed, 1.0),
-                new ConeAcquisitionPositionCommand(WristSetpoints.carry,
-                        ShoulderSetpoints.storage, false,
-                        FinishActions.NoDisable),
-                new FollowPathWithEvents(
-                        this.driveTrain.getTrajectoryCommand(returnTrajectory),
-                        returnTrajectory.getMarkers(),
-                        eventMap),
+                new ParallelCommandGroup(
+                        new AcquireConeCommand(ConeAcquisitionConstants.kHoldConeSpeed),
+                        new ConeAcquisitionPositionCommand(WristSetpoints.carry,
+                                ShoulderSetpoints.storage, false,
+                                FinishActions.NoDisable),
+                        new FollowPathWithEvents(
+                                this.driveTrain.getTrajectoryCommand(returnTrajectory),
+                                returnTrajectory.getMarkers(),
+                                eventMap)),
+                new WaitCommand(0.5),
                 new DisposeConeCommand(2.0),
                 new ConeAcquisitionPositionCommand(WristSetpoints.storage,
                         ShoulderSetpoints.storage, false,
