@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AcquireConeCommand;
+import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.ConeAcquisitionPositionCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.DisposeConeCommand;
@@ -32,38 +33,33 @@ public class TwoBallAuto extends Auton {
 
         PathPlannerTrajectory initialTrajectory = trajectories.get(0);
         PathPlannerTrajectory returnTrajectory = trajectories.get(1);
-        eventMap.put("AcquireCone", new ConeAcquisitionPositionCommand(WristSetpoints.acquire,
-                ShoulderSetpoints.acquire, true,
-                FinishActions.NoDisable));
-        eventMap.put("ReadyScoreCone", new ConeAcquisitionPositionCommand(WristSetpoints.high,
-                ShoulderSetpoints.high, true,
-                FinishActions.NoDisable));
+        eventMap.put("AcquireCone", new AcquireCubeCommand());
 
         Dashboard.getInstance().setTrajectory(initialTrajectory.concatenate(returnTrajectory));
 
         super.addCommands(
-                new ShootCubeCommand(CubeShooterSetpoints.high, 0.25),
-                new ParallelCommandGroup(
-                        new CubeAcquisitionPositionCommand(AcquisitionStates.Up),
-                        new FollowPathWithEvents(
-                                this.driveTrain.getTrajectoryCommand(initialTrajectory),
-                                initialTrajectory.getMarkers(),
-                                eventMap)),
-                new AcquireConeCommand(ConeAcquisitionConstants.kAcquireSpeed, 0.50),
-                new ConeAcquisitionPositionCommand(WristSetpoints.carry,
+                new ParallelRaceGroup(
+                        new AcquireConeCommand(ConeAcquisitionConstants.kAcquireSpeed),
+                        new ConeAcquisitionPositionCommand(WristSetpoints.high,
+                                ShoulderSetpoints.high, true,
+                                FinishActions.NoDisable)),
+                new WaitCommand(0.25),
+                new DisposeConeCommand(0.5),
+                new ConeAcquisitionPositionCommand(WristSetpoints.storage,
                         ShoulderSetpoints.storage, false,
                         FinishActions.NoDisable),
-                new ParallelRaceGroup(
-                        new AcquireConeCommand(ConeAcquisitionConstants.kHoldConeSpeed),
+                new CubeAcquisitionPositionCommand(AcquisitionStates.Down),
+                new FollowPathWithEvents(
+                        this.driveTrain.getTrajectoryCommand(initialTrajectory),
+                        initialTrajectory.getMarkers(),
+                        eventMap),
+                new ParallelCommandGroup(
+                        new AcquireCubeCommand(),
                         new FollowPathWithEvents(
                                 this.driveTrain.getTrajectoryCommand(returnTrajectory),
                                 returnTrajectory.getMarkers(),
                                 eventMap)),
-                new WaitCommand(0.5),
-                new DisposeConeCommand(0.5),
-                new ConeAcquisitionPositionCommand(WristSetpoints.storage,
-                        ShoulderSetpoints.storage, false,
-                        FinishActions.NoDisable));
+                new ShootCubeCommand(CubeShooterSetpoints.high, 0.25));
 
         this.setInitialPose(initialTrajectory);
     }
