@@ -33,7 +33,8 @@ public class TwoBallAuto extends Auton {
 
         PathPlannerTrajectory initialTrajectory = trajectories.get(0);
         PathPlannerTrajectory returnTrajectory = trajectories.get(1);
-        eventMap.put("AcquireCone", new AcquireCubeCommand());
+        eventMap.put("AcquireCube", new AcquireCubeCommand());
+        eventMap.put("ReadyScoreCube", new CubeAcquisitionPositionCommand(AcquisitionStates.Down));
 
         Dashboard.getInstance().setTrajectory(initialTrajectory.concatenate(returnTrajectory));
 
@@ -45,14 +46,14 @@ public class TwoBallAuto extends Auton {
                                 FinishActions.NoDisable)),
                 new WaitCommand(0.25),
                 new DisposeConeCommand(0.5),
-                new ConeAcquisitionPositionCommand(WristSetpoints.storage,
-                        ShoulderSetpoints.storage, false,
-                        FinishActions.NoDisable),
-                new CubeAcquisitionPositionCommand(AcquisitionStates.Down),
-                new FollowPathWithEvents(
-                        this.driveTrain.getTrajectoryCommand(initialTrajectory),
-                        initialTrajectory.getMarkers(),
-                        eventMap),
+                new ParallelCommandGroup(
+                        new ConeAcquisitionPositionCommand(WristSetpoints.storage,
+                                ShoulderSetpoints.storage, false,
+                                FinishActions.NoDisable),
+                        new FollowPathWithEvents(
+                                this.driveTrain.getTrajectoryCommand(initialTrajectory),
+                                initialTrajectory.getMarkers(),
+                                eventMap)),
                 new ParallelCommandGroup(
                         new AcquireCubeCommand(),
                         new FollowPathWithEvents(
