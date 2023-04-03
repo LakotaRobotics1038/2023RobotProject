@@ -199,11 +199,11 @@
     },
     {
       "anchorPoint": {
-        "x": 1.77,
+        "x": 1.7,
         "y": 0.86
       },
       "prevControl": {
-        "x": 2.2682240628163957,
+        "x": 2.198224062816396,
         "y": 0.8537291454172756
       },
       "nextControl": null,
@@ -224,13 +224,19 @@
     {
       "position": 1.4347212357954533,
       "names": [
-        "ReadyScoreCube"
+        "ReadyAcquireCube"
       ]
     },
     {
       "position": 3.35,
       "names": [
         "AcquireCube"
+      ]
+    },
+    {
+      "position": 6.0,
+      "names": [
+        "ReadyShootCube"
       ]
     }
   ]

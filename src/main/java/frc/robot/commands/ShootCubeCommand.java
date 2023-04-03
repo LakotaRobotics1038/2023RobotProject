@@ -13,6 +13,7 @@ public class ShootCubeCommand extends CommandBase {
     private CubeShooterSetpoints setpoint;
     private double secondsToShoot = 0.0;
     private boolean overrideFeedOut = false;
+    private boolean manualFeedOut = false;
     private Timer timer = new Timer();
 
     public ShootCubeCommand(CubeShooterSetpoints setpoint) {
@@ -26,6 +27,13 @@ public class ShootCubeCommand extends CommandBase {
         this.secondsToShoot = secondsToShoot;
     }
 
+    public ShootCubeCommand(CubeShooterSetpoints setpoint, boolean manualFeedOut, double secondsToShoot) {
+        this.addRequirements(cubeShooter, cubeAcquisition);
+        this.setpoint = setpoint;
+        this.secondsToShoot = secondsToShoot;
+        this.manualFeedOut = manualFeedOut;
+    }
+
     @Override
     public void initialize() {
         this.overrideFeedOut = false;
@@ -36,7 +44,7 @@ public class ShootCubeCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (overrideFeedOut || cubeShooter.onTarget()) {
+        if (overrideFeedOut || (!manualFeedOut && cubeShooter.onTarget())) {
             cubeShooter.feedOut();
             timer.start();
         }
@@ -55,5 +63,6 @@ public class ShootCubeCommand extends CommandBase {
     public void end(boolean interrupted) {
         cubeShooter.disable();
         cubeShooter.stopFeeder();
+        timer.stop();
     }
 }

@@ -8,6 +8,7 @@ import com.pathplanner.lib.commands.FollowPathWithEvents;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -32,10 +33,12 @@ public class TwoBallAuto extends Auton {
     public TwoBallAuto(Alliance alliance, List<PathPlannerTrajectory> trajectories) {
         super(alliance);
 
+        ShootCubeCommand shootCube = new ShootCubeCommand(CubeShooterSetpoints.high, true, 0.5);
+
         PathPlannerTrajectory initialTrajectory = trajectories.get(0);
         PathPlannerTrajectory returnTrajectory = trajectories.get(1);
+        eventMap.put("ReadyAcquireCube", new CubeAcquisitionPositionCommand(AcquisitionStates.Down));
         eventMap.put("AcquireCube", new AcquireCubeCommand());
-        eventMap.put("ReadyScoreCube", new CubeAcquisitionPositionCommand(AcquisitionStates.Down));
 
         Dashboard.getInstance().setTrajectory(initialTrajectory.concatenate(returnTrajectory));
 
@@ -60,12 +63,15 @@ public class TwoBallAuto extends Auton {
                                 initialTrajectory.getMarkers(),
                                 eventMap)),
                 new ParallelCommandGroup(
-                        new AcquireCubeCommand(),
-                        new FollowPathWithEvents(
-                                this.driveTrain.getTrajectoryCommand(returnTrajectory),
-                                returnTrajectory.getMarkers(),
-                                eventMap)),
-                new ShootCubeCommand(CubeShooterSetpoints.high, 0.25));
+                        new SequentialCommandGroup(
+                                new AcquireCubeCommand(),
+                                shootCube),
+                        new SequentialCommandGroup(
+                                new FollowPathWithEvents(
+                                        this.driveTrain.getTrajectoryCommand(returnTrajectory),
+                                        returnTrajectory.getMarkers(),
+                                        eventMap),
+                                new InstantCommand(() -> shootCube.overrideFeed()))));
 
         this.setInitialPose(initialTrajectory);
     }
