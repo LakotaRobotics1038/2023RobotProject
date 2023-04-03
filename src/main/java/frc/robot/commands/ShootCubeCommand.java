@@ -13,7 +13,7 @@ public class ShootCubeCommand extends CommandBase {
     private CubeShooterSetpoints setpoint;
     private double secondsToShoot = 0.0;
     private boolean overrideFeedOut = false;
-    private double startTime = 0.0;
+    private Timer timer = new Timer();
 
     public ShootCubeCommand(CubeShooterSetpoints setpoint) {
         this.addRequirements(cubeShooter, cubeAcquisition);
@@ -31,15 +31,14 @@ public class ShootCubeCommand extends CommandBase {
         this.overrideFeedOut = false;
         cubeAcquisition.setPosition(AcquisitionStates.Down);
         cubeShooter.enable(setpoint);
+        timer.reset();
     }
 
     @Override
     public void execute() {
         if (overrideFeedOut || cubeShooter.onTarget()) {
-            if (this.startTime == 0.0 && this.secondsToShoot != 0) {
-                this.startTime = Timer.getFPGATimestamp();
-            }
             cubeShooter.feedOut();
+            timer.start();
         }
     }
 
@@ -49,11 +48,7 @@ public class ShootCubeCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (this.startTime != 0.0 && this.secondsToShoot != 0) {
-            return this.startTime + this.secondsToShoot < Timer.getFPGATimestamp();
-        }
-
-        return false;
+        return secondsToShoot == 0.0 ? false : timer.get() >= secondsToShoot;
     }
 
     @Override
