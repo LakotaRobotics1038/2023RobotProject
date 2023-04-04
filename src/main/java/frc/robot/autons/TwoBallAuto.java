@@ -37,6 +37,7 @@ public class TwoBallAuto extends Auton {
 
         PathPlannerTrajectory initialTrajectory = trajectories.get(0);
         PathPlannerTrajectory returnTrajectory = trajectories.get(1);
+        PathPlannerTrajectory finalTrajectory = trajectories.get(2);
         eventMap.put("ReadyAcquireCube", new CubeAcquisitionPositionCommand(AcquisitionStates.Down));
         eventMap.put("AcquireCube", new AcquireCubeCommand());
 
@@ -71,7 +72,10 @@ public class TwoBallAuto extends Auton {
                                         this.driveTrain.getTrajectoryCommand(returnTrajectory),
                                         returnTrajectory.getMarkers(),
                                         eventMap),
-                                new InstantCommand(() -> shootCube.overrideFeed()))));
+                                new InstantCommand(() -> shootCube.overrideFeed()))),
+                new ParallelCommandGroup(
+                        new CubeAcquisitionPositionCommand(AcquisitionStates.Up),
+                        this.driveTrain.getTrajectoryCommand(finalTrajectory)));
 
         this.setInitialPose(initialTrajectory);
     }
