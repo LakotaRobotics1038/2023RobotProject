@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.AcquireConeCommand;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.ConeAcquisitionPositionCommand;
@@ -21,6 +22,7 @@ import frc.robot.commands.DisposeConeCommand;
 import frc.robot.commands.ShootCubeCommand;
 import frc.robot.commands.ConeAcquisitionPositionCommand.FinishActions;
 import frc.robot.constants.ConeAcquisitionConstants;
+import frc.robot.subsystems.CubeShooter;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
@@ -29,6 +31,7 @@ import frc.robot.subsystems.Wrist.WristSetpoints;
 
 public class TwoBallAuto extends Auton {
     private HashMap<String, Command> eventMap = new HashMap<>();
+    private CubeShooter cubeShooter = CubeShooter.getInstance();
 
     public TwoBallAuto(Alliance alliance, List<PathPlannerTrajectory> trajectories) {
         super(alliance);
@@ -75,6 +78,7 @@ public class TwoBallAuto extends Auton {
                                         this.driveTrain.getTrajectoryCommand(returnTrajectory),
                                         returnTrajectory.getMarkers(),
                                         eventMap),
+                                new WaitUntilCommand(cubeShooter::onTarget),
                                 new InstantCommand(() -> shootCube.overrideFeed()))),
                 new ParallelCommandGroup(
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up),
