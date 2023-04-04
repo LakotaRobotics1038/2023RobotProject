@@ -41,7 +41,10 @@ public class TwoBallAuto extends Auton {
         eventMap.put("ReadyAcquireCube", new CubeAcquisitionPositionCommand(AcquisitionStates.Down));
         eventMap.put("AcquireCube", new AcquireCubeCommand());
 
-        Dashboard.getInstance().setTrajectory(initialTrajectory.concatenate(returnTrajectory));
+        Dashboard.getInstance().setTrajectory(
+                initialTrajectory
+                        .concatenate(returnTrajectory)
+                        .concatenate(finalTrajectory));
 
         super.addCommands(
                 new ParallelRaceGroup(

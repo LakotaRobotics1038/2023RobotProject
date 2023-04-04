@@ -40,7 +40,7 @@ public class Trajectories {
 
     public static List<PathPlannerTrajectory> TwoBallSubstation() {
         return PathPlanner.loadPathGroup("Two Ball (Substation)",
-                AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+                AutoConstants.kMaxSpeedMetersPerSecond / (3 / 2),
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
 }
