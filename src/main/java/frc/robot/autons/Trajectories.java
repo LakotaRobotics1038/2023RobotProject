@@ -34,7 +34,7 @@ public class Trajectories {
 
     public static List<PathPlannerTrajectory> TwoBallScoringTable() {
         return PathPlanner.loadPathGroup("Two Ball (Scoring Table)",
-                AutoConstants.kMaxSpeedMetersPerSecond / 2,
+                AutoConstants.kMaxSpeedMetersPerSecond / (3 / 2),
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
 
