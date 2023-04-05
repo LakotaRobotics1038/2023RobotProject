@@ -136,7 +136,7 @@ public class CubeShooter extends SubsystemBase {
 
     public boolean onTarget() {
         double velocity = this.getVelocity();
-        return velocity <= this.setpoint.value + CubeShooterConstants.kShooterTolerance &&
-                velocity >= this.setpoint.value - CubeShooterConstants.kShooterTolerance;
+        return this.setpoint != null ? velocity <= this.setpoint.value + CubeShooterConstants.kShooterTolerance &&
+                velocity >= this.setpoint.value - CubeShooterConstants.kShooterTolerance : false;
     }
 }
