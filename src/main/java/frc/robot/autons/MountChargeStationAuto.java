@@ -4,7 +4,11 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.BalanceRobotCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.ShootCubeCommand;
@@ -23,7 +27,12 @@ public class MountChargeStationAuto extends Auton {
         super.addCommands(
                 new ShootCubeCommand(CubeShooterSetpoints.high, 1.0),
                 new ParallelCommandGroup(
-                        this.driveTrain.getTrajectoryCommand(trajectory),
+                        new ParallelRaceGroup(
+                                new SequentialCommandGroup(
+                                        new WaitUntilCommand(() -> (int) driveTrain.getRoll() >= 15),
+                                        new WaitCommand(1.0),
+                                        new WaitUntilCommand(() -> (int) driveTrain.getRoll() <= 14)),
+                                this.driveTrain.getTrajectoryCommand(trajectory)),
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up)),
                 new BalanceRobotCommand(),
                 new RunCommand(() -> driveTrain.setX(), driveTrain));
