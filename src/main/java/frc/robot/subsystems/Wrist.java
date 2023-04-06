@@ -25,7 +25,8 @@ public class Wrist extends PIDSubsystem {
         acquire(WristConstants.kAcquireSetpoint),
         mid(WristConstants.kMidSetpoint),
         humanPlayer(WristConstants.kHumanPlayerSetpoint),
-        high(WristConstants.kHighSetpoint);
+        highAuto(WristConstants.kHighAutoSetpoint),
+        high(WristConstants.kHighTeleopSetpoint);
 
         public final int value;
 

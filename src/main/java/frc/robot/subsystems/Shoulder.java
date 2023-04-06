@@ -23,7 +23,8 @@ public class Shoulder extends PIDSubsystem {
         acquire(ShoulderConstants.kAcquireSetpoint, ShoulderConstants.kAcquireArmDelay),
         mid(ShoulderConstants.kMidSetpoint),
         humanPlayer(ShoulderConstants.kHumanPlayerSetpoint),
-        high(ShoulderConstants.kHighSetpoint, ShoulderConstants.kHighArmDelay);
+        highAuto(ShoulderConstants.kHighAutoSetpoint, ShoulderConstants.kHighArmDelay),
+        high(ShoulderConstants.kHighTeleopSetpoint, ShoulderConstants.kHighArmDelay);
 
         public final int value;
         public final double armDelay;
