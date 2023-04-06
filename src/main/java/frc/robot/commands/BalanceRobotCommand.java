@@ -11,8 +11,8 @@ import frc.robot.subsystems.DriveTrain;
 public class BalanceRobotCommand extends PIDCommand {
 
     private static DriveTrain driveTrain = DriveTrain.getInstance();
+    private Timer timer = new Timer();
     private double delayFinish = 0.5;
-    private double startTime = 0.0;
 
     public BalanceRobotCommand() {
         super(new PIDController(BalanceConstants.kP, BalanceConstants.kI, BalanceConstants.kD),
@@ -31,16 +31,22 @@ public class BalanceRobotCommand extends PIDCommand {
     @Override
     public void execute() {
         super.execute();
-        if (getController().atSetpoint() && this.startTime == 0.0) {
-            this.startTime = Timer.getFPGATimestamp();
+        if (getController().atSetpoint()) {
+            timer.start();
         } else if (!getController().atSetpoint()) {
-            this.startTime = 0.0;
+            timer.stop();
+            timer.reset();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return getController().atSetpoint() &&
-                this.startTime + this.delayFinish < Timer.getFPGATimestamp();
+        return getController().atSetpoint() && timer.get() > delayFinish;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        timer.stop();
+        timer.reset();
     }
 }
