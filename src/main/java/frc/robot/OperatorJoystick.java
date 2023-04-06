@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.libraries.XboxController1038;
@@ -90,13 +91,33 @@ public class OperatorJoystick extends XboxController1038 {
         ShootCubeCommand highShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.high);
         yButton
                 .and(() -> this.isCube)
-                .whileTrue(highShootCubeCommand);
+                .whileTrue(highShootCubeCommand)
+                .whileTrue(new RunCommand(() -> {
+                    if (cubeShooter.onTarget()) {
+                        this.setRumble(RumbleType.kBothRumble, 1);
+                    } else {
+                        this.setRumble(RumbleType.kBothRumble, 0);
+                    }
+                }))
+                .onFalse(new InstantCommand(() -> {
+                    this.setRumble(RumbleType.kBothRumble, 0);
+                }));
 
         // Mid
         ShootCubeCommand midShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.mid);
         xButton
                 .and(() -> this.isCube)
-                .whileTrue(midShootCubeCommand);
+                .whileTrue(midShootCubeCommand)
+                .whileTrue(new RunCommand(() -> {
+                    if (cubeShooter.onTarget()) {
+                        this.setRumble(RumbleType.kBothRumble, 1);
+                    } else {
+                        this.setRumble(RumbleType.kBothRumble, 0);
+                    }
+                }))
+                .onFalse(new InstantCommand(() -> {
+                    this.setRumble(RumbleType.kBothRumble, 0);
+                }));
 
         // Manual
         ManualShootCubeCommand manualShootCommand = new ManualShootCubeCommand();
@@ -106,9 +127,9 @@ public class OperatorJoystick extends XboxController1038 {
 
         leftTrigger
                 .and(() -> this.isCube)
-                .onTrue(new InstantCommand(() -> {
-                    highShootCubeCommand.overrideFeed();
-                    midShootCubeCommand.overrideFeed();
+                .whileTrue(new RunCommand(() -> {
+                    highShootCubeCommand.feedOut();
+                    midShootCubeCommand.feedOut();
                     manualShootCommand.feedOut();
                 }));
 

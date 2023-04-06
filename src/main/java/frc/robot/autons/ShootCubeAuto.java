@@ -11,7 +11,7 @@ public class ShootCubeAuto extends Auton {
         super(alliance);
 
         super.addCommands(
-                new ShootCubeCommand(CubeShooterSetpoints.high, 1.0),
+                new ShootCubeCommand(CubeShooterSetpoints.high, true, 1.0),
                 new CubeAcquisitionPositionCommand(AcquisitionStates.Up));
     }
 }

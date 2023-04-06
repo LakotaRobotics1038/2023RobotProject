@@ -36,7 +36,7 @@ public class TwoBallAuto extends Auton {
     public TwoBallAuto(Alliance alliance, List<PathPlannerTrajectory> trajectories) {
         super(alliance);
 
-        ShootCubeCommand shootCube = new ShootCubeCommand(CubeShooterSetpoints.high, true, 0.5);
+        ShootCubeCommand shootCube = new ShootCubeCommand(CubeShooterSetpoints.high, 0.5);
 
         PathPlannerTrajectory initialTrajectory = trajectories.get(0);
         PathPlannerTrajectory returnTrajectory = trajectories.get(1);
