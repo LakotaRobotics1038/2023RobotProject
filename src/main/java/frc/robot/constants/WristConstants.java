@@ -15,5 +15,5 @@ public class WristConstants {
     public static final int kAcquireSetpoint = 75;
     public static final int kMidSetpoint = 106;
     public static final int kHumanPlayerSetpoint = 54;
-    public static final int kHighSetpoint = 105;
+    public static final int kHighSetpoint = 148;
 }
