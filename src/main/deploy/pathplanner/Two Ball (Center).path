@@ -220,5 +220,18 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 2.0500799005681816,
+      "names": [
+        "ReadyAcquireCube"
+      ]
+    },
+    {
+      "position": 2.4,
+      "names": [
+        "AcquireCube"
+      ]
+    }
+  ]
 }
