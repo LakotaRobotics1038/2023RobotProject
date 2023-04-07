@@ -81,20 +81,20 @@ public class TwoBallCenterAuto extends Auton {
                                         this.driveTrain.getTrajectoryCommand(overChargeStation),
                                         overChargeStation.getMarkers(),
                                         eventMap))),
+                // Get the cube and get back on charge station
+                new ParallelRaceGroup(
+                        new SequentialCommandGroup(
+                                new DetectChargeStation(driveTrain, DetectionDirections.On),
+                                new DetectChargeStation(driveTrain, DetectionDirections.Off)),
+                        new FollowPathWithEvents(
+                                this.driveTrain.getTrajectoryCommand(getCubeAndOverChargeStation),
+                                getCubeAndOverChargeStation.getMarkers(),
+                                eventMap)),
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(
                                 new AcquireCubeCommand(),
                                 shootCube),
                         new SequentialCommandGroup(
-                                // Get the cube and get back on charge station
-                                new ParallelRaceGroup(
-                                        new SequentialCommandGroup(
-                                                new DetectChargeStation(driveTrain, DetectionDirections.On),
-                                                new DetectChargeStation(driveTrain, DetectionDirections.Off)),
-                                        new FollowPathWithEvents(
-                                                this.driveTrain.getTrajectoryCommand(getCubeAndOverChargeStation),
-                                                getCubeAndOverChargeStation.getMarkers(),
-                                                eventMap)),
                                 // Back off charge station
                                 new ParallelRaceGroup(
                                         new DetectChargeStation(driveTrain, DetectionDirections.Off),
