@@ -41,20 +41,18 @@ public class TwoBallCenterAuto extends Auton {
         ShootCubeCommand shootCube = new ShootCubeCommand(CubeShooterSetpoints.high, 0.5);
         List<PathPlannerTrajectory> trajectories = Trajectories.TwoBallCenter();
 
-        PathPlannerTrajectory onChargeStationToAcq = trajectories.get(0);
-        PathPlannerTrajectory offChargeStationToAcq = trajectories.get(1);
-        PathPlannerTrajectory getCubeTrajectory = trajectories.get(2);
-        PathPlannerTrajectory offChargeStationToScore = trajectories.get(3);
-        PathPlannerTrajectory toBalance = trajectories.get(4);
+        PathPlannerTrajectory overChargeStation = trajectories.get(0);
+        PathPlannerTrajectory getCubeAndOverChargeStation = trajectories.get(1);
+        PathPlannerTrajectory scoreCubeTraj = trajectories.get(2);
+        PathPlannerTrajectory toBalance = trajectories.get(3);
 
         eventMap.put("ReadyAcquireCube", new CubeAcquisitionPositionCommand(AcquisitionStates.Down));
         eventMap.put("AcquireCube", new AcquireCubeCommand());
 
         Dashboard.getInstance().setTrajectory(
-                onChargeStationToAcq
-                        .concatenate(offChargeStationToAcq)
-                        .concatenate(getCubeTrajectory)
-                        .concatenate(offChargeStationToScore)
+                overChargeStation
+                        .concatenate(getCubeAndOverChargeStation)
+                        .concatenate(scoreCubeTraj)
                         .concatenate(toBalance));
 
         super.addCommands(
@@ -70,24 +68,19 @@ public class TwoBallCenterAuto extends Auton {
                                 FinishActions.NoDisable)),
                 new WaitCommand(0.25),
                 new DisposeConeCommand(0.5),
-                // Start toward charge station
+                // Go over charge station toward cube
                 new ParallelCommandGroup(
                         new ConeAcquisitionPositionCommand(WristSetpoints.storage,
                                 ShoulderSetpoints.storage, false,
                                 FinishActions.NoDisable),
                         new ParallelRaceGroup(
-                                new DetectChargeStation(driveTrain, DetectionDirections.On),
+                                new SequentialCommandGroup(
+                                        new DetectChargeStation(driveTrain, DetectionDirections.On),
+                                        new DetectChargeStation(driveTrain, DetectionDirections.Off)),
                                 new FollowPathWithEvents(
-                                        this.driveTrain.getTrajectoryCommand(onChargeStationToAcq),
-                                        onChargeStationToAcq.getMarkers(),
+                                        this.driveTrain.getTrajectoryCommand(overChargeStation),
+                                        overChargeStation.getMarkers(),
                                         eventMap))),
-                // Get off the charge station
-                new ParallelRaceGroup(
-                        new DetectChargeStation(driveTrain, DetectionDirections.Off),
-                        new FollowPathWithEvents(
-                                this.driveTrain.getTrajectoryCommand(offChargeStationToAcq),
-                                offChargeStationToAcq.getMarkers(),
-                                eventMap)),
                 new ParallelCommandGroup(
                         new SequentialCommandGroup(
                                 new AcquireCubeCommand(),
@@ -95,17 +88,19 @@ public class TwoBallCenterAuto extends Auton {
                         new SequentialCommandGroup(
                                 // Get the cube and get back on charge station
                                 new ParallelRaceGroup(
-                                        new DetectChargeStation(driveTrain, DetectionDirections.On),
+                                        new SequentialCommandGroup(
+                                                new DetectChargeStation(driveTrain, DetectionDirections.On),
+                                                new DetectChargeStation(driveTrain, DetectionDirections.Off)),
                                         new FollowPathWithEvents(
-                                                this.driveTrain.getTrajectoryCommand(getCubeTrajectory),
-                                                getCubeTrajectory.getMarkers(),
+                                                this.driveTrain.getTrajectoryCommand(getCubeAndOverChargeStation),
+                                                getCubeAndOverChargeStation.getMarkers(),
                                                 eventMap)),
                                 // Back off charge station
                                 new ParallelRaceGroup(
                                         new DetectChargeStation(driveTrain, DetectionDirections.Off),
                                         new FollowPathWithEvents(
-                                                this.driveTrain.getTrajectoryCommand(offChargeStationToScore),
-                                                offChargeStationToScore.getMarkers(),
+                                                this.driveTrain.getTrajectoryCommand(scoreCubeTraj),
+                                                scoreCubeTraj.getMarkers(),
                                                 eventMap)),
                                 // Score the cube
                                 new WaitUntilCommand(cubeShooter::onTarget),
@@ -115,9 +110,9 @@ public class TwoBallCenterAuto extends Auton {
                         // Balance
                         new ParallelRaceGroup(
                                 new DetectChargeStation(driveTrain, DetectionDirections.On),
-                                this.driveTrain.getTrajectoryCommand(toBalance)),
-                        new BalanceRobotCommand()));
+                                this.driveTrain.getTrajectoryCommand(toBalance))),
+                new BalanceRobotCommand());
 
-        this.setInitialPose(onChargeStationToAcq);
+        this.setInitialPose(overChargeStation);
     }
 }
