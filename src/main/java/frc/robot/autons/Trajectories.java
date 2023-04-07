@@ -38,6 +38,12 @@ public class Trajectories {
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
 
+    public static List<PathPlannerTrajectory> TwoBallSubstation() {
+        return PathPlanner.loadPathGroup("Two Ball (Substation)",
+                AutoConstants.kMaxSpeedMetersPerSecond / (3 / 2),
+                AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
+    }
+
     public static List<PathPlannerTrajectory> TwoBallCenter() {
         return PathPlanner.loadPathGroup("Two Ball (Center)",
                 AutoConstants.kMaxSpeedMetersPerSecond / (3 / 2),
