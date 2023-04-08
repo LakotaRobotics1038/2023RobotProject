@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.autons.reusable.AcquireConeHigh;
+import frc.robot.autons.reusable.ScoreConeHigh;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.ConeAcquisitionPositionCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
@@ -46,7 +46,7 @@ public class TwoBallAuto extends Auton {
                         .concatenate(finalTrajectory));
 
         super.addCommands(
-                new AcquireConeHigh(),
+                new ScoreConeHigh(),
                 new ParallelCommandGroup(
                         new ConeAcquisitionPositionCommand(WristSetpoints.storage,
                                 ShoulderSetpoints.storage, false,

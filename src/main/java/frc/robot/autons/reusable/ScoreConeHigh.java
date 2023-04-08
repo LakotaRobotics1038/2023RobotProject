@@ -11,8 +11,8 @@ import frc.robot.constants.ConeAcquisitionConstants;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Wrist.WristSetpoints;
 
-public class AcquireConeHigh extends SequentialCommandGroup {
-    public AcquireConeHigh() {
+public class ScoreConeHigh extends SequentialCommandGroup {
+    public ScoreConeHigh() {
         addCommands(
                 new ParallelRaceGroup(
                         new SequentialCommandGroup(
