@@ -1,4 +1,4 @@
-package frc.robot.autons;
+package frc.robot.autons.reusable;
 
 import java.util.function.DoubleSupplier;
 
@@ -20,7 +20,7 @@ public class DetectChargeStation extends SequentialCommandGroup {
         }
     }
 
-    DetectChargeStation(DoubleSupplier roll, DetectionDirections direction) {
+    public DetectChargeStation(DoubleSupplier roll, DetectionDirections direction) {
         addCommands(
                 new WaitUntilCommand(() -> (int) Math.abs(roll.getAsDouble()) >= direction.firstAngle),
                 new WaitCommand(1.0),
