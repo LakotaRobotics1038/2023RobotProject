@@ -75,8 +75,8 @@ public class TwoBallCenterAuto extends Auton {
                                 FinishActions.NoDisable),
                         new ParallelRaceGroup(
                                 new SequentialCommandGroup(
-                                        new DetectChargeStation(driveTrain, DetectionDirections.On),
-                                        new DetectChargeStation(driveTrain, DetectionDirections.Off)),
+                                        new DetectChargeStation(driveTrain::getRoll, DetectionDirections.On),
+                                        new DetectChargeStation(driveTrain::getRoll, DetectionDirections.Off)),
                                 new FollowPathWithEvents(
                                         this.driveTrain.getTrajectoryCommand(overChargeStation),
                                         overChargeStation.getMarkers(),
@@ -84,8 +84,8 @@ public class TwoBallCenterAuto extends Auton {
                 // Get the cube and get back on charge station
                 new ParallelRaceGroup(
                         new SequentialCommandGroup(
-                                new DetectChargeStation(driveTrain, DetectionDirections.On),
-                                new DetectChargeStation(driveTrain, DetectionDirections.Off)),
+                                new DetectChargeStation(driveTrain::getRoll, DetectionDirections.On),
+                                new DetectChargeStation(driveTrain::getRoll, DetectionDirections.Off)),
                         new FollowPathWithEvents(
                                 this.driveTrain.getTrajectoryCommand(getCubeAndOverChargeStation),
                                 getCubeAndOverChargeStation.getMarkers(),
@@ -97,7 +97,7 @@ public class TwoBallCenterAuto extends Auton {
                         new SequentialCommandGroup(
                                 // Back off charge station
                                 new ParallelRaceGroup(
-                                        new DetectChargeStation(driveTrain, DetectionDirections.Off),
+                                        new DetectChargeStation(driveTrain::getRoll, DetectionDirections.Off),
                                         new FollowPathWithEvents(
                                                 this.driveTrain.getTrajectoryCommand(scoreCubeTraj),
                                                 scoreCubeTraj.getMarkers(),
@@ -109,7 +109,7 @@ public class TwoBallCenterAuto extends Auton {
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up),
                         // Balance
                         new ParallelRaceGroup(
-                                new DetectChargeStation(driveTrain, DetectionDirections.On),
+                                new DetectChargeStation(driveTrain::getRoll, DetectionDirections.On),
                                 this.driveTrain.getTrajectoryCommand(toBalance))),
                 new BalanceRobotCommand());
 

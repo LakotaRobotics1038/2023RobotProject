@@ -26,7 +26,7 @@ public class MountChargeStationAuto extends Auton {
                 new ShootCubeCommand(CubeShooterSetpoints.high, true, 1.0),
                 new ParallelCommandGroup(
                         new ParallelRaceGroup(
-                                new DetectChargeStation(driveTrain, DetectionDirections.On),
+                                new DetectChargeStation(driveTrain::getRoll, DetectionDirections.On),
                                 this.driveTrain.getTrajectoryCommand(trajectory)),
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up)),
                 new BalanceRobotCommand(),

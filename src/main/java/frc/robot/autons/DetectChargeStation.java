@@ -1,9 +1,10 @@
 package frc.robot.autons;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.subsystems.DriveTrain;
 
 public class DetectChargeStation extends SequentialCommandGroup {
     public enum DetectionDirections {
@@ -19,10 +20,10 @@ public class DetectChargeStation extends SequentialCommandGroup {
         }
     }
 
-    DetectChargeStation(DriveTrain driveTrain, DetectionDirections direction) {
+    DetectChargeStation(DoubleSupplier roll, DetectionDirections direction) {
         addCommands(
-                new WaitUntilCommand(() -> (int) Math.abs(driveTrain.getRoll()) >= direction.firstAngle),
+                new WaitUntilCommand(() -> (int) Math.abs(roll.getAsDouble()) >= direction.firstAngle),
                 new WaitCommand(1.0),
-                new WaitUntilCommand(() -> (int) Math.abs(driveTrain.getRoll()) <= direction.secondAngle));
+                new WaitUntilCommand(() -> (int) Math.abs(roll.getAsDouble()) <= direction.secondAngle));
     }
 }
