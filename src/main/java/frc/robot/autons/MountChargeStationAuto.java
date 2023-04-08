@@ -1,5 +1,7 @@
 package frc.robot.autons;
 
+import java.util.List;
+
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -18,20 +20,23 @@ public class MountChargeStationAuto extends Auton {
     public MountChargeStationAuto(Alliance alliance) {
         super(alliance);
 
-        PathPlannerTrajectory trajectory = Trajectories.MountChargeStationPath();
+        List<PathPlannerTrajectory> trajectories = Trajectories.MountChargeStationPath();
+        PathPlannerTrajectory initialTrajectory = trajectories.get(0);
+        PathPlannerTrajectory finalTrajectory = trajectories.get(1);
 
-        Dashboard.getInstance().setTrajectory(trajectory);
+        Dashboard.getInstance().setTrajectory(initialTrajectory.concatenate(finalTrajectory));
 
         super.addCommands(
                 new ShootCubeCommand(CubeShooterSetpoints.high, true, 1.0),
                 new ParallelCommandGroup(
-                        new ParallelRaceGroup(
-                                new DetectChargeStation(driveTrain, DetectionDirections.On),
-                                this.driveTrain.getTrajectoryCommand(trajectory)),
+                        this.driveTrain.getTrajectoryCommand(initialTrajectory),
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up)),
+                new ParallelRaceGroup(
+                        new DetectChargeStation(driveTrain, DetectionDirections.On),
+                        this.driveTrain.getTrajectoryCommand(finalTrajectory)),
                 new BalanceRobotCommand(),
                 new RunCommand(() -> driveTrain.setX(), driveTrain));
 
-        this.setInitialPose(trajectory);
+        this.setInitialPose(initialTrajectory);
     }
 }

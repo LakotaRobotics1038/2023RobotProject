@@ -26,8 +26,8 @@ public class Trajectories {
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
 
-    public static PathPlannerTrajectory MountChargeStationPath() {
-        return PathPlanner.loadPath("Mount Charge Station Path",
+    public static List<PathPlannerTrajectory> MountChargeStationPath() {
+        return PathPlanner.loadPathGroup("Mount Charge Station Path",
                 AutoConstants.kMaxSpeedMetersPerSecond / 2,
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
