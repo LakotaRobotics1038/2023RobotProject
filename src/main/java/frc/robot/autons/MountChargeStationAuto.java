@@ -32,7 +32,7 @@ public class MountChargeStationAuto extends Auton {
                         this.driveTrain.getTrajectoryCommand(initialTrajectory),
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up)),
                 new ParallelRaceGroup(
-                        new DetectChargeStation(driveTrain, DetectionDirections.On),
+                        new DetectChargeStation(driveTrain::getRoll, DetectionDirections.On),
                         this.driveTrain.getTrajectoryCommand(finalTrajectory)),
                 new BalanceRobotCommand(),
                 new RunCommand(() -> driveTrain.setX(), driveTrain));
