@@ -11,6 +11,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.CubeShooterConstants;
+import frc.robot.constants.NeoMotorConstants;
 
 public class CubeShooter extends SubsystemBase {
     private CANSparkMax feederMotor = new CANSparkMax(CubeShooterConstants.kFeederMotorPort, MotorType.kBrushless);
@@ -66,8 +67,13 @@ public class CubeShooter extends SubsystemBase {
         leftShooterMotor.setInverted(true);
         rightShooterMotor.follow(leftShooterMotor, true);
 
+        feederMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
+        leftShooterMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
+        rightShooterMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
+
         leftShooterMotor.burnFlash();
         rightShooterMotor.burnFlash();
+        feederMotor.burnFlash();
     }
 
     public void loadCube() {
@@ -130,23 +136,7 @@ public class CubeShooter extends SubsystemBase {
 
     public boolean onTarget() {
         double velocity = this.getVelocity();
-        return velocity <= this.setpoint.value + CubeShooterConstants.kShooterTolerance &&
-                velocity >= this.setpoint.value - CubeShooterConstants.kShooterTolerance;
-    }
-
-    public void setP(double p) {
-        this.leftShooterPidController.setP(p);
-    }
-
-    public void setI(double i) {
-        this.leftShooterPidController.setI(i);
-    }
-
-    public void setD(double d) {
-        this.leftShooterPidController.setD(d);
-    }
-
-    public void setFF(double ff) {
-        this.leftShooterPidController.setFF(ff);
+        return this.setpoint != null ? velocity <= this.setpoint.value + CubeShooterConstants.kShooterTolerance &&
+                velocity >= this.setpoint.value - CubeShooterConstants.kShooterTolerance : false;
     }
 }

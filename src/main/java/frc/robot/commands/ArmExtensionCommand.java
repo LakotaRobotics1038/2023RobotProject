@@ -4,6 +4,11 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Arm.ArmExtensionStates;
 
+/**
+ * @deprecated
+ *             Use {@link ConeAcquisitionPositionCommand} instead
+ */
+@Deprecated
 public class ArmExtensionCommand extends CommandBase {
     private Arm arm = Arm.getInstance();
 
@@ -23,7 +28,7 @@ public class ArmExtensionCommand extends CommandBase {
         if (this.state != null) {
             this.arm.setPosition(state);
         } else {
-            switch (state) {
+            switch (arm.getPosition()) {
                 case In:
                     this.arm.setPosition(ArmExtensionStates.Out);
                     break;

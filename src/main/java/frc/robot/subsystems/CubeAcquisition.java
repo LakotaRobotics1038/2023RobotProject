@@ -57,11 +57,10 @@ public final class CubeAcquisition extends SubsystemBase {
     public void setPosition(AcquisitionStates state) {
         if (state.equals(AcquisitionStates.Up)) {
             acquisitionSolenoid.set(DoubleSolenoid.Value.kReverse);
-            currentState = state;
         } else {
             acquisitionSolenoid.set(DoubleSolenoid.Value.kForward);
-            currentState = state;
         }
+        currentState = state;
     }
 
     public AcquisitionStates getPosition() {

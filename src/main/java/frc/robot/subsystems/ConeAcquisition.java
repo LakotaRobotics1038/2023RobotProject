@@ -1,14 +1,17 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 // TODO: get this install working once we need this sensor
 // import com.revrobotics.Rev2mDistanceSensor;
 // import com.revrobotics.Rev2mDistanceSensor.Port;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.constants.ConeAcquisitionConstants;
+import frc.robot.constants.NeoMotorConstants;
 
 public class ConeAcquisition extends SubsystemBase {
     private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(
@@ -30,6 +33,9 @@ public class ConeAcquisition extends SubsystemBase {
 
     private ConeAcquisition() {
         coneAcquisitionMotor.restoreFactoryDefaults();
+        coneAcquisitionMotor.setIdleMode(IdleMode.kBrake);
+        coneAcquisitionMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
+        coneAcquisitionMotor.burnFlash();
     }
 
     public double getConeDistance() {
@@ -37,12 +43,17 @@ public class ConeAcquisition extends SubsystemBase {
         return 0.0;
     }
 
-    public void acquire() {
-        coneAcquisitionMotor.set(ConeAcquisitionConstants.kConstantMotorSpeed);
+    public double getCurrent() {
+        return coneAcquisitionMotor.getOutputCurrent();
     }
 
-    public void disposeCone() {
-        coneAcquisitionMotor.set(-ConeAcquisitionConstants.kConstantMotorSpeed);
+    public void acquire(double speed) {
+        speed = MathUtil.clamp(speed, NeoMotorConstants.kMinPower, NeoMotorConstants.kMaxPower);
+        coneAcquisitionMotor.set(speed);
+    }
+
+    public void dispose() {
+        coneAcquisitionMotor.set(-ConeAcquisitionConstants.kAcquireSpeed);
     }
 
     public void stop() {

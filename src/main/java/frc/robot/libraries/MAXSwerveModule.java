@@ -9,9 +9,11 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.REVLibError;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.RelativeEncoder;
 
@@ -98,7 +100,7 @@ public class MAXSwerveModule {
         turningPIDController.setOutputRange(SwerveModuleConstants.kTurningMinOutput,
                 SwerveModuleConstants.kTurningMaxOutput);
 
-        drivingSparkMax.setIdleMode(SwerveModuleConstants.kDrivingMotorIdleMode);
+        drivingSparkMax.setIdleMode(SwerveModuleConstants.kAutoDrivingMotorIdleMode);
         turningSparkMax.setIdleMode(SwerveModuleConstants.kTurningMotorIdleMode);
         drivingSparkMax.setSmartCurrentLimit(SwerveModuleConstants.kDrivingMotorCurrentLimit);
         turningSparkMax.setSmartCurrentLimit(SwerveModuleConstants.kTurningMotorCurrentLimit);
@@ -111,6 +113,16 @@ public class MAXSwerveModule {
         this.chassisAngularOffset = chassisAngularOffset;
         desiredState.angle = new Rotation2d(turningEncoder.getPosition());
         drivingEncoder.setPosition(0);
+    }
+
+    /**
+     * Sets the idle mode of the module's driving spark max
+     *
+     * @param mode The desired idle mode
+     * @return The status of the requested action
+     */
+    public REVLibError setDrivingIdleMode(IdleMode mode) {
+        return drivingSparkMax.setIdleMode(mode);
     }
 
     /**

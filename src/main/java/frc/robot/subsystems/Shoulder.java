@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import com.revrobotics.AbsoluteEncoder;
@@ -17,6 +18,28 @@ public class Shoulder extends PIDSubsystem {
 
     private AbsoluteEncoder shoulderEncoder = shoulderMotor.getAbsoluteEncoder(Type.kDutyCycle);
 
+    public enum ShoulderSetpoints {
+        storage(ShoulderConstants.kStorageSetpoint),
+        acquire(ShoulderConstants.kAcquireSetpoint, ShoulderConstants.kAcquireArmDelay),
+        mid(ShoulderConstants.kMidSetpoint),
+        humanPlayer(ShoulderConstants.kHumanPlayerSetpoint),
+        highAuto(ShoulderConstants.kHighAutoSetpoint, ShoulderConstants.kHighArmDelay),
+        high(ShoulderConstants.kHighTeleopSetpoint, ShoulderConstants.kHighArmDelay);
+
+        public final int value;
+        public final double armDelay;
+
+        ShoulderSetpoints(int value) {
+            this.value = value;
+            this.armDelay = 0;
+        }
+
+        ShoulderSetpoints(int value, double armDelay) {
+            this.value = value;
+            this.armDelay = armDelay;
+        }
+    }
+
     // Singleton setup
     private static Shoulder instance;
 
@@ -31,13 +54,18 @@ public class Shoulder extends PIDSubsystem {
     private Shoulder() {
         super(new PIDController(ShoulderConstants.kP, ShoulderConstants.kI, ShoulderConstants.kD));
         shoulderMotor.restoreFactoryDefaults();
+        shoulderMotor.setInverted(true);
+        shoulderMotor.setIdleMode(IdleMode.kBrake);
+        shoulderEncoder.setPositionConversionFactor(ShoulderConstants.kEncoderConversion);
+        shoulderEncoder.setInverted(true);
         getController().setTolerance(ShoulderConstants.kTolerance);
-        getController().disableContinuousInput();
+        getController().enableContinuousInput(0, ShoulderConstants.kEncoderConversion);
+        shoulderMotor.burnFlash();
     }
 
     @Override
     protected void useOutput(double output, double setpoint) {
-        double power = MathUtil.clamp(output, -1, 1);
+        double power = MathUtil.clamp(output, -ShoulderConstants.kMaxPower, ShoulderConstants.kMaxPower);
         shoulderMotor.set(power);
     }
 
@@ -58,5 +86,21 @@ public class Shoulder extends PIDSubsystem {
     public void setSetpoint(double setpoint) {
         setpoint = MathUtil.clamp(setpoint, 0, ShoulderConstants.kMaxDistance);
         super.setSetpoint(setpoint);
+    }
+
+    public void setSetpoint(ShoulderSetpoints setpoint) {
+        setSetpoint(setpoint.value);
+    }
+
+    public void setP(double p) {
+        getController().setP(p);
+    }
+
+    public void setI(double i) {
+        getController().setI(i);
+    }
+
+    public void setD(double d) {
+        getController().setD(d);
     }
 }
