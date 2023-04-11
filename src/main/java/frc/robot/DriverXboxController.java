@@ -36,16 +36,16 @@ public class DriverXboxController extends XboxController1038 {
 
         new Trigger(() -> getPOVPosition() == PovPositions.Up)
                 .whileTrue(new RunCommand(() -> driveTrain
-                        .drive(DriveConstants.kFineAdjustmentPercent, 0, 0, true, true)));
+                        .drive(DriveConstants.kFineAdjustmentPercent, 0, 0, true, false)));
         new Trigger(() -> getPOVPosition() == PovPositions.Down)
                 .whileTrue(new RunCommand(() -> driveTrain
-                        .drive(-DriveConstants.kFineAdjustmentPercent, 0, 0, true, true)));
+                        .drive(-DriveConstants.kFineAdjustmentPercent, 0, 0, true, false)));
         new Trigger(() -> getPOVPosition() == PovPositions.Left)
                 .whileTrue(new RunCommand(() -> driveTrain
-                        .drive(0, DriveConstants.kFineAdjustmentPercent, 0, true, true)));
+                        .drive(0, DriveConstants.kFineAdjustmentPercent, 0, true, false)));
         new Trigger(() -> getPOVPosition() == PovPositions.Right)
                 .whileTrue(new RunCommand(() -> driveTrain
-                        .drive(0, -DriveConstants.kFineAdjustmentPercent, 0, true, true)));
+                        .drive(0, -DriveConstants.kFineAdjustmentPercent, 0, true, false)));
 
         // Re-orient robot to the field
         super.startButton.whileTrue(new InstantCommand(driveTrain::zeroHeading, driveTrain));
