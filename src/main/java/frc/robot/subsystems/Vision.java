@@ -21,7 +21,7 @@ public class Vision extends SubsystemBase {
     JSONParser jsonParser = new JSONParser();
 
     // Instance Values
-    private boolean enabled = false;
+    public boolean enabled = false;
 
     // Singleton Setup
     private static Vision instance;
@@ -39,5 +39,10 @@ public class Vision extends SubsystemBase {
     @Override
     public void periodic() {
         // values = new JSONArray(valuesSubscriber.get());
+    }
+
+    public void enable() {
+        enabled = true;
+        System.out.println("HELLO");
     }
 }
