@@ -89,7 +89,7 @@ public class OperatorJoystick extends XboxController1038 {
         // Cube Shooter
         // High
         ShootCubeCommand highShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.high);
-        yButton
+        xButton
                 .and(() -> this.isCube)
                 .whileTrue(highShootCubeCommand)
                 .whileTrue(new RunCommand(() -> {
@@ -105,7 +105,7 @@ public class OperatorJoystick extends XboxController1038 {
 
         // Mid
         ShootCubeCommand midShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.mid);
-        xButton
+        aButton
                 .and(() -> this.isCube)
                 .whileTrue(midShootCubeCommand)
                 .whileTrue(new RunCommand(() -> {
@@ -121,7 +121,7 @@ public class OperatorJoystick extends XboxController1038 {
 
         // Manual
         ManualShootCubeCommand manualShootCommand = new ManualShootCubeCommand();
-        aButton
+        yButton
                 .and(() -> this.isCube)
                 .whileTrue(manualShootCommand);
 
