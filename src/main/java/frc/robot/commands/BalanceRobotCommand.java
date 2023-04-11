@@ -20,7 +20,7 @@ public class BalanceRobotCommand extends PIDCommand {
                 BalanceConstants.kSetpoint,
                 output -> {
                     output = MathUtil.clamp(output, -BalanceConstants.kMaxSpeed, BalanceConstants.kMaxSpeed);
-                    driveTrain.drive(output, 0, 0, true);
+                    driveTrain.drive(output, 0, 0, true, false);
                 },
                 driveTrain);
 
