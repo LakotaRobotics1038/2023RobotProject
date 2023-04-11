@@ -9,7 +9,6 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -17,7 +16,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.util.WPIUtilJNI;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -25,7 +23,6 @@ import frc.robot.constants.AutoConstants;
 import frc.robot.constants.DriveConstants;
 import frc.robot.libraries.MAXSwerveModule;
 import frc.robot.libraries.Pigeon1038;
-import frc.robot.libraries.SwerveUtils;
 
 public class DriveTrain extends SubsystemBase {
     // Create MAXSwerveModules
@@ -51,15 +48,6 @@ public class DriveTrain extends SubsystemBase {
 
     // The gyro sensor
     public final Pigeon1038 gyro = new Pigeon1038(DriveConstants.kGyroCanId);
-
-    // Slew rate filter variables for controlling lateral acceleration
-    private double currentRotation = 0.0;
-    private double currentTranslationDir = 0.0;
-    private double currentTranslationMag = 0.0;
-
-    private SlewRateLimiter magLimiter = new SlewRateLimiter(DriveConstants.kMagnitudeSlewRate);
-    private SlewRateLimiter rotLimiter = new SlewRateLimiter(DriveConstants.kRotationalSlewRate);
-    private double prevTime = WPIUtilJNI.now() * 1e-6;
 
     // Odometry class for tracking robot pose
     SwerveDriveOdometry odometry = new SwerveDriveOdometry(
@@ -134,70 +122,18 @@ public class DriveTrain extends SubsystemBase {
      * @param rot           Angular rate of the robot.
      * @param fieldRelative Whether the provided x and y speeds are relative to the
      *                      field.
-     * @param rateLimit     Whether to enable rate limiting for smoother control.
      */
-    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean rateLimit) {
-
-        double xSpeedCommanded;
-        double ySpeedCommanded;
-
-        if (rateLimit) {
-            // Convert XY to polar for rate limiting
-            double inputTranslationDir = Math.atan2(ySpeed, xSpeed);
-            double inputTranslationMag = Math.sqrt(Math.pow(xSpeed, 2) + Math.pow(ySpeed, 2));
-
-            // Calculate the direction slew rate based on an estimate of the lateral
-            // acceleration
-            double directionSlewRate;
-            if (currentTranslationMag != 0.0) {
-                directionSlewRate = Math.abs(DriveConstants.kDirectionSlewRate / currentTranslationMag);
-            } else {
-                directionSlewRate = 500.0; // some high number that means the slew rate is effectively instantaneous
-            }
-
-            double currentTime = WPIUtilJNI.now() * 1e-6;
-            double elapsedTime = currentTime - prevTime;
-            double angleDif = SwerveUtils.AngleDifference(inputTranslationDir, currentTranslationDir);
-            if (angleDif < 0.45 * Math.PI) {
-                currentTranslationDir = SwerveUtils.StepTowardsCircular(currentTranslationDir, inputTranslationDir,
-                        directionSlewRate * elapsedTime);
-                currentTranslationMag = magLimiter.calculate(inputTranslationMag);
-            } else if (angleDif > 0.85 * Math.PI) {
-                if (currentTranslationMag > 1e-4) {
-                    // some small number to avoid floating-point errors with equality checking keep
-                    // currentTranslationDir unchanged
-                    currentTranslationMag = magLimiter.calculate(0.0);
-                } else {
-                    currentTranslationDir = SwerveUtils.WrapAngle(currentTranslationDir + Math.PI);
-                    currentTranslationMag = magLimiter.calculate(inputTranslationMag);
-                }
-            } else {
-                currentTranslationDir = SwerveUtils.StepTowardsCircular(currentTranslationDir, inputTranslationDir,
-                        directionSlewRate * elapsedTime);
-                currentTranslationMag = magLimiter.calculate(0.0);
-            }
-            prevTime = currentTime;
-
-            xSpeedCommanded = currentTranslationMag * Math.cos(currentTranslationDir);
-            ySpeedCommanded = currentTranslationMag * Math.sin(currentTranslationDir);
-            currentRotation = rotLimiter.calculate(rot);
-
-        } else {
-            xSpeedCommanded = xSpeed;
-            ySpeedCommanded = ySpeed;
-            currentRotation = rot;
-        }
-
-        // Convert the commanded speeds into the correct units for the drivetrain
-        double xSpeedDelivered = xSpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
-        double ySpeedDelivered = ySpeedCommanded * DriveConstants.kMaxSpeedMetersPerSecond;
-        double rotDelivered = currentRotation * DriveConstants.kMaxAngularSpeed;
+    public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+        // Adjust input based on max speed
+        xSpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
+        ySpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
+        rot *= DriveConstants.kMaxAngularSpeed;
 
         SwerveModuleState[] swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
                 fieldRelative
-                        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered,
+                        ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot,
                                 Rotation2d.fromDegrees(gyro.getAngle()))
-                        : new ChassisSpeeds(xSpeedDelivered, ySpeedDelivered, rotDelivered));
+                        : new ChassisSpeeds(xSpeed, ySpeed, rot));
         this.setModuleStates(swerveModuleStates);
     }
 
@@ -236,7 +172,7 @@ public class DriveTrain extends SubsystemBase {
                 this::setModuleStates,
                 true,
                 this)
-                .andThen(() -> drive(0, 0, 0, false, false));
+                .andThen(() -> drive(0, 0, 0, false));
     }
 
     public void setDrivingIdleMode(IdleMode mode) {
