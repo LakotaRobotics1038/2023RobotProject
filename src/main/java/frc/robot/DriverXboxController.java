@@ -31,7 +31,7 @@ public class DriverXboxController extends XboxController1038 {
             double forward = super.getLeftY();
             double rotate = super.getRightX();
 
-            driveTrain.drive(-forward, -sideways, -rotate, true, true);
+            driveTrain.drive(forward, -sideways, -rotate, true, true);
         }, driveTrain));
 
         new Trigger(() -> getPOVPosition() == PovPositions.Up)
