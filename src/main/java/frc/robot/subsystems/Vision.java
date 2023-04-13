@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import edu.wpi.first.networktables.BooleanPublisher;
+import edu.wpi.first.networktables.BooleanTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringSubscriber;
@@ -32,16 +34,18 @@ public class Vision extends SubsystemBase {
         }
     }
 
+    // Instance Values
+    private JSONParser jsonParser = new JSONParser();
+    private boolean enabled = false;
+    private JSONArray visionData;
+
     // Network Tables Setup
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable(VisionConstants.kTableName);
-    BooleanPublisher enableProcessing;
+    BooleanTopic enabledTopic = table.getBooleanTopic(VisionConstants.kEnabledTopic);
+    BooleanPublisher enabledPublisher = enabledTopic.publish();
     StringTopic valuesTopic = table.getStringTopic(VisionConstants.kValuesTopic);
     StringSubscriber valuesSubscriber = valuesTopic.subscribe("[]");
-    JSONParser jsonParser = new JSONParser();
-
-    // Instance Values
-    public boolean enabled = false;
 
     // Singleton Setup
     private static Vision instance;
@@ -58,19 +62,21 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // values = new JSONArray(valuesSubscriber.get());
-        enableProcessing.set(enabled);
-        String value = valuesSubscriber.get("[]");
+        enabledPublisher.set(enabled);
+        String value = valuesSubscriber.get();
+        try {
+            visionData = (JSONArray) jsonParser.parse(value);
+        } catch (ParseException ex) {
+            System.out.println("Failed to parse vision data");
+        }
     }
 
     public void enable() {
         enabled = true;
-        System.out.println("HELLO");
     }
 
     public void disable() {
         enabled = false;
-        System.out.println("BYE");
     }
 
     public boolean isEnabled() {
