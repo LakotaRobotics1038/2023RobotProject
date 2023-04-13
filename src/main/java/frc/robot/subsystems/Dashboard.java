@@ -8,6 +8,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.MjpegServer;
+import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
@@ -97,7 +98,9 @@ public class Dashboard extends SubsystemBase {
     private Dashboard() {
         super();
         coneCam = new HttpCamera("JetsonCamera0", "http://team1038.local:1180/stream-0");
+        coneCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
         cubeCam = new HttpCamera("JetsonCamera1", "http://team1038.local:1180/stream-1");
+        cubeCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
 
         videoSink = CameraServer.addSwitchedCamera("Camera Stream");
 
@@ -157,7 +160,7 @@ public class Dashboard extends SubsystemBase {
                 .withWidget(BuiltInWidgets.kBooleanBox)
                 .withProperties(Map.of("colorWhenTrue", "purple", "colorWhenFalse", "yellow"));
 
-        driversTab.addBoolean("Vision Enabled?", vision::isEnabled)
+        driversTab.addBoolean("Vision Enabled?", vision::isEnabled0)
                 .withPosition(6, 0)
                 .withWidget(BuiltInWidgets.kBooleanBox)
                 .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red"));

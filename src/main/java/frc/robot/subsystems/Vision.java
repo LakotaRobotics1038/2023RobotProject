@@ -36,14 +36,17 @@ public class Vision extends SubsystemBase {
 
     // Instance Values
     private JSONParser jsonParser = new JSONParser();
-    private boolean enabled = false;
+    private boolean enabled0 = false;
+    private boolean enabled1 = false;
     private JSONArray visionData;
 
     // Network Tables Setup
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable(VisionConstants.kTableName);
-    BooleanTopic enabledTopic = table.getBooleanTopic(VisionConstants.kEnabledTopic);
-    BooleanPublisher enabledPublisher = enabledTopic.publish();
+    BooleanTopic enabled0Topic = table.getBooleanTopic(VisionConstants.kEnabled0Topic);
+    BooleanPublisher enabled0Publisher = enabled0Topic.publish();
+    BooleanTopic enabled1Topic = table.getBooleanTopic(VisionConstants.kEnabled1Topic);
+    BooleanPublisher enabled1Publisher = enabled1Topic.publish();
     StringTopic valuesTopic = table.getStringTopic(VisionConstants.kValuesTopic);
     StringSubscriber valuesSubscriber = valuesTopic.subscribe("[]");
 
@@ -62,7 +65,8 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
-        enabledPublisher.set(enabled);
+        enabled0Publisher.set(enabled0);
+        enabled1Publisher.set(enabled1);
         String value = valuesSubscriber.get();
         try {
             visionData = (JSONArray) jsonParser.parse(value);
@@ -71,15 +75,27 @@ public class Vision extends SubsystemBase {
         }
     }
 
-    public void enable() {
-        enabled = true;
+    public void enable0() {
+        enabled0 = true;
     }
 
-    public void disable() {
-        enabled = false;
+    public void disable0() {
+        enabled0 = false;
     }
 
-    public boolean isEnabled() {
-        return enabled;
+    public boolean isEnabled0() {
+        return enabled0;
+    }
+
+    public void enable1() {
+        enabled1 = true;
+    }
+
+    public void disable1() {
+        enabled1 = false;
+    }
+
+    public boolean isEnabled1() {
+        return enabled1;
     }
 }
