@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -12,6 +16,7 @@ import edu.wpi.first.networktables.StringSubscriber;
 import edu.wpi.first.networktables.StringTopic;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.VisionConstants;
+import frc.robot.utils.VisionData;
 
 public class Vision extends SubsystemBase {
     // Enum for different things vision can find
@@ -38,7 +43,7 @@ public class Vision extends SubsystemBase {
     private JSONParser jsonParser = new JSONParser();
     private boolean enabled0 = false;
     private boolean enabled1 = false;
-    private JSONArray visionData;
+    private List<VisionData> visionData;
 
     // Network Tables Setup
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -69,9 +74,19 @@ public class Vision extends SubsystemBase {
         enabled1Publisher.set(enabled1);
         String value = valuesSubscriber.get();
         try {
-            visionData = (JSONArray) jsonParser.parse(value);
+            JSONArray unparsedData = (JSONArray) jsonParser.parse(value);
+            visionData = new ArrayList<VisionData>();
+            for (Object data : unparsedData) {
+                JSONObject jsonObject = (JSONObject) data;
+                VisionData mappedData = new VisionData((String) jsonObject.get("x"), (String) jsonObject.get("y"),
+                        (String) jsonObject.get("area"), (String) jsonObject.get("conf"),
+                        (String) jsonObject.get("id"));
+                visionData.add(mappedData);
+            }
         } catch (ParseException ex) {
             System.out.println("Failed to parse vision data");
+        } catch (NumberFormatException ex) {
+            System.out.println("Bad number in vision data");
         }
     }
 
