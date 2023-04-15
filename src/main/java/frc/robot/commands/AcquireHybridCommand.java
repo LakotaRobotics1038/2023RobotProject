@@ -34,7 +34,7 @@ public class AcquireHybridCommand extends CommandBase {
     @Override
     public void initialize() {
         timer.restart();
-        hybridAcquisition.acquire(type, speed);
+        hybridAcquisition.acquire(type, type == HybridAcquisitionTypes.Cone ? speed : -speed);
     }
 
     @Override
