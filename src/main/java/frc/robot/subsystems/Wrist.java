@@ -21,12 +21,23 @@ public class Wrist extends PIDSubsystem {
 
     public enum WristSetpoints {
         storage(WristConstants.kStorageSetpoint),
-        carry(WristConstants.kCarrySetpoint),
-        acquire(WristConstants.kAcquireSetpoint),
-        mid(WristConstants.kMidSetpoint),
-        humanPlayer(WristConstants.kHumanPlayerSetpoint),
-        highAuto(WristConstants.kHighAutoSetpoint),
-        high(WristConstants.kHighTeleopSetpoint);
+
+        // Cone
+        coneCarry(WristConstants.kConeCarrySetpoint),
+        coneAcqFloor(WristConstants.kConeAcqFloorSetpoint),
+        coneMid(WristConstants.kConeMidSetpoint),
+        coneHumanPlayer(WristConstants.kConeHumanPlayerSetpoint),
+        coneHumanPlayerChute(WristConstants.kConeHumanPlayerChuteSetpoint),
+        coneHighAuto(WristConstants.kConeHighAutoSetpoint),
+        coneHigh(WristConstants.kConeHighTeleopSetpoint),
+
+        // Cube
+        cubeCarry(WristConstants.kCubeCarrySetpoint),
+        cubeAcqFloor(WristConstants.kCubeAcqFloorSetpoint),
+        cubeMid(WristConstants.kCubeMidSetpoint),
+        cubeHumanPlayer(WristConstants.kCubeHumanPlayerSetpoint),
+        cubeHumanPlayerChute(WristConstants.kCubeHumanPlayerChuteSetpoint),
+        cubeHigh(WristConstants.kCubeHighSetpoint);
 
         public final int value;
 
@@ -50,7 +61,7 @@ public class Wrist extends PIDSubsystem {
         wristMotor.setInverted(true);
         wristEncoder.setPositionConversionFactor(WristConstants.kEncoderConversion);
         wristEncoder.setInverted(true);
-        getController().enableContinuousInput(0, WristConstants.kEncoderConversion);
+        getController().disableContinuousInput();
         getController().setTolerance(WristConstants.kTolerance);
         wristMotor.burnFlash();
     }
@@ -67,7 +78,8 @@ public class Wrist extends PIDSubsystem {
     }
 
     public double getPosition() {
-        return wristEncoder.getPosition();
+        double position = wristEncoder.getPosition();
+        return position > 355 ? position - 360 : wristEncoder.getPosition();
     }
 
     public boolean onTarget() {

@@ -12,10 +12,10 @@ import frc.robot.autons.reusable.DetectChargeStation;
 import frc.robot.autons.reusable.ScoreConeHigh;
 import frc.robot.autons.reusable.DetectChargeStation.DetectionDirections;
 import frc.robot.commands.BalanceRobotCommand;
-import frc.robot.commands.ConeAcquisitionPositionCommand;
+import frc.robot.commands.HybridAcquisitionPositionCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.ShootCubeCommand;
-import frc.robot.commands.ConeAcquisitionPositionCommand.FinishActions;
+import frc.robot.commands.HybridAcquisitionPositionCommand.FinishActions;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
@@ -33,12 +33,12 @@ public class MountChargeStationAuto extends Auton {
         Dashboard.getInstance().setTrajectory(initialTrajectory.concatenate(finalTrajectory));
 
         super.addCommands(
-                // new ShootCubeCommand(CubeShooterSetpoints.high, true, 1.0),
+                new ShootCubeCommand(CubeShooterSetpoints.high, true, 1.0),
                 new ScoreConeHigh(),
                 new ParallelCommandGroup(
                         this.driveTrain.getTrajectoryCommand(initialTrajectory),
-                        // new CubeAcquisitionPositionCommand(AcquisitionStates.Up)
-                        new ConeAcquisitionPositionCommand(WristSetpoints.storage,
+                        new CubeAcquisitionPositionCommand(AcquisitionStates.Up),
+                        new HybridAcquisitionPositionCommand(WristSetpoints.storage,
                                 ShoulderSetpoints.storage, false,
                                 FinishActions.NoDisable)),
                 new ParallelRaceGroup(
