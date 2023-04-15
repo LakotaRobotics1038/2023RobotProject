@@ -11,13 +11,14 @@ import frc.robot.subsystems.SwagLights;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
+import frc.robot.subsystems.HybridAcquisition.HybridAcquisitionTypes;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Wrist.WristSetpoints;
-import frc.robot.commands.AcquireConeCommand;
+import frc.robot.commands.AcquireHybridCommand;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.HybridAcquisitionPositionCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
-import frc.robot.commands.DisposeConeCommand;
+import frc.robot.commands.DisposeHybridCommand;
 import frc.robot.commands.DisposeCubeCommand;
 import frc.robot.commands.ManualShootCubeCommand;
 import frc.robot.commands.ShootCubeCommand;
@@ -107,19 +108,20 @@ public class OperatorJoystick extends XboxController1038 {
         // Cone Acquisition
         rightTrigger
                 .and(() -> currentMode == OperatorStates.Cone)
-                .whileTrue(new AcquireConeCommand())
-                .onFalse(new AcquireConeCommand(HybridAcquisitionConstants.kHoldConeSpeed));
+                .whileTrue(new AcquireHybridCommand(HybridAcquisitionTypes.Cone))
+                .onFalse(new AcquireHybridCommand(HybridAcquisitionTypes.Cone,
+                        HybridAcquisitionConstants.kHoldConeSpeed));
         rightBumper
                 .and(() -> currentMode == OperatorStates.Cone)
-                .whileTrue(new DisposeConeCommand());
+                .whileTrue(new DisposeHybridCommand(HybridAcquisitionTypes.Cone));
 
         // Cube Hybrid Acquisition
         rightTrigger
                 .and(() -> currentMode == OperatorStates.CubeHybrid)
-                .whileTrue(new AcquireConeCommand());
+                .whileTrue(new AcquireHybridCommand(HybridAcquisitionTypes.Cube));
         rightBumper
                 .and(() -> currentMode == OperatorStates.CubeHybrid)
-                .whileTrue(new DisposeConeCommand());
+                .whileTrue(new DisposeHybridCommand(HybridAcquisitionTypes.Cube));
 
         // Cube Shooter
         // High

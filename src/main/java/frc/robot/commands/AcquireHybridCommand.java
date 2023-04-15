@@ -4,24 +4,29 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.constants.HybridAcquisitionConstants;
 import frc.robot.subsystems.HybridAcquisition;
+import frc.robot.subsystems.HybridAcquisition.HybridAcquisitionTypes;
 
-public class AcquireConeCommand extends CommandBase {
+public class AcquireHybridCommand extends CommandBase {
     private HybridAcquisition hybridAcquisition = HybridAcquisition.getInstance();
     private double speed = HybridAcquisitionConstants.kAcquireSpeed;
     private double secondsToAcquire = 0.0;
+    private HybridAcquisitionTypes type;
     private Timer timer = new Timer();
 
-    public AcquireConeCommand() {
+    public AcquireHybridCommand(HybridAcquisitionTypes type) {
         this.addRequirements(hybridAcquisition);
+        this.type = type;
     }
 
-    public AcquireConeCommand(double speed) {
+    public AcquireHybridCommand(HybridAcquisitionTypes type, double speed) {
         this.addRequirements(hybridAcquisition);
+        this.type = type;
         this.speed = speed;
     }
 
-    public AcquireConeCommand(double speed, double secondsToAcquire) {
+    public AcquireHybridCommand(HybridAcquisitionTypes type, double speed, double secondsToAcquire) {
         this.addRequirements(hybridAcquisition);
+        this.type = type;
         this.speed = speed;
         this.secondsToAcquire = secondsToAcquire;
     }
@@ -29,7 +34,7 @@ public class AcquireConeCommand extends CommandBase {
     @Override
     public void initialize() {
         timer.restart();
-        hybridAcquisition.acquireCone(speed);
+        hybridAcquisition.acquire(type, speed);
     }
 
     @Override

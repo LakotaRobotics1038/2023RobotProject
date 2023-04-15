@@ -15,6 +15,11 @@ public class HybridAcquisition extends SubsystemBase {
             HybridAcquisitionConstants.kAcquisitionMotorPort,
             MotorType.kBrushless);
 
+    public enum HybridAcquisitionTypes {
+        Cone,
+        Cube
+    }
+
     // Singleton Setup
     private static HybridAcquisition instance;
 
@@ -36,22 +41,28 @@ public class HybridAcquisition extends SubsystemBase {
         return acquisitionMotor.getOutputCurrent();
     }
 
-    public void acquireCone(double speed) {
-        speed = MathUtil.clamp(speed, NeoMotorConstants.kMinPower, NeoMotorConstants.kMaxPower);
+    public void acquire(HybridAcquisitionTypes type, double speed) {
+        switch (type) {
+            case Cone:
+                speed = MathUtil.clamp(speed, NeoMotorConstants.kMinPower, NeoMotorConstants.kMaxPower);
+                break;
+            case Cube:
+                speed = MathUtil.clamp(speed, -NeoMotorConstants.kMaxPower, -NeoMotorConstants.kMinPower);
+                break;
+        }
+
         acquisitionMotor.set(speed);
     }
 
-    public void disposeCone() {
-        acquisitionMotor.set(-HybridAcquisitionConstants.kAcquireSpeed);
-    }
-
-    public void acquireCube(double speed) {
-        speed = MathUtil.clamp(speed, -NeoMotorConstants.kMaxPower, -NeoMotorConstants.kMinPower);
-        acquisitionMotor.set(speed);
-    }
-
-    public void disposeCube() {
-        acquisitionMotor.set(HybridAcquisitionConstants.kAcquireSpeed);
+    public void dispose(HybridAcquisitionTypes type) {
+        switch (type) {
+            case Cone:
+                acquisitionMotor.set(-HybridAcquisitionConstants.kAcquireSpeed);
+                break;
+            case Cube:
+                acquisitionMotor.set(HybridAcquisitionConstants.kAcquireSpeed);
+                break;
+        }
     }
 
     public void stop() {
