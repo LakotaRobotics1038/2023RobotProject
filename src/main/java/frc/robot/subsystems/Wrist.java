@@ -37,7 +37,7 @@ public class Wrist extends PIDSubsystem {
         cubeMid(WristConstants.kCubeMidSetpoint),
         cubeHumanPlayer(WristConstants.kCubeHumanPlayerSetpoint),
         cubeHumanPlayerChute(WristConstants.kCubeHumanPlayerChuteSetpoint),
-        cubeHigh(WristConstants.kConeHighTeleopSetpoint);
+        cubeHigh(WristConstants.kCubeHighSetpoint);
 
         public final int value;
 
