@@ -11,12 +11,25 @@ public class ShoulderConstants {
     public static final double kD = 0.000;
 
     public static final int kMinExtensionPosition = 8;
+
     public static final int kStorageSetpoint = 0;
-    public static final int kAcquireSetpoint = 12;
-    public static final double kAcquireArmDelay = 1.0;
-    public static final int kMidSetpoint = 50;
-    public static final int kHumanPlayerSetpoint = 32;
-    public static final int kHighAutoSetpoint = 71;
-    public static final int kHighTeleopSetpoint = 78;
-    public static final double kHighArmDelay = 0.15;
+
+    // Cone Setpoints
+    public static final int kConeAcqFloorSetpoint = 12;
+    public static final double kConeAcqFloorArmDelay = 1.0;
+    public static final int kConeMidSetpoint = 50;
+    public static final int kConeHumanPlayerSetpoint = 32;
+    public static final int kConeHumanPlayerChuteSetpoint = 32;
+    public static final int kConeHighAutoSetpoint = 71;
+    public static final int kConeHighTeleopSetpoint = 78;
+    public static final double kConeHighArmDelay = 0.15;
+
+    // Cube Setpoints
+    public static final int kCubeAcqFloorSetpoint = 12;
+    public static final double kCubeAcqFloorArmDelay = 1.0;
+    public static final int kCubeMidSetpoint = 50;
+    public static final int kCubeHumanPlayerSetpoint = 32;
+    public static final int kCubeHumanPlayerChuteSetpoint = 32;
+    public static final int kCubeHighSetpoint = 78;
+    public static final double kCubeHighArmDelay = 0.15;
 }

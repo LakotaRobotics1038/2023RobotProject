@@ -11,10 +11,22 @@ public class WristConstants {
     public static final double kMaxDistance = 140;
 
     public static final int kStorageSetpoint = 0;
-    public static final int kCarrySetpoint = 24;
-    public static final int kAcquireSetpoint = 75;
-    public static final int kMidSetpoint = 106;
-    public static final int kHumanPlayerSetpoint = 54;
-    public static final int kHighAutoSetpoint = 105;
-    public static final int kHighTeleopSetpoint = 148;
+
+    // Cone Setpoints
+    public static final int kConeCarrySetpoint = 24;
+    public static final int kConeAcqFloorSetpoint = 75;
+    public static final int kConeMidSetpoint = 106;
+    public static final int kConeHumanPlayerSetpoint = 54;
+    public static final int kConeHumanPlayerChuteSetpoint = 54;
+    public static final int kConeHighAutoSetpoint = 105;
+    public static final int kConeHighTeleopSetpoint = 148;
+
+    // Cube Setpoints
+    public static final int kCubeCarrySetpoint = 24;
+    public static final int kCubeAcqFloorSetpoint = 75;
+    public static final int kCubeMidSetpoint = 106;
+    public static final int kCubeHumanPlayerSetpoint = 54;
+    public static final int kCubeHumanPlayerChuteSetpoint = 54;
+    public static final int kCubeAcqChuteSetpoint = 54;
+    public static final int kCubeHighSetpoint = 148;
 }

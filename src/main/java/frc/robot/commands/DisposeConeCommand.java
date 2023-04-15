@@ -2,26 +2,26 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ConeAcquisition;
+import frc.robot.subsystems.HybridAcquisition;
 
 public class DisposeConeCommand extends CommandBase {
-    private ConeAcquisition coneAcquisition = ConeAcquisition.getInstance();
+    private HybridAcquisition hybridAcquisition = HybridAcquisition.getInstance();
     private double secondsToDispose = 0.0;
     private Timer timer = new Timer();
 
     public DisposeConeCommand() {
-        this.addRequirements(coneAcquisition);
+        this.addRequirements(hybridAcquisition);
     }
 
     public DisposeConeCommand(double secondsToDispose) {
-        this.addRequirements(coneAcquisition);
+        this.addRequirements(hybridAcquisition);
         this.secondsToDispose = secondsToDispose;
     }
 
     @Override
     public void initialize() {
         timer.restart();
-        coneAcquisition.dispose();
+        hybridAcquisition.disposeCone();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class DisposeConeCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        coneAcquisition.stop();
+        hybridAcquisition.stop();
         timer.stop();
     }
 }

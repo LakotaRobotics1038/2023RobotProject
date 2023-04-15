@@ -11,7 +11,7 @@ public class WristPositionCommand extends CommandBase {
 
     /**
      * @deprecated
-     *             Use {@link ConeAcquisitionPositionCommand} instead
+     *             Use {@link HybridAcquisitionPositionCommand} instead
      */
     @Deprecated
     public WristPositionCommand(WristSetpoints setpoint) {

@@ -21,12 +21,23 @@ public class Wrist extends PIDSubsystem {
 
     public enum WristSetpoints {
         storage(WristConstants.kStorageSetpoint),
-        carry(WristConstants.kCarrySetpoint),
-        acquire(WristConstants.kAcquireSetpoint),
-        mid(WristConstants.kMidSetpoint),
-        humanPlayer(WristConstants.kHumanPlayerSetpoint),
-        highAuto(WristConstants.kHighAutoSetpoint),
-        high(WristConstants.kHighTeleopSetpoint);
+
+        // Cone
+        coneCarry(WristConstants.kConeCarrySetpoint),
+        coneAcqFloor(WristConstants.kConeAcqFloorSetpoint),
+        coneMid(WristConstants.kConeMidSetpoint),
+        coneHumanPlayer(WristConstants.kConeHumanPlayerSetpoint),
+        coneHumanPlayerChute(WristConstants.kConeHumanPlayerChuteSetpoint),
+        coneHighAuto(WristConstants.kConeHighAutoSetpoint),
+        coneHigh(WristConstants.kConeHighTeleopSetpoint),
+
+        // Cube
+        cubeCarry(WristConstants.kCubeCarrySetpoint),
+        cubeAcqFloor(WristConstants.kCubeAcqFloorSetpoint),
+        cubeMid(WristConstants.kCubeMidSetpoint),
+        cubeHumanPlayer(WristConstants.kCubeHumanPlayerSetpoint),
+        cubeHumanPlayerChute(WristConstants.kCubeHumanPlayerChuteSetpoint),
+        cubeHigh(WristConstants.kConeHighTeleopSetpoint);
 
         public final int value;
 

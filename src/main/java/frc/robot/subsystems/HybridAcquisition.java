@@ -10,28 +10,28 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.constants.ConeAcquisitionConstants;
+import frc.robot.constants.HybridAcquisitionConstants;
 import frc.robot.constants.NeoMotorConstants;
 
-public class ConeAcquisition extends SubsystemBase {
+public class HybridAcquisition extends SubsystemBase {
     private final CANSparkMax coneAcquisitionMotor = new CANSparkMax(
-            ConeAcquisitionConstants.kAcquisitionMotorPort,
+            HybridAcquisitionConstants.kAcquisitionMotorPort,
             MotorType.kBrushless);
 
     // private final Rev2mDistanceSensor distanceSensor = new
     // Rev2mDistanceSensor(Port.kMXP);
 
     // Singleton Setup
-    private static ConeAcquisition instance;
+    private static HybridAcquisition instance;
 
-    public static ConeAcquisition getInstance() {
+    public static HybridAcquisition getInstance() {
         if (instance == null) {
-            instance = new ConeAcquisition();
+            instance = new HybridAcquisition();
         }
         return instance;
     }
 
-    private ConeAcquisition() {
+    private HybridAcquisition() {
         coneAcquisitionMotor.restoreFactoryDefaults();
         coneAcquisitionMotor.setIdleMode(IdleMode.kBrake);
         coneAcquisitionMotor.setSmartCurrentLimit(NeoMotorConstants.kMaxNeo550Current);
@@ -47,13 +47,22 @@ public class ConeAcquisition extends SubsystemBase {
         return coneAcquisitionMotor.getOutputCurrent();
     }
 
-    public void acquire(double speed) {
+    public void acquireCone(double speed) {
         speed = MathUtil.clamp(speed, NeoMotorConstants.kMinPower, NeoMotorConstants.kMaxPower);
         coneAcquisitionMotor.set(speed);
     }
 
-    public void dispose() {
-        coneAcquisitionMotor.set(-ConeAcquisitionConstants.kAcquireSpeed);
+    public void disposeCone() {
+        coneAcquisitionMotor.set(-HybridAcquisitionConstants.kAcquireSpeed);
+    }
+
+    public void acquireCube(double speed) {
+        speed = MathUtil.clamp(speed, -NeoMotorConstants.kMaxPower, -NeoMotorConstants.kMinPower);
+        coneAcquisitionMotor.set(speed);
+    }
+
+    public void disposeCube() {
+        coneAcquisitionMotor.set(HybridAcquisitionConstants.kAcquireSpeed);
     }
 
     public void stop() {

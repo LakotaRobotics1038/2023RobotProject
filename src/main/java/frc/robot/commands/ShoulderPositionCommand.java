@@ -17,7 +17,7 @@ public class ShoulderPositionCommand extends CommandBase {
 
     /**
      * @deprecated
-     *             Use {@link ConeAcquisitionPositionCommand} instead
+     *             Use {@link HybridAcquisitionPositionCommand} instead
      */
     @Deprecated
     public ShoulderPositionCommand(ShoulderSetpoints setpoint) {
@@ -37,10 +37,10 @@ public class ShoulderPositionCommand extends CommandBase {
             arm.setPosition(ArmExtensionStates.In);
 
             double currentSetpoint = shoulder.getSetpoint();
-            if (currentSetpoint == ShoulderSetpoints.high.value) {
-                this.delayTime = ShoulderSetpoints.high.armDelay;
-            } else if (currentSetpoint == ShoulderSetpoints.acquire.value) {
-                this.delayTime = ShoulderSetpoints.acquire.armDelay;
+            if (currentSetpoint == ShoulderSetpoints.coneHigh.value) {
+                this.delayTime = ShoulderSetpoints.coneHigh.armDelay;
+            } else if (currentSetpoint == ShoulderSetpoints.coneAcqFloor.value) {
+                this.delayTime = ShoulderSetpoints.coneAcqFloor.armDelay;
             }
 
             delayTimer.restart();
