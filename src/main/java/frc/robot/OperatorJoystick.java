@@ -219,6 +219,14 @@ public class OperatorJoystick extends XboxController1038 {
                         false,
                         FinishActions.NoFinish));
 
+        // Carry Cone
+        leftTrigger
+                .and(() -> currentMode == OperatorStates.Cone)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.coneCarry,
+                        ShoulderSetpoints.storage,
+                        false));
+
         // Cube High
         yButton
                 .and(() -> currentMode == OperatorStates.CubeHybrid)
@@ -254,6 +262,14 @@ public class OperatorJoystick extends XboxController1038 {
                         ShoulderSetpoints.cubeHumanPlayer,
                         false,
                         FinishActions.NoFinish));
+
+        // Carry Cube
+        leftTrigger
+                .and(() -> currentMode == OperatorStates.CubeHybrid)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.cubeCarry,
+                        ShoulderSetpoints.storage,
+                        false));
     }
 
     /**
