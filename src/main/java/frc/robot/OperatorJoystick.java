@@ -81,14 +81,17 @@ public class OperatorJoystick extends XboxController1038 {
                                     false)
                                     .schedule();
                             wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.storage, true));
+                            new WristPositionCommand(WristSetpoints.storage).schedule();
                             break;
                         case Cone:
                             new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
                             wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.coneCarry, true));
+                            new WristPositionCommand(WristSetpoints.coneCarry).schedule();
                             break;
                         case CubeHybrid:
                             new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
                             wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.cubeCarry, true));
+                            new WristPositionCommand(WristSetpoints.cubeCarry).schedule();
                             break;
                     }
                     swagLights.setOperatorState(this.isCubeMode());
@@ -213,15 +216,6 @@ public class OperatorJoystick extends XboxController1038 {
                 .toggleOnTrue(new HybridAcquisitionPositionCommand(
                         WristSetpoints.coneHumanPlayer,
                         ShoulderSetpoints.coneHumanPlayer,
-                        false,
-                        FinishActions.NoFinish));
-
-        // Cone Chute Human Player
-        leftTrigger
-                .and(() -> currentMode == OperatorStates.Cone)
-                .toggleOnTrue(new HybridAcquisitionPositionCommand(
-                        WristSetpoints.coneHumanPlayerChute,
-                        ShoulderSetpoints.coneHumanPlayerChute,
                         false,
                         FinishActions.NoFinish));
 
