@@ -216,6 +216,15 @@ public class OperatorJoystick extends XboxController1038 {
                         false,
                         FinishActions.NoFinish));
 
+        // Cone Chute Human Player
+        leftTrigger
+                .and(() -> currentMode == OperatorStates.Cone)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.coneHumanPlayerChute,
+                        ShoulderSetpoints.coneHumanPlayerChute,
+                        false,
+                        FinishActions.NoFinish));
+
         // Cube High
         yButton
                 .and(() -> currentMode == OperatorStates.CubeHybrid)
