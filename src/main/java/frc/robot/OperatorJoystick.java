@@ -271,6 +271,11 @@ public class OperatorJoystick extends XboxController1038 {
         wrist.removeDefaultCommand();
     }
 
+    /**
+     * Is the current operator mode in control of a cube mechanism
+     *
+     * @return is the robot in cube mode
+     */
     public boolean isCubeMode() {
         return currentMode == OperatorStates.CubeWhale || currentMode == OperatorStates.CubeHybrid;
     }
