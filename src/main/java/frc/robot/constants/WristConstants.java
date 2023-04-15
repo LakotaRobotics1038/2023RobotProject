@@ -5,7 +5,7 @@ public class WristConstants {
     public static final double kEncoderConversion = 360.0;
     public static final double kMaxPower = 1.0;
     public static final double kP = 0.0043;
-    public static final double kI = 0.0003;
+    public static final double kI = 0.0004;
     public static final double kD = 0.00;
     public static final double kTolerance = 5.0;
     public static final double kMaxDistance = 260;
@@ -18,7 +18,7 @@ public class WristConstants {
     public static final int kConeMidSetpoint = 205;
     public static final int kConeHumanPlayerSetpoint = 54;
     public static final int kConeHumanPlayerChuteSetpoint = 54;
-    public static final int kConeHighAutoSetpoint = 199;
+    public static final int kConeHighAutoSetpoint = 185;
     public static final int kConeHighTeleopSetpoint = 190;
 
     // Cube Setpoints

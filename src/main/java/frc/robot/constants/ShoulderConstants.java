@@ -20,7 +20,7 @@ public class ShoulderConstants {
     public static final int kConeMidSetpoint = 75;
     public static final int kConeHumanPlayerSetpoint = 32;
     public static final int kConeHumanPlayerChuteSetpoint = 32;
-    public static final int kConeHighAutoSetpoint = 71;
+    public static final int kConeHighAutoSetpoint = 87;
     public static final int kConeHighTeleopSetpoint = 87;
     public static final double kConeHighArmDelay = 0.15;
 
