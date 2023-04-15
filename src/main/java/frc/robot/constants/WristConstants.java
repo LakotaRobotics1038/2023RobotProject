@@ -19,7 +19,7 @@ public class WristConstants {
     public static final int kConeHumanPlayerSetpoint = 54;
     public static final int kConeHumanPlayerChuteSetpoint = 54;
     public static final int kConeHighAutoSetpoint = 199;
-    public static final int kConeHighTeleopSetpoint = 205;
+    public static final int kConeHighTeleopSetpoint = 190;
 
     // Cube Setpoints
     public static final int kCubeCarrySetpoint = 24;
