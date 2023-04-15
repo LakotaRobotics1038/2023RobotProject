@@ -41,6 +41,10 @@ public class ShoulderPositionCommand extends CommandBase {
                 this.delayTime = ShoulderSetpoints.coneHigh.armDelay;
             } else if (currentSetpoint == ShoulderSetpoints.coneAcqFloor.value) {
                 this.delayTime = ShoulderSetpoints.coneAcqFloor.armDelay;
+            } else if (currentSetpoint == ShoulderSetpoints.cubeHigh.value) {
+                this.delayTime = ShoulderSetpoints.cubeHigh.armDelay;
+            } else if (currentSetpoint == ShoulderSetpoints.cubeAcqFloor.value) {
+                this.delayTime = ShoulderSetpoints.cubeAcqFloor.armDelay;
             }
 
             delayTimer.restart();
