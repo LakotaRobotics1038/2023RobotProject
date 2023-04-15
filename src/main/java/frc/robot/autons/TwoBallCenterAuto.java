@@ -11,14 +11,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.autons.DetectChargeStation.DetectionDirections;
 import frc.robot.commands.AcquireHybridCommand;
 import frc.robot.commands.AcquireCubeCommand;
 import frc.robot.commands.BalanceRobotCommand;
 import frc.robot.commands.HybridAcquisitionPositionCommand;
+import frc.robot.commands.ManualShootCubeCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.DisposeHybridCommand;
 import frc.robot.commands.ShootCubeCommand;
@@ -39,22 +40,17 @@ public class TwoBallCenterAuto extends Auton {
     public TwoBallCenterAuto(Alliance alliance) {
         super(alliance);
 
-        ShootCubeCommand shootCube = new ShootCubeCommand(CubeShooterSetpoints.high, 0.5);
         List<PathPlannerTrajectory> trajectories = Trajectories.TwoBallCenter();
 
         PathPlannerTrajectory overChargeStation = trajectories.get(0);
         PathPlannerTrajectory getCubeAndOverChargeStation = trajectories.get(1);
-        PathPlannerTrajectory scoreCubeTraj = trajectories.get(2);
-        PathPlannerTrajectory toBalance = trajectories.get(3);
 
         eventMap.put("ReadyAcquireCube", new CubeAcquisitionPositionCommand(AcquisitionStates.Down));
         eventMap.put("AcquireCube", new AcquireCubeCommand());
 
         Dashboard.getInstance().setTrajectory(
                 overChargeStation
-                        .concatenate(getCubeAndOverChargeStation)
-                        .concatenate(scoreCubeTraj)
-                        .concatenate(toBalance));
+                        .concatenate(getCubeAndOverChargeStation));
 
         super.addCommands(
                 // Score Cone
@@ -78,43 +74,35 @@ public class TwoBallCenterAuto extends Auton {
                                 FinishActions.NoDisable),
                         new ParallelRaceGroup(
                                 new SequentialCommandGroup(
+                                        new PrintCommand("Go ON"),
                                         new DetectChargeStation(driveTrain::getRoll, DetectionDirections.On),
-                                        new DetectChargeStation(driveTrain::getRoll, DetectionDirections.Off)),
+                                        new WaitCommand(0.5),
+                                        new PrintCommand("Get OFF"),
+                                        new DetectChargeStation(driveTrain::getRoll, DetectionDirections.Off),
+                                        new PrintCommand("DONE DETECT")),
                                 new FollowPathWithEvents(
                                         this.driveTrain.getTrajectoryCommand(overChargeStation),
                                         overChargeStation.getMarkers(),
                                         eventMap))),
+                new PrintCommand("NEXT SEGMENT"),
                 // Get the cube and get back on charge station
                 new ParallelRaceGroup(
                         new SequentialCommandGroup(
                                 new DetectChargeStation(driveTrain::getRoll, DetectionDirections.On),
-                                new DetectChargeStation(driveTrain::getRoll, DetectionDirections.Off)),
+                                new PrintCommand("BALANCE READY")),
                         new FollowPathWithEvents(
                                 this.driveTrain.getTrajectoryCommand(getCubeAndOverChargeStation),
                                 getCubeAndOverChargeStation.getMarkers(),
                                 eventMap)),
+                new PrintCommand("READY BALANCE"),
+                new BalanceRobotCommand(),
+                new InstantCommand(() -> cubeShooter.setShooterSpeed(1.0)),
+                new ParallelRaceGroup(
+                        new ManualShootCubeCommand(),
+                        new WaitCommand(1.0)),
                 new ParallelCommandGroup(
-                        new SequentialCommandGroup(
-                                new AcquireCubeCommand(),
-                                shootCube),
-                        new SequentialCommandGroup(
-                                // Back off charge station
-                                new ParallelRaceGroup(
-                                        new DetectChargeStation(driveTrain::getRoll, DetectionDirections.Off),
-                                        new FollowPathWithEvents(
-                                                this.driveTrain.getTrajectoryCommand(scoreCubeTraj),
-                                                scoreCubeTraj.getMarkers(),
-                                                eventMap)),
-                                // Score the cube
-                                new WaitUntilCommand(cubeShooter::onTarget),
-                                new InstantCommand(() -> shootCube.overrideFeed()))),
-                new ParallelCommandGroup(
-                        new CubeAcquisitionPositionCommand(AcquisitionStates.Up),
-                        // Balance
-                        new ParallelRaceGroup(
-                                new DetectChargeStation(driveTrain::getRoll, DetectionDirections.On),
-                                this.driveTrain.getTrajectoryCommand(toBalance))),
-                new BalanceRobotCommand());
+                        new InstantCommand(() -> cubeShooter.setShooterSpeed(1.0)),
+                        new CubeAcquisitionPositionCommand(AcquisitionStates.Up)));
 
         this.setInitialPose(overChargeStation);
     }
