@@ -14,18 +14,19 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import frc.robot.commands.AcquireConeCommand;
+import frc.robot.commands.AcquireHybridCommand;
 import frc.robot.commands.AcquireCubeCommand;
-import frc.robot.commands.ConeAcquisitionPositionCommand;
+import frc.robot.commands.HybridAcquisitionPositionCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
-import frc.robot.commands.DisposeConeCommand;
+import frc.robot.commands.DisposeHybridCommand;
 import frc.robot.commands.ShootCubeCommand;
-import frc.robot.commands.ConeAcquisitionPositionCommand.FinishActions;
-import frc.robot.constants.ConeAcquisitionConstants;
+import frc.robot.commands.HybridAcquisitionPositionCommand.FinishActions;
+import frc.robot.constants.HybridAcquisitionConstants;
 import frc.robot.subsystems.CubeShooter;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
+import frc.robot.subsystems.HybridAcquisition.HybridAcquisitionTypes;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Wrist.WristSetpoints;
 
@@ -53,16 +54,18 @@ public class TwoBallAuto extends Auton {
                 new ParallelRaceGroup(
                         new SequentialCommandGroup(
                                 new ParallelRaceGroup(
-                                        new AcquireConeCommand(ConeAcquisitionConstants.kAcquireSpeed),
+                                        new AcquireHybridCommand(HybridAcquisitionTypes.Cone,
+                                                HybridAcquisitionConstants.kAcquireSpeed),
                                         new WaitCommand(0.25)),
-                                new AcquireConeCommand(ConeAcquisitionConstants.kHoldConeSpeed)),
-                        new ConeAcquisitionPositionCommand(WristSetpoints.highAuto,
-                                ShoulderSetpoints.highAuto, true,
+                                new AcquireHybridCommand(HybridAcquisitionTypes.Cone,
+                                        HybridAcquisitionConstants.kHoldConeSpeed)),
+                        new HybridAcquisitionPositionCommand(WristSetpoints.coneHighAuto,
+                                ShoulderSetpoints.coneHighAuto, true,
                                 FinishActions.NoDisable)),
                 new WaitCommand(0.25),
-                new DisposeConeCommand(0.5),
+                new DisposeHybridCommand(HybridAcquisitionTypes.Cone, 0.5),
                 new ParallelCommandGroup(
-                        new ConeAcquisitionPositionCommand(WristSetpoints.storage,
+                        new HybridAcquisitionPositionCommand(WristSetpoints.storage,
                                 ShoulderSetpoints.storage, false,
                                 FinishActions.NoDisable),
                         new FollowPathWithEvents(

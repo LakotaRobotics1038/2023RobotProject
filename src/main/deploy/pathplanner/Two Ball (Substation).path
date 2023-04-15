@@ -74,16 +74,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.64,
-        "y": 4.52
+        "x": 7.5,
+        "y": 4.58
       },
       "prevControl": {
-        "x": 6.457855465842177,
-        "y": 4.519664896295416
+        "x": 7.317855157585884,
+        "y": 4.58
       },
       "nextControl": {
-        "x": 6.457855465842177,
-        "y": 4.519664896295416
+        "x": 7.317855157585884,
+        "y": 4.58
       },
       "holonomicAngle": 0.0,
       "isReversal": true,
@@ -225,7 +225,7 @@
   "isReversed": null,
   "markers": [
     {
-      "position": 2.4,
+      "position": 2.3,
       "names": [
         "AcquireCube"
       ]

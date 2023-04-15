@@ -11,20 +11,21 @@ import frc.robot.subsystems.SwagLights;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
+import frc.robot.subsystems.HybridAcquisition.HybridAcquisitionTypes;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Wrist.WristSetpoints;
-import frc.robot.commands.AcquireConeCommand;
+import frc.robot.commands.AcquireHybridCommand;
 import frc.robot.commands.AcquireCubeCommand;
-import frc.robot.commands.ConeAcquisitionPositionCommand;
+import frc.robot.commands.HybridAcquisitionPositionCommand;
 import frc.robot.commands.CubeAcquisitionPositionCommand;
-import frc.robot.commands.DisposeConeCommand;
+import frc.robot.commands.DisposeHybridCommand;
 import frc.robot.commands.DisposeCubeCommand;
 import frc.robot.commands.ManualShootCubeCommand;
 import frc.robot.commands.ShootCubeCommand;
 import frc.robot.commands.ShoulderPositionCommand;
 import frc.robot.commands.WristPositionCommand;
-import frc.robot.commands.ConeAcquisitionPositionCommand.FinishActions;
-import frc.robot.constants.ConeAcquisitionConstants;
+import frc.robot.commands.HybridAcquisitionPositionCommand.FinishActions;
+import frc.robot.constants.HybridAcquisitionConstants;
 import frc.robot.constants.CubeShooterConstants;
 import frc.robot.constants.IOConstants;
 
@@ -34,7 +35,13 @@ public class OperatorJoystick extends XboxController1038 {
     private Wrist wrist = Wrist.getInstance();
     private SwagLights swagLights = SwagLights.getInstance();
 
-    private boolean isCube = true;
+    public enum OperatorStates {
+        CubeWhale,
+        Cone,
+        CubeHybrid
+    }
+
+    private OperatorStates currentMode = OperatorStates.CubeWhale;
 
     // Singleton Setup
     private static OperatorJoystick instance;
@@ -49,48 +56,81 @@ public class OperatorJoystick extends XboxController1038 {
 
     private OperatorJoystick() {
         super(IOConstants.kOperatorControllerPort);
-        swagLights.setOperatorState(isCube);
+        swagLights.setOperatorState(this.isCubeMode());
 
         // Mode Toggle
         startButton
                 .onTrue(new InstantCommand(() -> {
-                    this.isCube = !this.isCube;
-                    swagLights.setOperatorState(isCube);
-                    if (this.isCube) {
-                        new ConeAcquisitionPositionCommand(WristSetpoints.storage, ShoulderSetpoints.storage, false)
-                                .schedule();
-                        wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.storage, true));
-                    } else {
-                        new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
-                        wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.carry, true));
+                    // Toggle through states
+                    switch (currentMode) {
+                        case CubeWhale:
+                            this.currentMode = OperatorStates.Cone;
+                            break;
+                        case Cone:
+                            this.currentMode = OperatorStates.CubeHybrid;
+                            break;
+                        case CubeHybrid:
+                            this.currentMode = OperatorStates.CubeWhale;
+                            break;
                     }
+
+                    // Initialize new state
+                    switch (currentMode) {
+                        case CubeWhale:
+                            new HybridAcquisitionPositionCommand(WristSetpoints.storage, ShoulderSetpoints.storage,
+                                    false)
+                                    .schedule();
+                            wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.storage, true));
+                            new WristPositionCommand(WristSetpoints.storage).schedule();
+                            break;
+                        case Cone:
+                            new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
+                            wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.coneCarry, true));
+                            new WristPositionCommand(WristSetpoints.coneCarry).schedule();
+                            break;
+                        case CubeHybrid:
+                            new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
+                            wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.cubeCarry, true));
+                            new WristPositionCommand(WristSetpoints.cubeCarry).schedule();
+                            break;
+                    }
+                    swagLights.setOperatorState(this.isCubeMode());
                 }));
 
-        // Cube Acquisition
+        // Cube Whale Acquisition
         rightTrigger
-                .and(() -> this.isCube)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
                 .whileTrue(new AcquireCubeCommand());
         rightBumper
-                .and(() -> this.isCube)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
                 .whileTrue(new DisposeCubeCommand());
         bButton
-                .and(() -> this.isCube)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
                 .onTrue(new CubeAcquisitionPositionCommand());
 
         // Cone Acquisition
         rightTrigger
-                .and(() -> !this.isCube)
-                .whileTrue(new AcquireConeCommand())
-                .onFalse(new AcquireConeCommand(ConeAcquisitionConstants.kHoldConeSpeed));
+                .and(() -> currentMode == OperatorStates.Cone)
+                .whileTrue(new AcquireHybridCommand(HybridAcquisitionTypes.Cone))
+                .onFalse(new AcquireHybridCommand(HybridAcquisitionTypes.Cone,
+                        HybridAcquisitionConstants.kHoldConeSpeed));
         rightBumper
-                .and(() -> !this.isCube)
-                .whileTrue(new DisposeConeCommand());
+                .and(() -> currentMode == OperatorStates.Cone)
+                .whileTrue(new DisposeHybridCommand(HybridAcquisitionTypes.Cone));
+
+        // Cube Hybrid Acquisition
+        rightTrigger
+                .and(() -> currentMode == OperatorStates.CubeHybrid)
+                .whileTrue(new AcquireHybridCommand(HybridAcquisitionTypes.Cube));
+        rightBumper
+                .and(() -> currentMode == OperatorStates.CubeHybrid)
+                .whileTrue(new DisposeHybridCommand(HybridAcquisitionTypes.Cube));
 
         // Cube Shooter
         // High
         ShootCubeCommand highShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.high);
         xButton
-                .and(() -> this.isCube)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
                 .whileTrue(highShootCubeCommand)
                 .whileTrue(new RunCommand(() -> {
                     if (cubeShooter.onTarget()) {
@@ -106,7 +146,7 @@ public class OperatorJoystick extends XboxController1038 {
         // Mid
         ShootCubeCommand midShootCubeCommand = new ShootCubeCommand(CubeShooterSetpoints.mid);
         aButton
-                .and(() -> this.isCube)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
                 .whileTrue(midShootCubeCommand)
                 .whileTrue(new RunCommand(() -> {
                     if (cubeShooter.onTarget()) {
@@ -122,11 +162,11 @@ public class OperatorJoystick extends XboxController1038 {
         // Manual
         ManualShootCubeCommand manualShootCommand = new ManualShootCubeCommand();
         yButton
-                .and(() -> this.isCube)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
                 .whileTrue(manualShootCommand);
 
         leftTrigger
-                .and(() -> this.isCube)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
                 .whileTrue(new RunCommand(() -> {
                     highShootCubeCommand.feedOut();
                     midShootCubeCommand.feedOut();
@@ -134,50 +174,102 @@ public class OperatorJoystick extends XboxController1038 {
                 }));
 
         new Trigger(() -> getPOVPosition() == PovPositions.Up)
-                .and(() -> this.isCube)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
                 .onTrue(new InstantCommand(() -> cubeShooter
                         .setShooterSpeed(cubeShooter.getShooterSpeed() + CubeShooterConstants.kShooterSpeedIncrement)));
         new Trigger(() -> getPOVPosition() == PovPositions.Down)
-                .and(() -> this.isCube)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
                 .onTrue(new InstantCommand(() -> cubeShooter
                         .setShooterSpeed(cubeShooter.getShooterSpeed() - CubeShooterConstants.kShooterSpeedIncrement)));
 
         // Wrist + Shoulder
-        // High
+        // Cone High
         yButton
-                .and(() -> !this.isCube)
-                .toggleOnTrue(new ConeAcquisitionPositionCommand(
-                        WristSetpoints.high,
-                        ShoulderSetpoints.high,
+                .and(() -> currentMode == OperatorStates.Cone)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.coneHigh,
+                        ShoulderSetpoints.coneHigh,
                         true,
                         FinishActions.NoFinish));
 
-        // Mid
+        // Cone Mid
         xButton
-                .and(() -> !this.isCube)
-                .toggleOnTrue(new ConeAcquisitionPositionCommand(
-                        WristSetpoints.mid,
-                        ShoulderSetpoints.mid,
+                .and(() -> currentMode == OperatorStates.Cone)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.coneMid,
+                        ShoulderSetpoints.coneMid,
                         false,
                         FinishActions.NoFinish));
 
-        // Low
+        // Cone Acq Floor
         aButton
-                .and(() -> !this.isCube)
-                .toggleOnTrue(new ConeAcquisitionPositionCommand(
-                        WristSetpoints.acquire,
-                        ShoulderSetpoints.acquire,
+                .and(() -> currentMode == OperatorStates.Cone)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.coneAcqFloor,
+                        ShoulderSetpoints.coneAcqFloor,
                         true,
                         FinishActions.NoFinish));
 
-        // Storage
+        // Cone Human Player
         bButton
-                .and(() -> !this.isCube)
-                .toggleOnTrue(new ConeAcquisitionPositionCommand(
-                        WristSetpoints.humanPlayer,
-                        ShoulderSetpoints.humanPlayer,
+                .and(() -> currentMode == OperatorStates.Cone)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.coneHumanPlayer,
+                        ShoulderSetpoints.coneHumanPlayer,
                         false,
                         FinishActions.NoFinish));
+
+        // Carry Cone
+        leftTrigger
+                .and(() -> currentMode == OperatorStates.Cone)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.coneCarry,
+                        ShoulderSetpoints.storage,
+                        false));
+
+        // Cube High
+        yButton
+                .and(() -> currentMode == OperatorStates.CubeHybrid)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.cubeHigh,
+                        ShoulderSetpoints.cubeHigh,
+                        true,
+                        FinishActions.NoFinish));
+
+        // Cube Mid
+        xButton
+                .and(() -> currentMode == OperatorStates.CubeHybrid)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.cubeMid,
+                        ShoulderSetpoints.cubeMid,
+                        false,
+                        FinishActions.NoFinish));
+
+        // Cube Acq Floor
+        aButton
+                .and(() -> currentMode == OperatorStates.CubeHybrid)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.cubeAcqFloor,
+                        ShoulderSetpoints.cubeAcqFloor,
+                        true,
+                        FinishActions.NoFinish));
+
+        // Cube Human Player
+        bButton
+                .and(() -> currentMode == OperatorStates.CubeHybrid)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.cubeHumanPlayer,
+                        ShoulderSetpoints.cubeHumanPlayer,
+                        false,
+                        FinishActions.NoFinish));
+
+        // Carry Cube
+        leftTrigger
+                .and(() -> currentMode == OperatorStates.CubeHybrid)
+                .toggleOnTrue(new HybridAcquisitionPositionCommand(
+                        WristSetpoints.cubeCarry,
+                        ShoulderSetpoints.storage,
+                        false));
     }
 
     /**
@@ -200,7 +292,12 @@ public class OperatorJoystick extends XboxController1038 {
         wrist.removeDefaultCommand();
     }
 
+    /**
+     * Is the current operator mode in control of a cube mechanism
+     *
+     * @return is the robot in cube mode
+     */
     public boolean isCubeMode() {
-        return isCube;
+        return currentMode == OperatorStates.CubeWhale || currentMode == OperatorStates.CubeHybrid;
     }
 }
