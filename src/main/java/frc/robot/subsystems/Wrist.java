@@ -61,7 +61,7 @@ public class Wrist extends PIDSubsystem {
         wristMotor.setInverted(true);
         wristEncoder.setPositionConversionFactor(WristConstants.kEncoderConversion);
         wristEncoder.setInverted(true);
-        getController().enableContinuousInput(0, WristConstants.kEncoderConversion);
+        getController().disableContinuousInput();
         getController().setTolerance(WristConstants.kTolerance);
         wristMotor.burnFlash();
     }
@@ -78,7 +78,8 @@ public class Wrist extends PIDSubsystem {
     }
 
     public double getPosition() {
-        return wristEncoder.getPosition();
+        double position = wristEncoder.getPosition();
+        return position > 355 ? position - 360 : wristEncoder.getPosition();
     }
 
     public boolean onTarget() {
