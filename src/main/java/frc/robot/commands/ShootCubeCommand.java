@@ -11,9 +11,13 @@ public class ShootCubeCommand extends CommandBase {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private CubeAcquisition cubeAcquisition = CubeAcquisition.getInstance();
     private CubeShooterSetpoints setpoint;
+    private AcquisitionStates initialAcqState;
     private double secondsToShoot = 0.0;
+    private double secondsToWaitForAcquisition = 0.5;
     private boolean overrideFeedOut = false;
-    private double startTime = 0.0;
+    private boolean autoFire = false;
+    private Timer shootDelayTimer = new Timer();
+    private Timer cubeAcqDelayTimer = new Timer();
 
     public ShootCubeCommand(CubeShooterSetpoints setpoint) {
         this.addRequirements(cubeShooter, cubeAcquisition);
@@ -26,21 +30,44 @@ public class ShootCubeCommand extends CommandBase {
         this.secondsToShoot = secondsToShoot;
     }
 
+    public ShootCubeCommand(CubeShooterSetpoints setpoint, boolean autoFire, double secondsToShoot) {
+        this.addRequirements(cubeShooter, cubeAcquisition);
+        this.setpoint = setpoint;
+        this.secondsToShoot = secondsToShoot;
+        this.autoFire = autoFire;
+    }
+
     @Override
     public void initialize() {
         this.overrideFeedOut = false;
-        cubeAcquisition.setPosition(AcquisitionStates.Down);
+        if (this.autoFire) {
+            cubeAcquisition.setPosition(AcquisitionStates.Down);
+        }
+        this.initialAcqState = cubeAcquisition.getPosition();
         cubeShooter.enable(setpoint);
+        shootDelayTimer.reset();
+        cubeAcqDelayTimer.reset();
     }
 
     @Override
     public void execute() {
-        if (overrideFeedOut || cubeShooter.onTarget()) {
-            if (this.startTime == 0.0 && this.secondsToShoot != 0) {
-                this.startTime = Timer.getFPGATimestamp();
+        if (overrideFeedOut || (autoFire && cubeShooter.onTarget())) {
+            if (this.initialAcqState == AcquisitionStates.Up) {
+                cubeAcqDelayTimer.start();
+                cubeAcquisition.setPosition(AcquisitionStates.Down);
+                if (cubeAcqDelayTimer.get() >= secondsToWaitForAcquisition) {
+                    cubeShooter.feedOut();
+                    shootDelayTimer.start();
+                }
+            } else {
+                cubeShooter.feedOut();
+                shootDelayTimer.start();
             }
-            cubeShooter.feedOut();
         }
+    }
+
+    public void feedOut() {
+        this.overrideFeedOut = cubeShooter.onTarget();
     }
 
     public void overrideFeed() {
@@ -49,16 +76,14 @@ public class ShootCubeCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (this.startTime != 0.0 && this.secondsToShoot != 0) {
-            return this.startTime + this.secondsToShoot < Timer.getFPGATimestamp();
-        }
-
-        return false;
+        return secondsToShoot == 0.0 ? false : shootDelayTimer.get() >= secondsToShoot;
     }
 
     @Override
     public void end(boolean interrupted) {
         cubeShooter.disable();
         cubeShooter.stopFeeder();
+        shootDelayTimer.stop();
+        cubeAcqDelayTimer.stop();
     }
 }

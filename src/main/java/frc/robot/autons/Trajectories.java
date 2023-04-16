@@ -34,13 +34,13 @@ public class Trajectories {
 
     public static List<PathPlannerTrajectory> TwoBallScoringTable() {
         return PathPlanner.loadPathGroup("Two Ball (Scoring Table)",
-                AutoConstants.kMaxSpeedMetersPerSecond / 2,
+                AutoConstants.kMaxSpeedMetersPerSecond / (3 / 2),
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
 
     public static List<PathPlannerTrajectory> TwoBallSubstation() {
         return PathPlanner.loadPathGroup("Two Ball (Substation)",
-                AutoConstants.kMaxSpeedMetersPerSecond / 2,
+                AutoConstants.kMaxSpeedMetersPerSecond / (3 / 2),
                 AutoConstants.kMaxAccelerationMetersPerSecondSquared / 2);
     }
 }

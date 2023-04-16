@@ -20,10 +20,21 @@ public class Shoulder extends PIDSubsystem {
 
     public enum ShoulderSetpoints {
         storage(ShoulderConstants.kStorageSetpoint),
-        acquire(ShoulderConstants.kAcquireSetpoint, ShoulderConstants.kAcquireArmDelay),
-        mid(ShoulderConstants.kMidSetpoint),
-        humanPlayer(ShoulderConstants.kHumanPlayerSetpoint),
-        high(ShoulderConstants.kHighSetpoint, ShoulderConstants.kHighArmDelay);
+
+        // Cone
+        coneAcqFloor(ShoulderConstants.kConeAcqFloorSetpoint, ShoulderConstants.kConeAcqFloorArmDelay),
+        coneMid(ShoulderConstants.kConeMidSetpoint),
+        coneHumanPlayer(ShoulderConstants.kConeHumanPlayerSetpoint),
+        coneHumanPlayerChute(ShoulderConstants.kConeHumanPlayerChuteSetpoint),
+        coneHighAuto(ShoulderConstants.kConeHighAutoSetpoint, ShoulderConstants.kConeHighArmDelay),
+        coneHigh(ShoulderConstants.kConeHighTeleopSetpoint, ShoulderConstants.kConeHighArmDelay),
+
+        // Cube
+        cubeAcqFloor(ShoulderConstants.kCubeAcqFloorSetpoint, ShoulderConstants.kCubeAcqFloorArmDelay),
+        cubeMid(ShoulderConstants.kCubeMidSetpoint),
+        cubeHumanPlayer(ShoulderConstants.kCubeHumanPlayerSetpoint),
+        cubeHumanPlayerChute(ShoulderConstants.kCubeHumanPlayerChuteSetpoint),
+        cubeHigh(ShoulderConstants.kCubeHighSetpoint, ShoulderConstants.kCubeHighArmDelay);
 
         public final int value;
         public final double armDelay;

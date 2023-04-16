@@ -26,7 +26,7 @@ public class Dashboard extends SubsystemBase {
     private CubeShooter cubeShooter = CubeShooter.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
     private Wrist wrist = Wrist.getInstance();
-    private ConeAcquisition coneAcquisition = ConeAcquisition.getInstance();
+    private HybridAcquisition hybridAcquisition = HybridAcquisition.getInstance();
     private Compressor1038 compressor = Compressor1038.getInstance();
     private OperatorJoystick operatorJoystick = OperatorJoystick.getInstance();
     private Vision vision = Vision.getInstance();
@@ -166,7 +166,7 @@ public class Dashboard extends SubsystemBase {
                 .withSize(8, 5)
                 .withWidget(BuiltInWidgets.kField);
 
-        controlsTab.addNumber("Cone Acq Current", coneAcquisition::getCurrent)
+        controlsTab.addNumber("Cone Acq Current", hybridAcquisition::getCurrent)
                 .withPosition(0, 1);
     }
 

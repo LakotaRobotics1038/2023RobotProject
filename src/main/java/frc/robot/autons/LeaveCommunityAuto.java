@@ -17,7 +17,7 @@ public class LeaveCommunityAuto extends Auton {
         Dashboard.getInstance().setTrajectory(trajectory);
 
         super.addCommands(
-                new ShootCubeCommand(CubeShooterSetpoints.high, 1.0),
+                new ShootCubeCommand(CubeShooterSetpoints.high, true, 1.0),
                 new ParallelCommandGroup(
                         this.driveTrain.getTrajectoryCommand(trajectory),
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up)));

@@ -10,7 +10,7 @@ import frc.robot.subsystems.Arm.ArmExtensionStates;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
 import frc.robot.subsystems.Wrist.WristSetpoints;
 
-public class ConeAcquisitionPositionCommand extends CommandBase {
+public class HybridAcquisitionPositionCommand extends CommandBase {
     private Wrist wrist = Wrist.getInstance();
     private Shoulder shoulder = Shoulder.getInstance();
     private Arm arm = Arm.getInstance();
@@ -28,7 +28,7 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
     private boolean extendArm = false;
     private double delayTime = 0;
 
-    public ConeAcquisitionPositionCommand(WristSetpoints wristSetpoint, ShoulderSetpoints shoulderSetpoint,
+    public HybridAcquisitionPositionCommand(WristSetpoints wristSetpoint, ShoulderSetpoints shoulderSetpoint,
             boolean extendArm) {
         this.addRequirements(wrist, shoulder, arm);
         this.wristSetpoint = wristSetpoint;
@@ -36,7 +36,7 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
         this.extendArm = extendArm;
     }
 
-    public ConeAcquisitionPositionCommand(WristSetpoints wristSetpoint, ShoulderSetpoints shoulderSetpoint,
+    public HybridAcquisitionPositionCommand(WristSetpoints wristSetpoint, ShoulderSetpoints shoulderSetpoint,
             boolean extendArm,
             FinishActions finishAction) {
         this.addRequirements(wrist, shoulder, arm);
@@ -52,10 +52,15 @@ public class ConeAcquisitionPositionCommand extends CommandBase {
             arm.setPosition(ArmExtensionStates.In);
 
             double currentSetpoint = shoulder.getSetpoint();
-            if (currentSetpoint == ShoulderSetpoints.high.value) {
-                this.delayTime = ShoulderSetpoints.high.armDelay;
-            } else if (currentSetpoint == ShoulderSetpoints.acquire.value) {
-                this.delayTime = ShoulderSetpoints.acquire.armDelay;
+
+            if (currentSetpoint == ShoulderSetpoints.coneHigh.value) {
+                this.delayTime = ShoulderSetpoints.coneHigh.armDelay;
+            } else if (currentSetpoint == ShoulderSetpoints.coneAcqFloor.value) {
+                this.delayTime = ShoulderSetpoints.coneAcqFloor.armDelay;
+            } else if (currentSetpoint == ShoulderSetpoints.cubeHigh.value) {
+                this.delayTime = ShoulderSetpoints.cubeHigh.armDelay;
+            } else if (currentSetpoint == ShoulderSetpoints.cubeAcqFloor.value) {
+                this.delayTime = ShoulderSetpoints.cubeAcqFloor.armDelay;
             }
 
             delayTimer.restart();

@@ -6,7 +6,7 @@ import frc.robot.subsystems.Arm.ArmExtensionStates;
 
 /**
  * @deprecated
- *             Use {@link ConeAcquisitionPositionCommand} instead
+ *             Use {@link HybridAcquisitionPositionCommand} instead
  */
 @Deprecated
 public class ArmExtensionCommand extends CommandBase {
