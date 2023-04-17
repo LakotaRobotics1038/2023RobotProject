@@ -45,6 +45,7 @@ public class OperatorJoystick extends XboxController1038 {
     }
 
     private OperatorStates currentMode = OperatorStates.CubeWhale;
+    private boolean areCubesFat = false;
 
     // Singleton Setup
     private static OperatorJoystick instance;
@@ -187,6 +188,20 @@ public class OperatorJoystick extends XboxController1038 {
                 .and(() -> currentMode == OperatorStates.CubeWhale)
                 .onTrue(new InstantCommand(() -> cubeShooter
                         .setShooterSpeed(cubeShooter.getShooterSpeed() - CubeShooterConstants.kShooterSpeedIncrement)));
+        new Trigger(() -> getPOVPosition() == PovPositions.Left)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
+                .onTrue(new InstantCommand(() -> {
+                    midShootCubeCommand.setSetpoint(CubeShooterSetpoints.mid);
+                    highShootCubeCommand.setSetpoint(CubeShooterSetpoints.high);
+                    areCubesFat = false;
+                }));
+        new Trigger(() -> getPOVPosition() == PovPositions.Right)
+                .and(() -> currentMode == OperatorStates.CubeWhale)
+                .onTrue(new InstantCommand(() -> {
+                    midShootCubeCommand.setSetpoint(CubeShooterSetpoints.midFat);
+                    highShootCubeCommand.setSetpoint(CubeShooterSetpoints.highFat);
+                    areCubesFat = true;
+                }));
 
         // Wrist + Shoulder
         // Cone High

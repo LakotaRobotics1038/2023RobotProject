@@ -26,9 +26,10 @@ public class CubeShooter extends SubsystemBase {
     private CubeShooterSetpoints setpoint;
 
     public enum CubeShooterSetpoints {
-        low(CubeShooterConstants.kLowShooterSetpoint),
         mid(CubeShooterConstants.kMidShooterSetpoint),
-        high(CubeShooterConstants.kHighShooterSetpoint);
+        high(CubeShooterConstants.kHighShooterSetpoint),
+        midFat(CubeShooterConstants.kMidShooterFatCubeSetpoint),
+        highFat(CubeShooterConstants.kHighShooterFatCubeSetpoint);
 
         public final int value;
 

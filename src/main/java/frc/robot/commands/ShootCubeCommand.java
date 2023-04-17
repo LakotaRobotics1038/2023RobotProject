@@ -37,6 +37,10 @@ public class ShootCubeCommand extends CommandBase {
         this.autoFire = autoFire;
     }
 
+    public void setSetpoint(CubeShooterSetpoints setpoint) {
+        this.setpoint = setpoint;
+    }
+
     @Override
     public void initialize() {
         this.overrideFeedOut = false;

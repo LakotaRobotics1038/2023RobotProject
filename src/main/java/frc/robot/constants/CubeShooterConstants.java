@@ -19,7 +19,10 @@ public final class CubeShooterConstants {
     public static final double kFF = 1 / NeoMotorConstants.kFreeSpeedRpm;
     public static final double kShooterTolerance = 5;
 
-    public static final int kLowShooterSetpoint = 750;
+    public static final int kMaxShooterSetpoint = 2200;
+
     public static final int kMidShooterSetpoint = 1000;
-    public static final int kHighShooterSetpoint = 1380; // Max setpoint is 2,200
+    public static final int kHighShooterSetpoint = 1380;
+    public static final int kMidShooterFatCubeSetpoint = 965;
+    public static final int kHighShooterFatCubeSetpoint = 1330;
 }
