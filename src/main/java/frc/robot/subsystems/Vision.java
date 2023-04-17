@@ -41,6 +41,7 @@ public class Vision extends SubsystemBase {
 
     // Instance Values
     private JSONParser jsonParser = new JSONParser();
+    private boolean recording = false;
     private boolean enabled0 = false;
     private boolean enabled1 = false;
     private List<VisionData> visionData;
@@ -48,6 +49,8 @@ public class Vision extends SubsystemBase {
     // Network Tables Setup
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable(VisionConstants.kTableName);
+    BooleanTopic recordingTopic = table.getBooleanTopic(VisionConstants.kRecordingTopic);
+    BooleanPublisher recordingPublisher = recordingTopic.publish();
     BooleanTopic enabled0Topic = table.getBooleanTopic(VisionConstants.kEnabled0Topic);
     BooleanPublisher enabled0Publisher = enabled0Topic.publish();
     BooleanTopic enabled1Topic = table.getBooleanTopic(VisionConstants.kEnabled1Topic);
@@ -70,8 +73,6 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
-        enabled0Publisher.set(enabled0);
-        enabled1Publisher.set(enabled1);
         String value = valuesSubscriber.get();
         try {
             JSONArray unparsedData = (JSONArray) jsonParser.parse(value);
@@ -90,12 +91,24 @@ public class Vision extends SubsystemBase {
         }
     }
 
+    public void startRecording() {
+        recording = true;
+        recordingPublisher.set(recording);
+    }
+
+    public void stopRecording() {
+        recording = false;
+        recordingPublisher.set(recording);
+    }
+
     public void enable0() {
         enabled0 = true;
+        enabled0Publisher.set(enabled0);
     }
 
     public void disable0() {
         enabled0 = false;
+        enabled0Publisher.set(enabled0);
     }
 
     public boolean isEnabled0() {
@@ -104,10 +117,12 @@ public class Vision extends SubsystemBase {
 
     public void enable1() {
         enabled1 = true;
+        enabled1Publisher.set(enabled1);
     }
 
     public void disable1() {
         enabled1 = false;
+        enabled1Publisher.set(enabled1);
     }
 
     public boolean isEnabled1() {

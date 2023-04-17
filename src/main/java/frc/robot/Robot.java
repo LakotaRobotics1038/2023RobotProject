@@ -7,6 +7,7 @@ package frc.robot;
 import edu.wpi.first.hal.ControlWord;
 import edu.wpi.first.hal.DriverStationJNI;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -17,12 +18,14 @@ import frc.robot.subsystems.Compressor1038;
 import frc.robot.subsystems.Dashboard;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.SwagLights;
+import frc.robot.subsystems.Vision;
 
 public class Robot extends TimedRobot {
     // Singleton Instances
     private AutonSelector autonSelector = AutonSelector.getInstance();
     private SwagLights swagLights = SwagLights.getInstance();
     private OperatorJoystick operatorJoystick = OperatorJoystick.getInstance();
+    private Vision vision = Vision.getInstance();
     private Compressor1038 compressor = Compressor1038.getInstance();
 
     // Variables
@@ -66,9 +69,13 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+
         operatorJoystick.clearDefaults();
         compressor.disable();
         autonomousCommand = autonSelector.chooseAuton();
+        if (DriverStation.isFMSAttached()) {
+            vision.startRecording();
+        }
 
         if (autonomousCommand != null) {
             Pose2d initialPose = autonomousCommand.getInitialPose();
@@ -106,6 +113,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopExit() {
         driveTrain.setX();
+        vision.stopRecording();
     }
 
     @Override
