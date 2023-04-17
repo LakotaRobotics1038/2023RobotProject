@@ -94,7 +94,7 @@ public class TwoBallCenterAuto extends Auton {
                                 this.driveTrain.getTrajectoryCommand(getCubeAndOverChargeStation),
                                 getCubeAndOverChargeStation.getMarkers(),
                                 eventMap)),
-                new PrintCommand("READY BALANCE"),
+                new PrintCommand("DO BALANCE"),
                 new BalanceRobotCommand(),
                 new InstantCommand(() -> cubeShooter.setShooterSpeed(1.0)),
                 new ParallelRaceGroup(
