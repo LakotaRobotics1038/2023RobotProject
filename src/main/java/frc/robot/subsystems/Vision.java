@@ -39,6 +39,11 @@ public class Vision extends SubsystemBase {
         }
     }
 
+    public enum CameraStream {
+        cam0,
+        cam1;
+    }
+
     // Instance Values
     private JSONParser jsonParser = new JSONParser();
     private boolean recording = false;
@@ -55,6 +60,8 @@ public class Vision extends SubsystemBase {
     BooleanPublisher enabled0Publisher = enabled0Topic.publish();
     BooleanTopic enabled1Topic = table.getBooleanTopic(VisionConstants.kEnabled1Topic);
     BooleanPublisher enabled1Publisher = enabled1Topic.publish();
+    BooleanTopic streamCam0Topic = table.getBooleanTopic(VisionConstants.kStreamCam0);
+    BooleanPublisher streamCam0Publisher = streamCam0Topic.publish();
     StringTopic valuesTopic = table.getStringTopic(VisionConstants.kValuesTopic);
     StringSubscriber valuesSubscriber = valuesTopic.subscribe("[]");
 
@@ -89,6 +96,10 @@ public class Vision extends SubsystemBase {
         } catch (NumberFormatException ex) {
             System.out.println("Bad number in vision data");
         }
+    }
+
+    public void setCamStream(CameraStream cam) {
+        streamCam0Publisher.set(cam == CameraStream.cam0);
     }
 
     public void startRecording() {

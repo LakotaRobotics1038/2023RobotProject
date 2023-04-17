@@ -8,11 +8,13 @@ import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.CubeShooter;
 import frc.robot.subsystems.Shoulder;
 import frc.robot.subsystems.SwagLights;
+import frc.robot.subsystems.Vision;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.CubeAcquisition.AcquisitionStates;
 import frc.robot.subsystems.CubeShooter.CubeShooterSetpoints;
 import frc.robot.subsystems.HybridAcquisition.HybridAcquisitionTypes;
 import frc.robot.subsystems.Shoulder.ShoulderSetpoints;
+import frc.robot.subsystems.Vision.CameraStream;
 import frc.robot.subsystems.Wrist.WristSetpoints;
 import frc.robot.commands.AcquireHybridCommand;
 import frc.robot.commands.AcquireCubeCommand;
@@ -34,6 +36,7 @@ public class OperatorJoystick extends XboxController1038 {
     private Shoulder shoulder = Shoulder.getInstance();
     private Wrist wrist = Wrist.getInstance();
     private SwagLights swagLights = SwagLights.getInstance();
+    private Vision vision = Vision.getInstance();
 
     public enum OperatorStates {
         CubeWhale,
@@ -82,16 +85,19 @@ public class OperatorJoystick extends XboxController1038 {
                                     .schedule();
                             wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.storage, true));
                             new WristPositionCommand(WristSetpoints.storage).schedule();
+                            vision.setCamStream(CameraStream.cam0);
                             break;
                         case Cone:
                             new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
                             wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.coneCarry, true));
                             new WristPositionCommand(WristSetpoints.coneCarry).schedule();
+                            vision.setCamStream(CameraStream.cam1);
                             break;
                         case CubeHybrid:
                             new CubeAcquisitionPositionCommand(AcquisitionStates.Up).schedule();
                             wrist.setDefaultCommand(new WristPositionCommand(WristSetpoints.cubeCarry, true));
                             new WristPositionCommand(WristSetpoints.cubeCarry).schedule();
+                            vision.setCamStream(CameraStream.cam1);
                             break;
                     }
                     swagLights.setOperatorState(this.isCubeMode());
