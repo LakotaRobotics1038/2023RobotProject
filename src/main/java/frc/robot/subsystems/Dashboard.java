@@ -6,11 +6,11 @@ import java.util.Map;
 import com.pathplanner.lib.PathPlannerTrajectory;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.MjpegServer;
-import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -29,19 +29,19 @@ public class Dashboard extends SubsystemBase {
     private HybridAcquisition hybridAcquisition = HybridAcquisition.getInstance();
     private Compressor1038 compressor = Compressor1038.getInstance();
     private OperatorJoystick operatorJoystick = OperatorJoystick.getInstance();
+    private Vision vision = Vision.getInstance();
 
     // Choosers
     private SendableChooser<AutonChoices> autoChooser = new SendableChooser<>();
 
     // Tabs
-    private ShuffleboardTab driversTab = Shuffleboard.getTab("Drivers");
-    private ShuffleboardTab controlsTab = Shuffleboard.getTab("Controls");
+    private final ShuffleboardTab driversTab = Shuffleboard.getTab("Drivers");
+    private final ShuffleboardTab controlsTab = Shuffleboard.getTab("Controls");
+    private final NetworkTableInstance tableInstance = NetworkTableInstance.getDefault();
 
     // Variables
     private final Field2d field = new Field2d();
-    private final MjpegServer videoSink;
-    private UsbCamera cubeCam;
-    private UsbCamera coneCam;
+    private final HttpCamera camera;
 
     // Enums
     public enum Cameras {
@@ -96,20 +96,9 @@ public class Dashboard extends SubsystemBase {
 
     private Dashboard() {
         super();
-        cubeCam = CameraServer.startAutomaticCapture(0);
-        cubeCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-        cubeCam.setConnectVerbose(0);
-        coneCam = CameraServer.startAutomaticCapture(1);
-        coneCam.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
-        coneCam.setConnectVerbose(0);
-
-        videoSink = CameraServer.addSwitchedCamera("Camera Stream");
-
-        // TODO: setup the jetson streams to replace the USB ports
-        // NetworkTableInstance piCamTable = NetworkTableInstance.getDefault();
-        // String[] serverAddress = { "mjpeg:http://team1038.local:1180/?action=stream"
-        // };
-        // piCamTable.getEntry("/CameraPublisher/JetsonCamera/streams").setStringArray(serverAddress);
+        camera = new HttpCamera("JetsonCamera", "http://team1038.local:1180/stream");
+        camera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+        tableInstance.getEntry("/CameraPublisher/JetsonCamera/streams").setStringArray(camera.getUrls());
 
         // TODO: This prevents you from switching tabs for some reason
         // Shuffleboard.selectTab("Drivers");
@@ -158,7 +147,7 @@ public class Dashboard extends SubsystemBase {
                 .withSize(4, 3)
                 .withWidget(BuiltInWidgets.kField);
 
-        driversTab.add("Camera Stream", videoSink.getSource())
+        driversTab.add("Camera Stream", camera)
                 .withPosition(6, 0)
                 .withSize(4, 4);
 
@@ -167,9 +156,10 @@ public class Dashboard extends SubsystemBase {
                 .withWidget(BuiltInWidgets.kBooleanBox)
                 .withProperties(Map.of("colorWhenTrue", "purple", "colorWhenFalse", "yellow"));
 
-        // If you set the camera before sending the source to the dashboard
-        // it will not toggle
-        this.setCamera(Cameras.cubeCamera);
+        driversTab.addBoolean("Vision Enabled?", vision::isEnabled0)
+                .withPosition(6, 0)
+                .withWidget(BuiltInWidgets.kBooleanBox)
+                .withProperties(Map.of("colorWhenTrue", "green", "colorWhenFalse", "red"));
 
         controlsTab.add(field)
                 .withPosition(2, 0)
@@ -188,13 +178,7 @@ public class Dashboard extends SubsystemBase {
             resetGyro.setBoolean(false);
         }
         field.setRobotPose(driveTrain.getPose());
-        boolean isCubeMode = operatorJoystick.isCubeMode();
-        // TODO: does this work?
-        if (isCubeMode && videoSink.getSource().equals(coneCam)) {
-            this.setCamera(Cameras.cubeCamera);
-        } else if (!isCubeMode && videoSink.getSource().equals(cubeCam)) {
-            this.setCamera(Cameras.coneCamera);
-        }
+
         // shoulder.setP(shoulderP.getDouble(ShoulderConstants.kP));
         // shoulder.setI(shoulderI.getDouble(ShoulderConstants.kI));
         // shoulder.setD(shoulderD.getDouble(ShoulderConstants.kD));
@@ -226,22 +210,6 @@ public class Dashboard extends SubsystemBase {
      */
     public void clearTrajectory() {
         this.field.getObject("traj").setPoses(new ArrayList<>());
-    }
-
-    /**
-     * Chooses which camera is visible on the dashboard
-     *
-     * @param camera
-     */
-    private void setCamera(Cameras camera) {
-        switch (camera) {
-            case coneCamera:
-                videoSink.setSource(coneCam);
-                break;
-            case cubeCamera:
-                videoSink.setSource(cubeCam);
-                break;
-        }
     }
 
     /**

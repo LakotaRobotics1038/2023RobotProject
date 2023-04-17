@@ -4,6 +4,7 @@ import frc.robot.constants.DriveConstants;
 import frc.robot.constants.IOConstants;
 import frc.robot.libraries.XboxController1038;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Vision;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -12,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class DriverXboxController extends XboxController1038 {
     // Subsystem Dependencies
     private final DriveTrain driveTrain = DriveTrain.getInstance();
+    private final Vision vision = Vision.getInstance();
 
     // Previous Status
     private double prevX = 0;
@@ -70,6 +72,12 @@ public class DriverXboxController extends XboxController1038 {
 
         // Lock the wheels into an X formation
         super.xButton.whileTrue(new RunCommand(driveTrain::setX, driveTrain));
+
+        // Enables Vision thing
+        super.aButton.whileTrue(new RunCommand(vision::enable0, vision));
+
+        // Disables Vision thing
+        super.aButton.whileFalse(new RunCommand(vision::disable0, vision));
     }
 
     /**
