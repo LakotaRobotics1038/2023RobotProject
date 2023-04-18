@@ -33,7 +33,6 @@ public class Shoulder extends PIDSubsystem {
         cubeAcqFloor(ShoulderConstants.kCubeAcqFloorSetpoint, ShoulderConstants.kCubeAcqFloorArmDelay),
         cubeMid(ShoulderConstants.kCubeMidSetpoint),
         cubeHumanPlayer(ShoulderConstants.kCubeHumanPlayerSetpoint),
-        cubeHumanPlayerChute(ShoulderConstants.kCubeHumanPlayerChuteSetpoint),
         cubeHigh(ShoulderConstants.kCubeHighSetpoint, ShoulderConstants.kCubeHighArmDelay);
 
         public final int value;

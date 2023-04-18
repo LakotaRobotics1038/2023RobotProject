@@ -25,8 +25,7 @@ public class WristConstants {
     public static final int kCubeCarrySetpoint = 24;
     public static final int kCubeAcqFloorSetpoint = 75;
     public static final int kCubeMidSetpoint = 106;
-    public static final int kCubeHumanPlayerSetpoint = 54;
-    public static final int kCubeHumanPlayerChuteSetpoint = 54;
+    public static final int kCubeHumanPlayerSetpoint = 25;
     public static final int kCubeAcqChuteSetpoint = 54;
     public static final int kCubeHighSetpoint = 148;
 }

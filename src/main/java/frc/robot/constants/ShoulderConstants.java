@@ -28,8 +28,7 @@ public class ShoulderConstants {
     public static final int kCubeAcqFloorSetpoint = 12;
     public static final double kCubeAcqFloorArmDelay = 1.0;
     public static final int kCubeMidSetpoint = 50;
-    public static final int kCubeHumanPlayerSetpoint = 32;
-    public static final int kCubeHumanPlayerChuteSetpoint = 32;
+    public static final int kCubeHumanPlayerSetpoint = 25;
     public static final int kCubeHighSetpoint = 78;
     public static final double kCubeHighArmDelay = 0.15;
 }
