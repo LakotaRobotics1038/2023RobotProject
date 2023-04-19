@@ -96,7 +96,7 @@ public class Dashboard extends SubsystemBase {
 
     private Dashboard() {
         super();
-        camera = new HttpCamera("JetsonCamera", "http://team1038.local:1180/stream");
+        camera = new HttpCamera("JetsonCamera", "http://10.10.38.99:1180/stream");
         camera.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
         tableInstance.getEntry("/CameraPublisher/JetsonCamera/streams").setStringArray(camera.getUrls());
 
