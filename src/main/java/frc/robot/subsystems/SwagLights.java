@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.robot.OperatorJoystick;
 
 public class SwagLights implements Subsystem {
     // Enums
@@ -20,6 +21,7 @@ public class SwagLights implements Subsystem {
     public enum OperatorStates {
         Cone("Y"),
         Cube("P"),
+        Hybrid("H"),
         AcquireSuccess("G");
 
         public final String value;
@@ -104,7 +106,17 @@ public class SwagLights implements Subsystem {
      *
      * @param isCube is the current mode the cube mode?
      */
-    public void setOperatorState(boolean isCube) {
-        this.operatorState = isCube ? OperatorStates.Cube : OperatorStates.Cone;
+    public void setOperatorState(OperatorJoystick.OperatorStates operatorState) {
+        switch (operatorState) {
+            case Cone:
+                this.operatorState = OperatorStates.Cone;
+                break;
+            case CubeWhale:
+                this.operatorState = OperatorStates.Cube;
+                break;
+            case CubeHybrid:
+                this.operatorState = OperatorStates.Hybrid;
+                break;
+        }
     }
 }

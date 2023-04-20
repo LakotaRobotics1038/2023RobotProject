@@ -60,7 +60,7 @@ public class OperatorJoystick extends XboxController1038 {
 
     private OperatorJoystick() {
         super(IOConstants.kOperatorControllerPort);
-        swagLights.setOperatorState(this.isCubeMode());
+        swagLights.setOperatorState(this.currentMode);
 
         // Mode Toggle
         startButton
@@ -101,7 +101,7 @@ public class OperatorJoystick extends XboxController1038 {
                             vision.setCamStream(CameraStream.cam1);
                             break;
                     }
-                    swagLights.setOperatorState(this.isCubeMode());
+                    swagLights.setOperatorState(this.currentMode);
                 }));
 
         // Cube Whale Acquisition
