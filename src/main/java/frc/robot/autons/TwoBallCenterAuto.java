@@ -24,6 +24,7 @@ import frc.robot.commands.CubeAcquisitionPositionCommand;
 import frc.robot.commands.DisposeHybridCommand;
 import frc.robot.commands.ShootCubeCommand;
 import frc.robot.commands.HybridAcquisitionPositionCommand.FinishActions;
+import frc.robot.constants.CubeShooterConstants;
 import frc.robot.constants.HybridAcquisitionConstants;
 import frc.robot.subsystems.CubeShooter;
 import frc.robot.subsystems.Dashboard;
@@ -47,6 +48,8 @@ public class TwoBallCenterAuto extends Auton {
 
         eventMap.put("ReadyAcquireCube", new CubeAcquisitionPositionCommand(AcquisitionStates.Down));
         eventMap.put("AcquireCube", new AcquireCubeCommand());
+
+        ManualShootCubeCommand shootCubeCommand = new ManualShootCubeCommand();
 
         Dashboard.getInstance().setTrajectory(
                 overChargeStation
@@ -98,10 +101,13 @@ public class TwoBallCenterAuto extends Auton {
                 new BalanceRobotCommand(),
                 new InstantCommand(() -> cubeShooter.setShooterSpeed(1.0)),
                 new ParallelRaceGroup(
-                        new ManualShootCubeCommand(),
-                        new WaitCommand(1.0)),
+                        shootCubeCommand,
+                        new ParallelCommandGroup(
+                                new WaitCommand(1.0),
+                                new InstantCommand(() -> shootCubeCommand.feedOut()))),
                 new ParallelCommandGroup(
-                        new InstantCommand(() -> cubeShooter.setShooterSpeed(1.0)),
+                        new InstantCommand(
+                                () -> cubeShooter.setShooterSpeed(CubeShooterConstants.kDefaultShooterSpeed)),
                         new CubeAcquisitionPositionCommand(AcquisitionStates.Up)));
 
         this.setInitialPose(overChargeStation);
