@@ -78,10 +78,9 @@ public class DriverXboxController extends XboxController1038 {
         super.xButton.whileTrue(new RunCommand(driveTrain::setX, driveTrain));
 
         // Enables Vision thing
-        super.aButton.whileTrue(new RunCommand(vision::enable0, vision));
-
-        // Disables Vision thing
-        super.aButton.whileFalse(new RunCommand(vision::disable0, vision));
+        super.aButton
+                .onTrue(new InstantCommand(vision::enable0, vision))
+                .onFalse(new InstantCommand(vision::disable0, vision));
     }
 
     /**
