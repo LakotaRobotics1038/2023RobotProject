@@ -51,25 +51,33 @@ public class DriverXboxController extends XboxController1038 {
             prevY = y;
             prevZ = z;
 
+            switch (this.getPOVPosition()) {
+                case Up:
+                    forward = DriveConstants.kFineAdjustmentPercent;
+                    sideways = 0;
+                    break;
+                case Down:
+                    forward = -DriveConstants.kFineAdjustmentPercent;
+                    sideways = 0;
+                    break;
+                case Left:
+                    forward = 0;
+                    sideways = DriveConstants.kFineAdjustmentPercent;
+                    break;
+                case Right:
+                    forward = 0;
+                    sideways = -DriveConstants.kFineAdjustmentPercent;
+                    break;
+                default:
+                    break;
+            }
+
             if (this.getRightBumper()) {
                 driveTrain.drive(y, -x, -z, true);
             } else {
                 driveTrain.drive(forward, -sideways, -rotate, true);
             }
         }, driveTrain));
-
-        new Trigger(() -> getPOVPosition() == PovPositions.Up)
-                .whileTrue(new RunCommand(() -> driveTrain
-                        .drive(DriveConstants.kFineAdjustmentPercent, 0, 0, true)));
-        new Trigger(() -> getPOVPosition() == PovPositions.Down)
-                .whileTrue(new RunCommand(() -> driveTrain
-                        .drive(-DriveConstants.kFineAdjustmentPercent, 0, 0, true)));
-        new Trigger(() -> getPOVPosition() == PovPositions.Left)
-                .whileTrue(new RunCommand(() -> driveTrain
-                        .drive(0, DriveConstants.kFineAdjustmentPercent, 0, true)));
-        new Trigger(() -> getPOVPosition() == PovPositions.Right)
-                .whileTrue(new RunCommand(() -> driveTrain
-                        .drive(0, -DriveConstants.kFineAdjustmentPercent, 0, true)));
 
         // Re-orient robot to the field
         super.startButton.whileTrue(new InstantCommand(driveTrain::zeroHeading, driveTrain));
