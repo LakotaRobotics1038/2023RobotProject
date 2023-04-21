@@ -73,9 +73,9 @@ public class Robot extends TimedRobot {
         operatorJoystick.clearDefaults();
         compressor.disable();
         autonomousCommand = autonSelector.chooseAuton();
-        if (DriverStation.isFMSAttached()) {
-            vision.startRecording();
-        }
+        // if (DriverStation.isFMSAttached()) {
+        vision.startRecording();
+        // }
 
         if (autonomousCommand != null) {
             Pose2d initialPose = autonomousCommand.getInitialPose();
