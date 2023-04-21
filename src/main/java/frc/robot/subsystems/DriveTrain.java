@@ -8,6 +8,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.DriveConstants;
+import frc.robot.constants.NeoMotorConstants;
 import frc.robot.libraries.MAXSwerveModule;
 import frc.robot.libraries.Pigeon1038;
 
@@ -47,10 +49,10 @@ public class DriveTrain extends SubsystemBase {
             DriveConstants.kBackRightChassisAngularOffset);
 
     // The gyro sensor
-    public final Pigeon1038 gyro = new Pigeon1038(DriveConstants.kGyroCanId);
+    private final Pigeon1038 gyro = new Pigeon1038(DriveConstants.kGyroCanId);
 
     // Odometry class for tracking robot pose
-    SwerveDriveOdometry odometry = new SwerveDriveOdometry(
+    private SwerveDriveOdometry odometry = new SwerveDriveOdometry(
             DriveConstants.kDriveKinematics,
             Rotation2d.fromDegrees(gyro.getAngle()),
             new SwerveModulePosition[] {
@@ -59,6 +61,13 @@ public class DriveTrain extends SubsystemBase {
                     rearLeft.getPosition(),
                     rearRight.getPosition()
             });
+
+    // PID Controller for Rotation Lock
+    private PIDController rotationLockController = new PIDController(
+            DriveConstants.kRotationLockP,
+            DriveConstants.kRotationLockI,
+            DriveConstants.kRotationLockD);
+    private boolean isRotationLocked = false;
 
     // Singleton Setup
     private static DriveTrain instance;
@@ -74,6 +83,11 @@ public class DriveTrain extends SubsystemBase {
     private DriveTrain() {
         super();
         gyro.reset();
+
+        // Setup Rotation Lock Controller
+        rotationLockController.enableContinuousInput(0, 360);
+        rotationLockController.setTolerance(DriveConstants.kRotationLockTolerance);
+        rotationLockController.setSetpoint(0);
     }
 
     @Override
@@ -124,6 +138,11 @@ public class DriveTrain extends SubsystemBase {
      *                      field.
      */
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+        if (isRotationLocked) {
+            double lockedRot = rotationLockController.calculate(getHeading());
+            rot = MathUtil.clamp(lockedRot, -NeoMotorConstants.kMaxPower, NeoMotorConstants.kMaxPower);
+        }
+
         // Adjust input based on max speed
         xSpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
         ySpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
@@ -135,6 +154,17 @@ public class DriveTrain extends SubsystemBase {
                                 Rotation2d.fromDegrees(gyro.getAngle()))
                         : new ChassisSpeeds(xSpeed, ySpeed, rot));
         this.setModuleStates(swerveModuleStates);
+    }
+
+    public void lockRotation(double setpoint) {
+        setpoint = MathUtil.clamp(setpoint, 0, 360);
+        this.rotationLockController.setSetpoint(setpoint);
+        this.isRotationLocked = true;
+    }
+
+    public void unlockRotation() {
+        this.isRotationLocked = false;
+        this.rotationLockController.reset();
     }
 
     /**

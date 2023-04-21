@@ -11,6 +11,12 @@ public final class DriveConstants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     public static final double kFineAdjustmentPercent = 0.2;
 
+    // Rotation PID Constants
+    public static final double kRotationLockP = 0.01;
+    public static final double kRotationLockI = 0.000;
+    public static final double kRotationLockD = 0.000;
+    public static final double kRotationLockTolerance = 1.0;
+
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26);
     // Distance between centers of right and left wheels on robot
