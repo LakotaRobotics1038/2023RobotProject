@@ -90,7 +90,7 @@ public class CubeShooter extends SubsystemBase {
     }
 
     public void setShooterSpeed(double p) {
-        MathUtil.clamp(p, NeoMotorConstants.kMinPower, NeoMotorConstants.kMaxPower);
+        p = MathUtil.clamp(p, NeoMotorConstants.kMinPower, NeoMotorConstants.kMaxPower);
         shooterSpeed = p;
     }
 
