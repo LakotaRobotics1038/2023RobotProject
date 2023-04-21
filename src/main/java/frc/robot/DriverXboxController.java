@@ -51,7 +51,11 @@ public class DriverXboxController extends XboxController1038 {
             prevY = y;
             prevZ = z;
 
-            driveTrain.drive(forward, -sideways, -rotate, true);
+            if (this.getRightBumper()) {
+                driveTrain.drive(y, -x, -z, true);
+            } else {
+                driveTrain.drive(forward, -sideways, -rotate, true);
+            }
         }, driveTrain));
 
         new Trigger(() -> getPOVPosition() == PovPositions.Up)
