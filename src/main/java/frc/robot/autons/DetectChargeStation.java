@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 
 public class DetectChargeStation extends SequentialCommandGroup {
+    // makes enum for the angles of being on the charge station and being off the
+    // change station
     public enum DetectionDirections {
         On(15, 14),
         Off(15, 2);

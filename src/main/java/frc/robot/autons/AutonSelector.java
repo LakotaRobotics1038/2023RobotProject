@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.Dashboard;
 
 public class AutonSelector {
+    // makes an enum of all the different auton choices
     public enum AutonChoices {
         NoAuto,
         LeaveCommunityCenterAuto,
@@ -20,6 +21,7 @@ public class AutonSelector {
     }
 
     // Choosers
+    // in the smart dashboard so you can choose the auton
     SendableChooser<AutonChoices> autoChooser;
 
     // Singleton Setup
@@ -33,6 +35,7 @@ public class AutonSelector {
         return instance;
     }
 
+    // Method to set all of the Dashboard things to link up to autons
     private AutonSelector() {
         this.autoChooser = Dashboard.getInstance().getAutoChooser();
 
@@ -47,7 +50,9 @@ public class AutonSelector {
     }
 
     public Auton chooseAuton() {
+        // gets the allince so pathplanner can run the right side of the field
         Alliance alliance = DriverStation.getAlliance();
+        // long if statement that is if this auton is selected than run that auton
         switch (this.autoChooser.getSelected()) {
             case LeaveCommunityCenterAuto:
                 return new LeaveCommunityAuto(alliance, Trajectories.LeaveCommunityPathCenter());
