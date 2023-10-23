@@ -9,7 +9,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 
-public class DriverXboxController extends XboxController1038 {
+public class DriverJoystick extends XboxController1038 {
     // Subsystem Dependencies
     private final DriveTrain driveTrain = DriveTrain.getInstance();
     private final Vision vision = Vision.getInstance();
@@ -20,17 +20,17 @@ public class DriverXboxController extends XboxController1038 {
     private double prevZ = 0;
 
     // Singleton Setup
-    private static DriverXboxController instance;
+    private static DriverJoystick instance;
 
-    public static DriverXboxController getInstance() {
+    public static DriverJoystick getInstance() {
         if (instance == null) {
             System.out.println("Creating a new Driver Xbox Controller");
-            instance = new DriverXboxController();
+            instance = new DriverJoystick();
         }
         return instance;
     }
 
-    private DriverXboxController() {
+    private DriverJoystick() {
         super(IOConstants.kDriverControllerPort);
 
         SlewRateLimiter forwardFilter = new SlewRateLimiter(1.0);

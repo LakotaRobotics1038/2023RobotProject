@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        DriverXboxController.getInstance();
+        DriverJoystick.getInstance();
         Dashboard.getInstance();
         addPeriodic(swagLights::periodic, 0.5);
     }
