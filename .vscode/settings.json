@@ -38,6 +38,7 @@
         "Coms",
         "deadband",
         "gryo",
+        "holonomic",
         "Jetson",
         "Mjpeg",
         "Odometry",
@@ -47,7 +48,8 @@
         "setpoint",
         "Setpoints",
         "teleop",
-        "traj"
+        "traj",
+        "wpilib"
     ],
     "editor.bracketPairColorization.enabled": true,
     "editor.guides.bracketPairs": "active",

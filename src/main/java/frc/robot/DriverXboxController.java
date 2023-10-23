@@ -8,7 +8,6 @@ import frc.robot.subsystems.Vision;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class DriverXboxController extends XboxController1038 {
     // Subsystem Dependencies

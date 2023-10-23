@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.HttpCamera;
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
 import edu.wpi.first.math.trajectory.Trajectory;
