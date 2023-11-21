@@ -36,6 +36,7 @@ public final class CubeAcquisition extends SubsystemBase {
     private CubeAcquisition() {
         setPosition(AcquisitionStates.Up);
         acquisitionMotor.restoreFactoryDefaults();
+        acquisitionMotor.burnFlash();
     }
 
     public void acquire() {
