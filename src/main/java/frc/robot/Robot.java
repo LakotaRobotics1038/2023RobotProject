@@ -81,7 +81,7 @@ public class Robot extends TimedRobot {
         if (autonomousCommand != null) {
             Pose2d initialPose = autonomousCommand.getInitialPose();
             if (initialPose != null) {
-                driveTrain.resetOdometry(autonomousCommand.getInitialPose());
+                driveTrain.resetOdometry(initialPose);
             }
             driveTrain.setDrivingIdleMode(SwerveModuleConstants.kAutoDrivingMotorIdleMode);
             autonomousCommand.schedule();
